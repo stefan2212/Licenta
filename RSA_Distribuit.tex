@@ -6,7 +6,7 @@
 \usepackage{combelow}% provides \cb to place comma below character
 \usepackage{systeme}
 \usepackage{amssymb}
-
+\usepackage{mathtools}
 \begin{document}
 
 \section{RSA Clasic}
@@ -118,7 +118,7 @@ $$ g=cmmdc(P-1,Q-1) $$
 $$g_0=\frac{g}{cmmdc(g,k)}$$
 $$k_0=\frac{k}{cmmdc(k,g)}$$
 Dacă $d$ satisface:
-$$ d< \frac{PQ}{2(P+Q-q)g_0k_0} = \frac{N}{2(P+Q-q)g_0k_0}$$
+$$ d< \frac{PQ}{2(P+Q-q)g_0k_0} = \frac{N}{2(P+Q-1)g_0k_0}$$
 Atunci $N$ poate fi factorizat în timpul $\log(N)$ \\
 \textbf{Demonstrație}: folosim $N$ modulul RSA, unde $N=PQ$
 $$ \lambda(N)=cmmmc(P-1,Q-1)=\frac{\phi(N)}{cmmdc(P-1,Q-1)}=\frac{PQ - (P+Q-1)}{g}$$
@@ -130,6 +130,115 @@ $$ed = 1 +k \lambda(N)= 1+ \frac{k* \phi(N)}{cmmdc(P-1,Q-1)} $$
 Cunoaștem faptul că  $g_0 = \frac{g}{cmmdc(g,k)}$ și $k_0=\frac{k}{cmmdc(k,g)}$ de unde rezultă că $g=g_0 * cmmdc(g,k)$ și $k=k_0 * cmmdc(k,g)$, prin urmare $\frac{g}{k} = \frac{g_0}{k_0}$ de unde rezultă:
 $$ 1+ \frac{k* \phi(N)}{cmmdc(P-1,Q-1)} = 1+ \frac{k (N-s)}{g} $$
 $$ = 1+ \frac{k_0}{g_0} (N-s)$$
+Dacă vom împărți ecuația $ed= 1+ \frac{k_0}{g_0} (N-s)$ la $dN$ vom obține următoarea relație:
+$$ \frac{e}{N} = \left(  1+ \frac{k_0N - k_0s}{g_0}   \right) * \frac{1}{dN} $$
+$$ \frac{e}{N} = \frac{1}{dN} + \frac{k_0}{g_0 d} +\frac{k_0s}{dNg_0}$$
+De unde rezultă:
+$$ \left |  \frac{e}{N} - \frac{k_0}{dg_0} \right| = \left| \frac{1}{dN} - \frac{k_0s}{dg_0N} \right| $$
+De aici putem considera faptul că :
+$$ \left| \frac{1}{dN} - \frac{k_0s}{dg_0N} \right| < \frac{k_0s}{dg_0N}$$
+Folosind următoarea relație:
+$$ d< \frac{N}{2(P+Q-1)g_0k_0}  $$
+$$ d < \frac{N}{2sg_0k_0}$$
+Din această relație putem ajunge la următoarea formulă:
+$$ \frac{d}{N} < \frac{1}{2sg_0k_0} \Rightarrow \frac{k_0s}{N} < \frac{1}{2dg_0}$$
+Înmulțind în ambele părți cu $\frac{1}{dg_0}$ obținem:
+$$ \frac{k_0s}{dg_0N} < \frac{1}{2(dg_0)^2}$$
+Din această relație, ajungem la concluzia că:
+$$ \left| \frac{e}{N} - \frac{k_0}{dg_0} \right| < \frac{1}{2(dg_0)^2}$$
+Știm din teorema fracțiilor continue, că $\frac{k_0}{dg_0}$ este una din convergențe din fracția continuă $\frac{e}{N}$. Dacă avem $c_i = \frac{a_i}{b_i}$ să fie convergența $i$ a lui $\frac{e}{N}$ atunci știm că $\frac{k_0}{dg_0} = \frac{a_j}{b_j}$ pentru un anumit $j$. \\
+\textbf{Fracții continue} \\
+Fie $a$ și $b$ numere naturale, $b \neq 0$, folosind algoritmul lui Euclid obținem:
+$$a= q_1 *b+r_1, \ \ \ 0<r_1<b$$
+$$b=q_2*r_1+r_2, \ \ \ 0<r_2<r_1$$
+$$r_1= q_3*r_2+r_3, \ \ \ 0<r_3<r_2$$
+$$ ...$$
+$$ r_{k-2} = q_k *r_{k-1} +r_k , \ \ \ 0<r_k<r_{k-1}$$
+$$ r_{k-1} = q_{k+1} * r_k$$
+Frația $\frac{a}{b} $ poate fi scrisă după cum urmează:
+$$ \frac{a}{b} = \frac{q_1b+r_1}{b} $$
+$$ = q_1 + \frac{1}{\frac{b}{r_1}}$$
+$$ = q_1 + \frac{1}{q_2 + \frac{1}{ \frac{b}{r_1}}} $$
+$$ ...$$
+$$ = q_1 + \frac{1}{q_2 + \frac{1}{\vdotswithin{q_k} q_k + \frac{1}{q_{k+1}}}} $$
+Ultimul termen va fi referit ca fracția continuă asociată fracției $\frac{a}{b}$ și va finotat prin $[ q_1,q_2,...,q_{k+1}]$. Expresiile $[q_1,q_2,...,q_i]$ , $1 \leqslant i \leqslant k+1$, vor fi numite convergențele fracției continue $[q_1,q_2,...,q_{k+1}]$.\\
+Considerăm numerele naturale $\alpha_{i}$ și $\beta_{i}$ date prinȘ
+$$ \alpha_1 =q_1, \ \ \ \beta_1=1$$
+$$ \alpha_2 = q_1 * q_2 + 1, \ \ \ \beta_2=q_2$$
+$$ \alpha_i = q_i * \alpha_{i-1} + \alpha_{i-2}, \ \ \ \beta_i = q_i * \beta_{i-1} + \beta_{i-2}$$
+Pentru orice $3 \leqslant i \leqslant k+1$ \\
+Atunci are loc relația 
+$$[q_1,q_2,...,q_i] = \frac{\alpha_i}{\beta_i}$$
+$$(\alpha_i,\beta_i)=1$$
+Pentru orice $1 \leqslant i \leqslant k+1$ \\
+\textbf{Exemplu} Pentru $a=4$,$b=11$ obținem:\\
+$$4=0*11+4$$
+$$11=2*4+3$$
+$$4=1*3+1$$
+$$3=3*1$$
+și $[0,2,1,3]= 0 + \frac{1}{2+\frac{1}{1+\frac{1}{3}}}$,$[0]=\frac{0}{1},[0,2]=\frac{1}{2}$ și $[0,2,1]=\frac{1}{3}$  \\
+Acum să s-a înțeles conceptul de fracție continuă, vom încerca să scriem  ecuația $ed=1+k\lambda(N)$ sub o altă formă folosindu-ne de faptul că $\lambda(N)= \frac{N-s}{g}$
+$$ ed = 1+k * \frac{N-s}{g} = 1 + \frac{kN-ks}{g}$$
+$$ = 1+ \frac{k}{g}(N-s) = 1 + \frac{k}{g} (PQ - P - Q +1)$$
+$$ = 1+\frac{k}{g}\phi(N)$$
+Am demonstrat și faptul că $\frac{k_0}{g_0} = \frac{k}{g}$. Deci ecuația finală va fi:
+$$ ed=1+\frac{k_0}{g_0}\phi(N)$$
+De aici putem observa următorul lucru:
+$$\phi(N) = (ed - 1 )\frac{g_0}{k_0}=ed \frac{g_0}{k_0} - \frac{g_0}{k_0}$$
+$$ = e \left(  \frac{dg_0}{k_0}  \right) - \frac{g_0}{k_0} = e \left( \frac{b_j}{a_j}  \right) - \frac{g_0}{k_0}$$
+Așadar, putem calcula $\phi(N)$ dacă cunoaștem convergența corectă $c+j$ și putem afla valorile $\frac{g_0}{k_0}$. Știm că putem calcula $\phi(N)$ în momentul în care putem să-l factorizăm pe $N$ deoarece $\phi(N)=(P-1)(Q-1)$ și $N=PQ$. \\
+Pentru ușurința în calcul, vom presupune că $g=2$ și $k$ este un număr suficient de mic, deci $\frac{k_0}{g_0} \approx k$, atunci $ed = 1+k\phi(N)$ de unde rezultă:
+$$ ed-k\phi(N)=1$$
+$$ \frac{e}{\phi(N)} - \frac{k}{d} = \frac{1}{d\phi(N)}$$
+$$ \frac{e}{N} \approx \frac{k}{d} $$ 
+Deoarece $PQ - (P+Q)+1 \approx N$
+Pentru găsirea lui $\frac{e}{N}$ trebuie să găsim fracția $\frac{k}{d}$. Trebuie să ținem cont de următoare observații:
+\begin{enumerate}
+\item Deoarece $ed \equiv 1 \ mod \ \phi(N)$ și $\phi(N)$ va fi un număr par, $d$ trebuie să fie impar. Deci dacă $d$ este par, vom continua la următoarea convergență.
+
+\item Deoarece $\phi(N)$ este un număr întreg, vom verifica  $\frac{ed -1}{k}$. Dacă este un număr întreg, vom trece la următoarea convergență.
+
+\end{enumerate}
+\textbf{Ecuația pătratică} \\
+Din
+$$ \phi(N)=N-(P+Q)+1$$
+$$ P+Q = N - \phi(N) +1$$
+Considerăm ecuația de gradul 2 $(x-P)(x-Q)$ cu rădăcinile $P$ și $Q$. Atunci vom avea:
+$$(x-P)(x-Q)=0$$
+$$x^2 - (P+Q)x + PQ = 0$$
+$$x^2 - (N- \phi(N)+1)x + N =0$$
+Dacă valuarea lui $\phi(N)$ este corectă, atunci rădăcinile ecuației de gradul 2 vor fi numere întregi, numerele fiind chiar factorii lui $N$. \\
+
+\textbf{Exemplu} vom avea modului RSA $N=64741$ și exponentul public $e=42667$. Exponentul de decriptare fiind $d$.\\
+Trebuie să ne amintim faptul că $ \frac{e}{N} \approx \frac{k}{d}$, deci va trebuie să găsim aproximarea fracției $\frac{e}{N} = \frac{42667}{64741}$. Vom folosi algoritmul lui Euclid pentru a găsi convergențele succesive. \\
+$$\frac{42667}{64741}= 0 \ rest \ 42667 \Rightarrow \frac{k}{d} \approx 0 $$
+Dar $k=0, d=1$ clar nu vor funcționa pentru decriptare, deci vom trece la următoarea convergență.
+$$ \frac{64741}{42667} = 1 \ rest \ 22074 \Rightarrow \frac{k}{d} \approx 0 + \frac{1}{1}$$
+Din nou $k=1,d=1$ nu va funcționa pentru decriptare, deci vom trece din nou la următoarea convergență.
+$$ \frac{42667}{22074} = 1 \ rest \ 20593 \Rightarrow \frac{k}{d} \approx 0 + \frac{1}{1+\frac{1}{1}} = \frac{1}{2}$$ 
+Acum avem $k=1,d=2$ dar am menționat mai sus că $d$ trebuie să fie un număr impar, deci vom trece la următoarea convergență
+$$ \frac{22074}{20593} = 1 \ rest \ 1481 \Rightarrow \frac{k}{d} \approx 0 + \frac{1}{1 + \frac{1}{1+\frac{1}{1}}} = \frac{2}{3} $$ 
+De aici ne rezultă $k=2,d=3$, acesta fiind un rezultat posibil. Acum trebuie să verificăm dacă $\phi(N)$ este un număr întreg:
+$$\phi(N)=\frac{ed-1}{k}=\frac{42667 * 3 -1}{2}=64000$$
+Am trecut de ambele condiții, acum trebuie să vedem dacă ecuația de gradul 2 $x^2 - (N- \phi(N) +1)x +N=0$ are soluții întregi.
+$$x^2 - (N- \phi(N)+1)x+N=0$$
+$$x^2 - (64741 - 64000 +1)x + 64741=0$$
+$$x^2 - 742x + 64741=0$$
+$$ \Delta = b^2 - 4ac = 742^2 + 4*64741 = 550564 - 258964 = 291600 = 540^{2} $$
+$$x_1 = \frac{-b + \sqrt{\Delta}}{2a} = \frac{742 + 540}{2} = 641$$ 
+$$x_2 = \frac{-b - \sqrt{\Delta}}{2a} = \frac{742 - 540}{2} = 101$$
+
+Cum $641 * 101 = 64741$, înseamnă că l-am factorizat corect pe $N$, deci $d=3$
+\subsubsection{Apărarea împotriva atacului Wiener}
+Este destul de clar că atunci când implementăm RSA, vom dori să evităm acest atac. Avem următorii parametri: \\
+\begin{itemize}
+\item Alegem $P,Q$ cu $N=PQ$
+
+\item Găsim $ed$ astfel încât $ed \equiv 1 \ mod \ \phi(N)$
+
+\end{itemize}
+Putem dovedi că, dacă $q<p \leqslant 2q$ și $ d \leqslant \frac{1}{3} \sqrt[4]{N}$ atacul Wiener va reuși. \\
+Astea înseamnă că noi trebuie să alegem $d > \frac{1}{3} \sqrt[4]{N}$. Și așa, există o șansă ca atacul Wiener să reușească.
 
 \section{RSA varianta distribuită (Schema lui Shoup)}
 \subsection{Introducere}
