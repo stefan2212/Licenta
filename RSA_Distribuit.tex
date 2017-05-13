@@ -1,0 +1,411 @@
+\documentclass[12]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[romanian]{babel}
+\usepackage{amsfonts}
+\usepackage{combelow}% provides \cb to place comma below character
+\usepackage{systeme}
+\usepackage{amssymb}
+
+\begin{document}
+
+\section{RSA Clasic}
+\subsection{Descriere}
+RSA este un algoritm criptografic cu chei publice, primul algoritm utilizat atât pentru criptare, cât și pentru semnătura electronică. Algoritmul a fost dezvoltt în 1977 și publicat în 1978 de Ron Rivest, Adi Shamir și Leonard Adleman la MIT, iar numele algoritmului provine din inițialele lor. \\
+Securitatea sa se bazează pe dificultatea problemei factorizării numerelor întregi, problemă la care se reduce criptanaliza RSA și pentru care toți algoritmii de rezolvare cunoscuți au complexitate exponențială. Există câteva metode de criptanaliză care ocolesc factorizarea efectivă, exploatând maniere de implementare efectivă a schemei de criptare.
+\subsection{Funcționare}
+RSA este un algoritm de criptare pe blocuri. Acesta înseamnă că atât textul clar cât și cel criptat sunt numere între 0 și $N-1$, cu un $N$ ales. Un mesaj este împărțit în segmente de lungime corespunzătoare, numit blocuri, care sunt cifrate rând pe rând. De asemenea, ca algoritm criptografic cu chei publice, funcționează pe baza unei perechi de chei legate matematic între ele: o cheie publică, cunoscută de toată lumea, și una secretă, cunoscută doar de deținătorul acesteia.
+\subsection{Generarea cheilor}
+Perechea de chei se generează după următorii pași:
+\begin{enumerate}
+\item Se generează două numere prime, de preferat mari, $P$ și $Q$
+\item Se calculează $N=PQ$ și $\phi(N)=(P-1)(Q-1)$
+\item Se generează un număr întreg aleator $e$ , $1<e<\phi(N)$, astfel încât $gcd(e,\phi(N))=1$, perechea $<N,e>$ este cheia publică.
+\item Folosind algoritmul lui Euclid extins, se calculează întregul $d$ , element din $\mathbb{Z}_{\phi(N)}^{*}$, cu proprietatea că $de \equiv 1 \ mod \ \phi(N)$
+\end{enumerate}
+\subsection{Criptare și Decriptare}
+Presupunând că mesajul clar este sub forma unui număr $m$, mai mic decât $N$, atunci mesajul criptat, notat cu $c$ este:
+$$c = m^e \ mod \ N$$
+Unde $e$ este cheia publică a destinatarului mesajului. Pentru a decripta mesaju, destinatarul își folosește cheia sa secretă $d$, care are proprietatea foarte importantă că:
+$$de \equiv 1 \ mod \ \phi(N)$$
+Astfel, mesajul clar este recuperat calculând:
+$$m = c^d \ mod \ N$$
+Oricine poate decripta mesaje cu cheia publică a destinatarului, dar numai acesta din urmă poate decripta, deoarece trebuie să folosească cheia sa secretă.
+\subsection{Implementări eficiente}
+În general, deoarece se bzează pe o operație destul de costisitoare din punct de vedere al timpului de calcul și al resurselor folosite, și anume exponențierea modulo $n$, viteza RSA este mult mai mică decât a algoritmilor de criptare cu cheie secretă. În jurul anilor 90, se estima că o implementare RSA hardware este de 1000 de ori mai lentă decât o implementare DES, iar în software, RSA este de 100 de ori mai lent. \\
+Există anumite modificări care pot aduce performanțe sporite, precum alegerea unui exponent de criptare mic (de exemplu $e=17$), care astfel reduce calculele necesare criptării, rezolvând în același timp și unele probleme de securitate. De asemenea, operațiile cu cheia secretă pot fi accelerate pe baza teoremei chineze a resturilor, dacă se stochează $P$,$Q$ și unele rezultate intermediare, foloside des.  Viteza decriptării va crește de circa 4 ori. De aceea, în sistemele de comunicație în timp real, în care viteza de criptare și decriptare este esențială (cum ar fi de exemplu aplicațiile de streaming video sau audio securizate), RSA se folosește doar la începutul comunicației, pentru a transmite ceia secretă de comunicație, care ulterior este folosită într-un algoritm cu cheie secretă, cum ar fi 3DES sau AES.
+\subsection{Securitatea}
+Problema decriptării unui mesaj criptat cu RSA este denumită problema RSA. Acesta constă în obținerea rădăcinii de ordin $e$ modulo $N$, unde $e$ și $N$ au proprietatea că $N$ este produsul a două numere prime mari $P$ și $Q$, iar $e$ este relativ prim cu produsul dintre $P-1$ și $Q-1$. În acest moment, cea mai eficientă de a realiza aeasta este descompunerea în factori primi ai lui $n$, și obținerea astfel a cheii secrete $d$ pe baza lui $e$. Astfel, este demonstrat că dificultatea spargerii unui mesaj criptat cu RSA nu este mai dificilă decât problema factorizării. Nu a fost descoperită încă o soluție generală a problemei RSA, dar nici nu s-a demonstrat matematic că nu există o altă soluție. \\
+Factorizarea întregilor prin metode comune ajută la găsirea soluțiilor în timp util doar pentru numere mici. Pentru numere mari, algoritmii de factorizare, cu complexitatea exponențială. dau soluția după foarte mult timp. Cea mai rapidă metodă de factorizare a întregilor, algoritmul ”Number Field Siev”, are o complexitate de $O(e^{c((\log n)^{\frac{1}{3}} (\log \log n)^{\frac{2}{3}}       })$. Aici, $c$ este un număr ce ia valori în jur de $1,9$ pentru numere de tipul lui $N$, adică numere cu 2 factori primi. Cel mai mare număr factorizat vreodată prin acest algoritm, rulat în anul 2005, de către specialiștii de la Agenția Federală Germană pentru Securitatea Tehnologiei Informației, are 200 de cifre zecimale, iar reprezentarea binară a factorilor primi obținuți ocupă 663 de biți. Cheile de criptare RSA cele mai sigure au lungimi de peste 1024 de biți.\\
+Atacul RSA forței brute, adică încercarea fiecărei chei secrete posibile, consumă chiar mai mult timp decât factorizarea.
+
+\section{Criptanaliză RSA}
+Deși securitatea algoritmului RSA constă în legătura dintre aceasta și factorizarea întregilor, el trebuie folosit u grijă în implementări, deoarece, în caz de folosire eronată, sistemele bazate pe RSA pot fi atacate în anumite maniere care ocolesc factorizarea efectiva a modului, atacatorul ajungând să obțină mesajul clar sau cheia secreă.
+\subsection{Atac cu criptotext ales}
+În cazul acestui atac, adversarul dispune de cheia publică a entității atacate (exponentul de criptare $e$ și modulul $N$), și interceptează mesaje criptate trimise acestuia. Pentru a obține mesajul clar $m$ dintr-un mesaj criptat $c$ atacatorul poate proceda în felul următor:
+\begin{enumerate}
+\item Calculează $x=(c * 2^e) \ mod \ N$
+\item Trimite entității atacate spre semnare pe $x$, obținând $y=x^d \ mod \ N$
+\item Se observă că: 
+$$x=c*2^e \ mod \ N $$
+$$=m^e * 2^e \ mod \ N$$
+$$=(2m)^e \ mod \ N$$ 
+\item Se rezolvă ecuația $y=2m \ mod \ N$
+\end{enumerate}
+Atacatorul obține astfel mesajul criptat. Există mai multe feluri de tipul atac cu criptotext ales, dar sunt câteva moduri de apărare împotriva lor. Unele pot fi evitate dacă pur și simplu entitatea protejată cu chei secrete refuză să semneze texte arbitrare trimise de terți. Dacă acest lucru nu este posibil ( ca de exemplu în cazul unui notar public care trebuie să semneze documente electronice prezentate de persoane străine), atunci atacul poate fi prevenit prin folosirea unei perechi de diferite chei pentru criptare și pentru semnătura electronică. De asemenea, este necesar să se folosească și un padding aleator pentru mesaj înainte de criptare sau, în cazul semnăturii, să nu semneze mesajul clar, ci un has al acestuia. De asemenea, atacul poate fi evitat și dacă se impune o anumită structură predefinită a mesajelor primite spre semnare.
+\subsection{Mesaje necriptate}
+Întrucât RSA se bazează pe ridicarea la putere (modulo un număr $N$), există părți de mesaje care nu sunt criptate, părți rezultate în urma împărțirii mesajului pe blocuri. Astfel de mesaje sunt mesajele $m$ cu proprietatea că $m=m^x \ mod \ N$ oricare ar fi $x$, ca de exemplu $m=0$,$m=1$,$m=N-1$. Numărul exact al acestor mesaje decriptate este $(1+gcd(e-1,P-1))((1+gcd(e-1,Q-1))$, și deși este minim 0(deoarece $e$,$p$ și$q$ sunt impare). Pentru a micșora numărul de astfel de părți de mesaj, este util să se folosească un exponent public $e$ cât mai mic.
+\subsection{Exponentul de criptare mic}
+În unele aplicații, se folosește un exponent de criptare $e$ mic, de exemplu $e=17$, pentru a mări performanța, dar și pentru a rezolva unele probleme de securitate. Dacă mai multe entități care comunică folosesc același exponent public (dar fiecare are propriul modul și deci propria cheie secretă), atunci același mesaj trimis mai multor destinatari are următoarele valori:
+
+\[
+\left\{ 
+\begin{array}{c}
+c_1 = m^e \ mod \ N_1 \\ 
+c_2 = m^e \ mod \ N_2 \\ 
+c_3 = m^e \ mod \ N_3
+\end{array}
+\right. 
+\]
+Unde $N_i$ sunt modulele elor trei destinatari, $e$ este exponentul  comun acestora iar $m$ este mesajul trimis celor trei. Un atacator poate folosi algoritmul lui Gauss pentru a descoperi o soluție mai mică decât $N_1$,$N_2$,$N_3$ a unui sistem compus din următoarele ecuații
+\[
+\left\{ 
+\begin{array}{c}
+x=m^e \ mod \ N_1  \\
+x=m^e \ mod \ N_2  \\
+x=m^e \ mod \ N_3  
+\end{array}
+\right. 
+\]
+Această soluție este, conform teoremei chineze a resturilor, cubul mesajului m. Soluția pentru această problemă este cea denumită sărarea mesajului ( din engleză salting), adică adăugarea unui padding format din numere pseudoaleatoare, padding diferit pentru fiecare expediere a mesajuului.
+
+\subsubsection{Atac de tip mesaj stereotip}
+Când o parte din plaintext este cunoscută, este posibil să se recupereze tot plaintextul inițial dacă dimensiunea exponentului este destul de mică. \\
+În cazuri extreme, presupunem că noi cunoaștem că plaintextul este mic relativ la dimensiunea modulului. Asta înseamnă că cei mai semnificativi biți ai plaintextului vor fi 0. Dacă plaintextul $m < N^{1/e}$ este cryptat cu exponentul $e$, atunci cu siguranță plaintextul va ri recuperat ușor deoarece:
+$$ c = m^e \ mod \ N = m^e$$
+Doar luând $e$ rădăcina unui criptotext, vom putea descoperi un plaintext. Pentru un plaintext aleator $m$ în $\mathbb{Z}_N$ este foarte improbabil ca și acesta să fie mic. \\
+Așadar, dacă dimensiunea lui $N$ ar fi de 1024 de biți iar $e=3$, atunci plaintextele mai mici de 342 de biți pot fi recuperate foarte ușor. Padând biți random unui plaintext în așa fel încât $m > N^{1/e}$ împiedică acest atac. \\
+Acum să presupunem că avem un plaintext de dimensiune mare, asta ar însemna că acest atac nu ar putea funcționa, dar totuși noi cunoaștem o bucată din acest text, spre exemplu: \\
+Astăzi la licență am prezentat ???????? \\
+unde partea pe care nu o cunoaștem este destul de mică. În această situație, Copper-smith \cite{cooper} \cite{cooper2} ne arată că dacă partea necunoscută a unui text este destul de mică, este posibil să recuperăm întreg plaintextul. Rezultatul de bază este dat de următoare teoremă: \\
+\textbf{Teorema 4.1}
+Fie $<N,e>$ o cheie RSA publică, și $m$ plaintextul. Cheia publică $e$ este folosită pentru calculul criptotextului $c = m^e \ mod \ N$, dacă toate sau măcar o fracție $1/e$ de biți consecutivi este cunoscută, atunci tot plaintextul $m$ poate fi calculat în timpul $\log(N)$. \\
+Demonstrație: Deoarece măcar o fracție $1/e$ de biți consecutivi este cunoscută din $m$, putem scrie plaintextul ca și:
+$$ m= m_{2}^{} * 2^{k_2} + m_1 * 2^{k_1} + m_0$$
+Unde toți acești termeni sunt cunoscuți, mai puțin $m_1$. Mai departe știm  că dimensiunea lui $m_1$ satisface următoarea relație $ |m_1| < N^{1/e}$. Acest lucru sugerează că trebuie să ne uităm după soluții mici ale polinomului monic de grad e $f_N(x) \in \mathbb{Z}_N $ (un polinom monic este un polinom univariat al cărui coeficient al termenului $X^n$ este egal cu 1, iar un polinom univariat este un polinom care are o singură variabilă $x$) dat de următoarea formulă:
+$$ f_N(x) = 2^{-k_1 * e}((m_2 * 2^{k_2} + x*2^{k_1} + m_0)^e - e) \ mod \ N$$
+deoarece $f_N(m_1)= 2^{-k_1 *e}(m^e-e)=0 \ mod \ N$. Deoarece $ |m_1| < N^{1/e}$, rezultatul Copersmith pentru găsirea soluțiilor mici pentru ecuațiile modulare univariate poate fi folosit pentru a calcula $m_1$, care va face ca întreg plaintextul să fie descoperit. 
+
+\subsubsection{Atac de tip mesaje relaționale}
+Când două plaintexte sunt criptate cu aceeași cheie publică $e$, este posibil să recuperăm plaintextele dacă exponentul public este mic iar relația liniară dintre plaintexte este cunoscută. Un atac inițial a fost făcut când exponentul public $e$ era $e=3$, de către  Franklin și Reiter \cite{franklyn} după care a fost preluată de Coppersmith \cite{copper3}, iar rezolvarea este dată de următoarea teoremă: \\
+\textbf{Teprema 4.2} Fie $<N,e>$ o cheie publică RSA, cu $e=3$. Fie $m_1$ și $m_2$ două plaintexte astfel încât $m2=am_1b$. Date $a,b,c=m_1^{3} \ mod N,c2 = m_2^3 \ mod \ N$, atât $m_1$ cât și $m_2$ pot fi calculat în timpul $\log(N)$. Acest lucru este dovedid în următorul calcul:
+$$ \frac{b(c_2 + 2a^3c_1 - b^3)}{a(c_2-a^3c_1+2b^3)} \ mod \ N$$ 
+$$= \frac{m_1(3a^3bm_1^2+3a^2b^2m_1+3ab^3)}{3a^3m_{1}^{2}+3a^2b^2m_1+3ab^3} \ mod \ N = m_1$$ 
+De îndată ce $m_1$ este cunoscut, este ușor să calculăm $m_2 = am_1 +b$
+
+\subsubsection{Atac prin padare aleatoare}
+Când două plaintexte sunt legate între ele printr-o relație liniară $m_2=am_1+b$, unde $b$ este necunoscut, tot este posibil să recuperăm plaintextul dacă b este suficient de mic. Acest atac a fost făcut pentru $e=3$ de către Coppersmith \cite{cooper2}, folosind următoare teoremă:\\
+\textbf{Teorema 4.5} Fie $<N,e>$ e cheie RSA publică și $e=$. Fie $m_1$ și $m_2$ două plaintexte care satisfac relația $m_2=am_1+b$. Dat $c_1=m_1^3 \ mod \ N,c2=(m1+b)^3 \ mod \ N$, dacă $|b|<N^{1/9}$ atunci plaintexte $m_1$ și $m_2$ pot fi calculate în timp polinomial.
+
+\subsection{Exponent de decriptare mic}
+Dacă exponentul de decriptare (cel secret) este mic, pe lângă faptul că multe părți din mesaj nu se criptează, așa cum s-a arătat mai sus, există un algoritm rapid de găsire a lui $d$, cunoscând informațiile $e$ și $N$. Acest algoritm nu este eficient dacă $d$ este de același ordin de mărire cu $N$, deci dacă $e$ este mic, acesta fiind unul din motivele pentru care se alege în general $e$ un număr mic, pentru ca $d$ să fie cât mai mare.
+
+\subsubsection{Atacul fracțiilor continue: Atacul Wiener}
+Primul atac semnificativ asupra exponenților privați mici. Dată doar cheia publică RSA $<N,e>$, atacul factorizează modulul folosind doar informații obținute din convergența fracției continue $e/N$. Atacul Wiener folosește următoarea teoremă:
+\textbf{Teorema} Fie $N=PQ$ modulul RSA cu $e$ cheia de criptare publică și $d$ cheia privată definită ca și $\lambda(N)$. Fie $k$ să fie un număr întreg care satisface următoarele:
+$$ ed=1+k \lambda(N)$$
+$$ g=cmmdc(P-1,Q-1) $$
+$$g_0=\frac{g}{cmmdc(g,k)}$$
+$$k_0=\frac{k}{cmmdc(k,g)}$$
+Dacă $d$ satisface:
+$$ d< \frac{PQ}{2(P+Q-q)g_0k_0} = \frac{N}{2(P+Q-q)g_0k_0}$$
+Atunci $N$ poate fi factorizat în timpul $\log(N)$ \\
+\textbf{Demonstrație}: folosim $N$ modulul RSA, unde $N=PQ$
+$$ \lambda(N)=cmmmc(P-1,Q-1)=\frac{\phi(N)}{cmmdc(P-1,Q-1)}=\frac{PQ - (P+Q-1)}{g}$$
+$$ = \frac{N - (P+Q-1)}{g}$$
+Vom nota cu $s$ conținutul parantezii, deci rezultă:
+$$ \lambda(N) = \frac{N-s}{g}$$
+De aici rezultă că ecuația cheii va fi:
+$$ed = 1 +k \lambda(N)= 1+ \frac{k* \phi(N)}{cmmdc(P-1,Q-1)} $$
+Cunoaștem faptul că  $g_0 = \frac{g}{cmmdc(g,k)}$ și $k_0=\frac{k}{cmmdc(k,g)}$ de unde rezultă că $g=g_0 * cmmdc(g,k)$ și $k=k_0 * cmmdc(k,g)$, prin urmare $\frac{g}{k} = \frac{g_0}{k_0}$ de unde rezultă:
+$$ 1+ \frac{k* \phi(N)}{cmmdc(P-1,Q-1)} = 1+ \frac{k (N-s)}{g} $$
+$$ = 1+ \frac{k_0}{g_0} (N-s)$$
+
+\section{RSA varianta distribuită (Schema lui Shoup)}
+\subsection{Introducere}
+Varianta partajată a RSA (schemă prin semnături) prezintă câteva aspecte foarte interesante. În primul rând, este securizată și robustă deoarece problema criptanalizei este foarte grea. Apoi, partajarea, generarea semnăturii și verificarea sunt non interactive și în final, dimensiunea unei semnături partajate este legată de o constantă înmulțită cu dimensiunea modulului RSA. \\
+Când un mesaj trebuie să fie semnat de măcar $ t+1 $ server unde $ 2t+1 \leqslant l $, un server special numit combinator, direcționează mesajul $m$ sau $x$, unde $x=H(x)$ către toate serverele, apoi fiecare server calculează semnătura cu o dovadă de corectitudine, apoi combinatorul selectează un subgrup de $t+1$ servere și le combină. \\
+Folosind distributivitatea aditivă, $d=\sum_{i=1}^{l} d_i \ mod \ \phi(N)$, combinatorul poate alcula ușor semnăturile $S$, $s_i=x^{d_i} \ mod \ N$, unde $x=H(m)$, este mesajul semnat folosind formula:
+$$ S= \prod_{i=1}^{l} S_i = \prod_{i=1}^{l} x^{d_i} = x^{\sum_{i}^{l} d_i} = x^d \ mod \ N $$
+Principalul dezavantaj al acestor tehnici îl reprezintă mărimea cheilor, din cauza necesității diferitelor partajări și a tehnicilor de reconstruire a semnăturilor. Ulterior, Shoup a propus prima schemă bazată pe partajarea polinomială (schema Desmedt și Frankel \cite{desmet}). Protocolul trebuie să revină de $t$ ori pentru a putea înlătura serverele rele, semnătura depinzând e un subgrup de $t+1$ servere. \\
+Fie $\delta =l!$. Partajarea lui $d$ este în așa fel încât $\delta | d_i$ și $d_i =f(i)$ unde $f$ este un polinom de grad $t$ și cu termenul constant $d$. \\
+Fie $S$ mulțimea a $t+1$ servere, atunci coeficientul Lagrange va fi: 
+$$ \lambda_{i,j}^{'S} = \prod_{j^{'} \in S \setminus j}^{} \frac{i-j^{'}}{j-j^{'}}   $$
+De unde rezultă:
+$$ d= \sum_{i \in S}^{} \lambda_{0,i}^{'S} d_i \ mod \ \phi(N)$$
+O problemă majoră o reprezint faptul că $\lambda_{i,j}^{'}$ nu poate fi calculat în $\mathbb{Z}_{\phi(N)}$ deoarece $\phi(N)$ poate fi par. Apoi combinatorul trebuie să calculeze:
+$$s=\prod_{i \in S}^{} S_{i}^{\lambda_{0,i}^{'S} d_i}$$
+$$ = S^{\sum_{i \in S}^{}\lambda_{0,i}^{'S} d_i} = S^d \ mod \ N$$.
+Cum numerele din mulțimea $ \lambda_{i,j}^{'S}$ nu sunt numere întregi, combinatorul nu poate calcula rădăcina modulo a unui număr compus. Ideea esențială este să spunem că $\delta \times \lambda_{i,j}^{'S}$ sunt numere întregi. Atunci putem spune că 
+$$l_{0,i}^{S} = \delta \times \lambda_{i,j}^{'S} \ , \ i \in \mathbb{Z} $$
+Și:
+$$ S^{'} = x^{l_{0,i}^{S} \times * d_i } \ mod \ N   $$
+Combinatorul va calcula:
+$$S = \prod_{i \in S}^{} S_{i}^{'} = \prod_{i \in S}^{} x^{l_{0,i}^{S} \times d_i    } $$
+$$ = \prod_{i \in S}^{}  x^{\delta \times \lambda_{i,j}^{'S} \times d_i} = \prod_{i \in S}^{} 
+x^{\lambda_{0,j}^{'S} d_i} = x^d \ mod \ N  $$
+
+Dacă semnătura nu este bună, atunci combinatorul înlătură serverele rele. După $t$ iterații, toate serverele rele sunt înlăturate din setul $S$ iar semnăturile rămase vor fi corecte. Totuși, nici această redefinire a subgrupului nu părea să fie foarte bună, și Shoup a propus o nouă tehnică. \\
+Problema a fost rezolvată folosind o lemă cunoscută pentru a extrage $e$-rădăcina lui $w$ modulo un număr compus dintr-o $e$-rădăcină a unei puteri $w$ cunoscute fără a folosi secrete. Soluția a fost să multiplicăm coeficienții Lagrange cu $\delta$ ca aceștia să devină întregi. 
+$$ \lambda_{i,j}^{'S} = \delta \times \lambda_{i,j \in \mathbb{Z}}^{'S} $$
+Și:
+$$ \delta d = \sum_{i \in S}^{} \lambda_{0,i}^{S} d_i $$
+Fie $ s_i = x^{d_i} $, combinatorul care calculează semnătura și schimbarea grupului (folosind noua formulă Lagrange pentru cele $t+1$ servere). Se calculează ecuația folosind $\lambda_{i,j}^{S} $ și se obține:
+$$S^{\delta} = \prod_{i \in S}^{} S_{i}^{\lambda_{0,i}^{S} = x^{\delta d} \ mod \ N}$$
+În final, combinatorul calculează rădăcina lui $x^d$.
+
+\subsection{Dovada robusteții și folosirea numerelor prime sigure}
+Robustețea înseamnă faptul că serverele corupte nu le pot împiedica pe cele necorupte să-și realizeze semnătura. \\
+În dovada corectitudinii serverele trebuie să dovedească că ridică $x$ la puterea $d_i$. Serverul $i$ deține cheia de verificare
+$$ v_i = \log_{x} S_i = d_i \ mod \ \phi(N)$$
+Problemele sunt: $\mathbb{Z}_{N}^{*}$ nu este un grup ciclic,  generatorul $V$ nu există și elementele de ordin maximal sunt greu de găsit. Dacă vom folosi numere prime sigure, atunci $\mathbb{Z}_{N}^{*}$ este un grup ciclic, iar generatoarele sunt ușor de găsit. \\
+Pentru a nu crea neclarități, este bine să descriem totuși ce este acela un grup, mai precis un grup ciclic: 
+\subsubsection{Grupuri}
+Un grup este o structură algebrică ce constă dintr-o mulțime pe care este definită o lege de compoziție internă (acesta combină două elemente ale unei mulțimi și formează un al treilea element tot din aceeași mulțime). Pentru a fi un grup, mulțimea și operația trebuie să satisfacă o serie de axiome:
+\begin{enumerate}
+\item Axioma închiderii: \\
+$\forall x,  y \in G$  , și rezultatul operației $x \circ y \in G$
+
+\item Axioma asociativității: \\
+$\forall x,y,z \in G, (x \circ y) \circ z = x \circ (y \circ z)$
+
+\item Axioma elementului neutru: \\
+$\exists e \in G$, astfel încât $e \circ x = x \circ e = x, \ \forall x \in G$
+
+\item Axioma elementelor simetrice: \\
+$\forall x \in G, \exists y \in G$ cu proprietatea că $x \circ y = y \circ x = e$
+
+\item Axioma comutativității:
+$\forall x,y \in G, x \circ y = y \circ x$ \\
+atunci grupul $(G,\circ )$ se numește grup comutativ sau abelian
+
+
+
+\end{enumerate}
+\textbf{Un grup ciclic} este un grup ale cărui elemente sunt puteri (când operația de grup este considerată a fi de natură aditivă, se preferă termenul de multipli) ai unui element $a$. 
+
+\subsection{Problema}
+Numerele prime sigure sunt folosite în general de chei pentru a dovedi faptul că schema de partajare a secretelor (Shamir) este sigură în inelul $\mathbb{Z}_M$, și nu într-un corp finit. Robustețea ne garantează faptul că dacă un jucător malițios trimite semnături false, scema tot va genera corect S. \\
+Spre exemplu: combinatorul primește de la servere și trebuie să genereze semnăturile corecte. O cale de a face acest lucru este să alegem aleator $t+1$ semnături, să generăm posibilele semnături $S^{'}$ și să testăm dacă $S^{'}$ este valid. Dacă $S^{'}$ trece de protocolul de verificare, atunci semnătura corectă a fost găsită, dacă nu, combinatorul trebuie să testeze alte $t+1$ semnături. Combinatorul nu știe care sunt semnăturile false iar din această cauză, acesta poate ajunge la un număr exponențial de încercări. Așadar, este necesar să divizăm într-un mod eficient.
+
+
+\subsection{Modele de securitate}
+\subsubsection{Rețeaua}
+Grupul de $l$ servere conectate la un mediu prin broadcast, iar mesajele trimise către canalul de comunicare ajung la fiecare entitate.
+\subsubsection{Adversarul}
+Adversarii pot corupe servere în orice moment prin verificarea memoriei serverelor corupte(adversar pasiv) și/sau pot modifica comportamentul acestora(adversari activi). Adversarii decid pe cine să corupă la startul protocolului (adversari statici). Putem asuma și ca adversarii nu vor corupe mai mult de $t$ servere din $l$, unde $l \geqslant 2t+1$.
+\subsubsection{Definiții formale}
+O schemă RSA de semnături folosește următoarele componente:
+\begin{enumerate}
+\item Un algoritm de generare de chei care primește ca input parametrii de securitate $N$, numărul $k$ de elemente care trebuie să genereze $Q_N$, numărul de $l$ servere care trebuie să semneze, parametrul $t$ și un string random $w$. Are ca și output o cheie publică $<N,e>$, cu cheile private $d_1,...,d_t$ cunoscute doar de servere corecte pentru fiecare $u \in [1,k]$ o listă $v_u,v_{u,1},...v{u,t}=v_{u}^{d_i} \ mod \ N$ verificări de chei. 
+\item Un algoritm de partajare de semnături primește ca input o cheie publică $<N,e>$, un index $ 1\leqslant i \leqslant l$, cheia privată $d_i$, și un mesaj $m$; are ca output o semnătură $s_i = x^{d_i} \ mod \ N$ unde $x=H(m)$ și $H()$ este o funcție de hash și padare, și dovada validității este:
+$$ validity \ proof_i \ (for \ all \ u \in [1,k], \log_{v_u} v_{u,i}=\log_x S_i)$$
+\item Un algoritm combinat de verificare primește ca input o cheie publică $<N,e>$, un mesaj $m$, o listă $s_1,...,s_l$ de semnături partajate, pentru fiecare $u \in [1,k]$ lista $v_u,v_{u,1},...,v_{u,l}$ de chei de verificare și o listă $proof_1,...,proof_l$ de validări, și ca output o semnătură sau fail.
+\item Un algoritm de verificare primește ca input o cheie publică $<N,e>$, un mesaj $m$, o semnătură $S$ și are ca output un bit $b$ indicând dacă semnătura este corectă sau nu.
+\end{enumerate}
+\subsubsection{Jucătorul și adversarul}
+Jocul nostru include următorii jucători: un combinator, un set $l$ de severe $P_i$, un adversar, userii care cer semnături.\\
+Considerăm următorul scenariu: \\
+\begin{enumerate}
+\item La faza de inițializare, serverele folosesc algoritmul distribuit de generare de chei pentru crearea cheilor private, publice și a cheilor de verificare. Cheia publică $<N,e>$ și cheile de verificare $v_{u}^{'}S$ și $v_{u,i}^{'}S$ sunt publicate și fiecare server obține partajarea $d_i$ a cheii secrete $d$.
+\item Pentru a semna un mesaj $m$, combinatorul trimite mai departe $m$ către servere. Folosind cheia privată $d_i$ și cheile de verificare $v_u,v_{u,1}$ pentru $u \in [1,k]$ pentru fiecare server rulează algoritmul de partajare de semnături și are ca output o semnătură partajată $S_i$ împreună cu o dovadă de validitate și o dovadă de validitate $proof_i$. În final, combinatorul utilizează algoritmul de combinare de generare de semnături, și scoate câte semnături partajate sunt valabile și valide.
+\end{enumerate}
+\subsubsection{Proprietăți}
+După cum am mai menționat, robustețea garantează faptul că dacă avem un număr $t$ de jucători malițioși care trimit semnături false, schema tot va returna o semnătură corectă. Această proprietate este folosită doar în prezența adversarilor activi.\\
+Proprietatea care asigură fapul că nu poate fi falsificat , spune că pentru orice subset de $t+1$ jucători pot genera o semnătură $S$, dar nu permite generarea a mai puin de $t$ jucători. Această proprietate exprimă securitatea unei scheme de securitate și este folositoare în prezența atacurilor adversarilor pasivi.
+\subsubsection{Generarea cheii și protocolul de semnare}
+În această secțiune, vom descrie noțiunile de securitate pentru generarea de chei și protocolul pentru semnături. Am arătat că informațiile arătate în timpul generărilor de chei și semnării nu eliberează informații secrete adversarilor.
+\begin{itemize}
+\item Jocul pentru generarea de chei: \\
+Corectitudinea pentru generarea cheilor necesită ca probabilitatea cheilor secrete $d, P, Q$ și cheilor publice $<N,e>$ să fie uniform distribuite către adversari \\ 
+Dacă $\exists$ un adversar $A$ care corupe cel mult $t$ servere la începutul jocului, atunci el nu poate obține informația ținută de jucătorii necorupți
+
+\item Jocul pentru protocolul de semnare: \\
+Secretul semnării înseamnă că dacă $\exists$ un adversar $A$ care corupe cel mult $t$ servere la începutul jocului chiar dacă el poate obține informații, el nu poate forța o semnătură pe un nou mesaj.
+\end{itemize}
+
+
+\subsection{Un nou mod de a genera modulul RSA (schema Boneh-Franklin \cite{boneh})}
+Obiectul este să generăm moduli RSA astfel încât grupul este ciclic, iar ordinul acestui grup nu are factori primi mici.
+\subsubsection{Un nou modul distribuit}
+\begin{enumerate}
+
+\item La primul pas,fiecare server generază aleator două valori $p_i$ și $q_i$ în intervalul $ \left[ [2^{(n-1)/2}], [\frac{2^{n/2}-1}{l}] \right]$ unde $n$ este dimensiunea în biți. Apoi vom folosi un algoritm pentru a renunța la $p_1,...p_l$ și $q_1,...,q_l$ care au factori primi mici, și dacă $p_1+...+p_{l-1}$ sau $q_1+...,+q_{l-1}$ au factori primi mici. Serverul verifică dacă $cmmdc(P-1,4P)=2$ și $cmmdc(4P,Q-1)=2$ unde $P = \prod_{2 <p_i < B} p_i$
+
+\item Protocolul este rulat pentru a calcula produsul $N$ al lui $p_1+...+p_l$ și $q_1+...+q_l$. Se calculează și produsul lui $\phi(N)=(P-1)(Q-1)$ și $cmmdc(\phi(N),N-1)=1$
+
+\item Trebuie să folosim și un test de primalitate
+\end{enumerate}
+\subsubsection{Calculul cmmdc a unei valori publice și a unei valori secrete partajate}
+Tehnica de bază constă prin observarea faptului că $cmmdc(e,\phi)=cmmdc(e,\phi + Re)$ unde $R$ este un număr întreg mare folosit pentru a masca valoarea secretului partajat:
+$$\phi=\phi_1+...+\phi _l$$.
+Serverul $i$ generează aleator un întreg $r_i \in [0 ... 2^{n+k^{'}}]$, unde $k^{'}$ este un parametru de securitate, calculează:
+$$ c = \sum_{i}^{} c_i = \phi + eR$$
+Dacă setăm $R=\sum_i r_i$. Această valuare poate fi cunoscută public apoi, toate serverele vor calcula $cmmdc(e,\phi)=1$. Apoi, este ușor să arătăm că dacă vom înlocui $c$ cu $\phi + eR$, vom obține $e(u + R_v) + \phi v = 1$. Prin urmare, $u + R_v \ mod \ \phi$ este inversul modular al lui $e \ mod \ \phi$. În acest caz, dacă notăm cu $d$ inversul $e \ mod \ \phi$, fiecare server asignează inversul lui $d$ către $d_i = vr_i$ și primul server lui $d_1= vr_1$.
+\subsubsection{Îmbunătățirea generării numerelor fără factori mici}
+\begin{enumerate}
+\item Fiecare server generează aleator un număr întreg $a_i$ în intervalul $[1,P]$ în așa fel încât $a_i$ este relativ prim lui $P$. Deoarece $a_i$ este un număr întreg aleator relativ prim cu P, atunci $a=a_1,...,a_l \ mod \ P$ este de asemenea relativ prim cu P.
+
+\item Serverul rulează un protocl pentrua converti $a$ la $a=b_1+...+b_l$.
+
+\item Fiecare serve generează aleator un număr random:
+$$r_i \in \left[  [ \frac{\sqrt{2}* 2^{\frac{n}{2} -1} }{P}   ], [\frac{2^{\frac{n}{2}-1}}{p^l}]      \right] $$
+Și:
+$$ p_i=r_i P + b_i$$
+$p = \sum p_i \equiv a \ mod \ P$ și prin urmare $p$nu este divizibil de nici un număr prim mai mic decât $B$. Putem nota $p=BR +a$ unde $R=\sum_{i} r_i$. Acest lucru funcționează doar dacă $P<p$. Pentru a arăta asta și că $p^{'} = \frac{p-1}{2}$ nu are factori primi în afară de B, atunci trebuie să verificăm că $cmmdc(p-1,P)=cmmdc(2p^{'},P)=1$ și $cmmdc(p-1,4P)=2$ ca să testăm puterea lui 2. Dacă notăm $P^{'}=4P$, putem face un singur test $cmmdc(p-1,P^{'})=2$\\
+În final, protocolul care transformă partajarea multiplicativă a lui $a$ într-o partajare aditivă, poate fi făcută robustă. Această transformare apelează de $l$ ori protocolul. La început $b_{i,0}=0$ pentru toți $i \in {0,...,l}$. Apoi, pentru fiecare $i=1$ până la $l$, $u_i=a_i$ și $i_j=0$ pentru $\forall j \neq u$ iar protocolul execută: 
+$$(b_{1,i-1}+...+b_{l,i-1}) \times a_i = (b_{1,i-1}+...+b_{l,i-1})(u_1+...+u_l)=b_{1,i}+...+b_{l,i}$$
+\end{enumerate}
+\subsubsection{Generarea lui $N$ întrucât $Q_N$ este ciclic}
+Aici vom arăta cum trebuie generat $N$ astfel încât $Q_N$ să fie ciclic. Pentru a garanta această proprietate trebuie să ne folosim de faptul că prodosul a două grupuri ciclice care sunt coprime este un grup ciclic. Trebuie să verificăm totuși că $P^{'}$ și $Q^{'}$ sunt coprime. Întâi trebuie demonstrată următoarea lemă: \\
+Lema 1: $N=PQ$, $cmmdc(P-1,Q-1)|c,,dc(N-1,\phi(N)$ și pătratul liber (un pătrat liber este un număr care nu este divizibil de nici un număr care este pătrat perfect) al lui $cmmdc(N-1,\phi(N))$ divide $(P-1),(Q-1)$. Dacă $cmmdc(N-1,\phi(N))=2$ atunci $cmmdc(P-1,Q-1)=2$ \\
+Demonstrație: Dacă $cmmdc(N-1,\phi(N))=2$ atunci $cmmdc(P-1,Q-1)|cmmdc(N-1,\phi(N)), cmmdc(P-1,Q-1)=2$. Deoarece $cmmdc(P-1,Q-1) \neq 1$.\\
+\textbf{Teorema}: Generarea cheilor folosind Boneh-Franklin și $cmmdc$ ne ajută să generă, chei RSA în așa fel încât grupul $Q_N$ este ciclic de ordin $M=P^{'}Q^{'}$, unde $N=PQ$, $P=2P^{'}+1$,$Q=2Q^{'}+1$ și nici $P^{'}$ șau $Q^{'}$ au factori primi mai mici decât B. Numărul de iterații ale acestui protocl are o medie de $ 4 \times e^{\lambda} \ln(B)$ \\
+Demonstrație: Ne asumăm faptul că avem un modul RSA în care $P-1$ și $Q-1$ au divizoriiprimi mai mari decât B, aceștia nu au divizori comuni, $cmmdc(P-1,Q-1) = 2$ și $\frac{P-1}{2}$ și $\frac{Q-1}{2}$ nu au factori primi mici. Prodosul a două grupuri ciclice ale căror ordine sunt coprime dau un grup ciclic, grupuri din $\mathbb{Z}_{P}^{*}$ și $\mathbb{Z}_{Q}^{*}$ sunt ciclice, la fel și grupul $Q_N$ este ciclic. Acest lucru ne garantează faptul că există un subgrup ciclic în $\mathbb{Z}_{N}^{*}$ de ordin $M=P^{'}Q^{'}$. Putem estima numărul de iterații ales acestui algoritm folosind faza $1$ din protocolul Boneh-Franklin. Întâi trebuie să cunoaștem faptul că:
+
+$$\lim_{n-> \infty} Pr_{P^{'},Q^{'}  \in [1,n] } [cmmdc(P^{'},Q^{'}]= 1 =  \frac{6}{\Pi^{2}} > 1/2 $$ 
+Adică, ne asumăm faptul că numerele prime din intervalul $ \left[  2^{\frac{n-1}{2}}, 2^{\frac{n}{2}}         \right] $ sunt uniform distribuite. Singurul factor lent la generarea cheii este verificarea dacă $cmmdc(P^{'},P-1)=2$ unde $P^{'} = 4P$. Putem nota că:
+$$Pr_{P^{'}}[ cmmdc(2P^{'},P^{'}) =2 ]$$
+$$ = Pr_{P^{'}} [2 \nmid P^{'} \wedge 3 \nmid P^{'} ...   \wedge B \nmid P^{'} ] =(1- \frac{1}{2})(1 - \frac{1}{3})...(1- \frac{1}{B}) = \prod_{p_i \leqslant B}^{} (1- \frac{1}{P^i}) \approx \frac{1}{e^{\lambda} \ln(B)}  $$
+Conform teoremei a doua a lui Merts, unde $\lambda$ este onstanta lui Euler. Așadar, va trebui să rulăm algoritmul de $ 4 \times (e^{\lambda} \ln(B)$ ori în medie pentru a putea genera un astfel de modul RSA. 
+\subsubsection{Metoda distribuită de generare de chei în protocolul lui Shoup}
+De ăndată ce $N$ este generat, fie $e$ primul număr mai mare decât $4 \delta^{2}$  în așa fel încât serverul îl poate calcula. Apoi, protocolul Catalano \cite{catalano} este rulat pentru a genera cheia partajată într-o manieră distribuită. La finalul protocolului, fiecare server calculează cheia ei de verificare în felul următor:
+$$ v_{u,i} = v_{u}^{\delta d_i}$$
+Pentru $v_u$ aleator calculat ca și $y_{u}^{2} \ mod \ N$ unde $y_u$ e concatenarea lui $H(N|i)$ pentru suficient de mulți $i$ pentru a colecta corect parametri de securitate.
+
+\subsection{Schema lui Shoup împotriva adversarilor activi}
+\subsubsection{Generarea cheilor}
+La sfârșitul protocolului de genarare de chei, va trebui să se verifice, dacă informația îl poate ajuta pe adversar să afle cheia secretă. Fie $d_{i_1},...,d_{i_t}$, $t$ subsecrete ale cheii secrete, obținută de adversar la $t$ servere corupte. \\
+Informația dezvăluită prin partajarea lui $d_{i_j}$. Pentru fiecare $d_{i_j}$ putem spune că: 
+$$d_{i_j} = f(i_j) = a_0 + a_1i_j + ... + a_t i_{j}^{t} \ mod \ M       $$
+Dacă adăugăm o a $t+1$ ecuație, $a_0=d$, vom obține următorul sistem liniar:
+
+
+
+\[
+\left\{ 
+\begin{array}{c}
+a_0 + a_1 i_1 + ... a_t i_{1}^{t}  = d_{i_1} \ mod \ M \\ 
+a_0 + a_1 i_2 + ... a_t i_{2}^{t}  = d_{i_2} \ mod \ M \\ 
+... \\
+a_0 + a_1 i_t + ... a_t i_{t}^{t}  = d_{i_t} \ mod \ M \\
+\end{array}
+\right. 
+\]
+
+Sau o matrice $A = D \ mod \ M$
+
+\[
+\left (
+\begin{array}{cc}
+1 \ i_1 \ i_{1}^{2} ... i_{1}^{t} \\
+1 \ i_2 \ i_{2}^{2} ... i_{2}^{t} \\
+... \\
+1 \ i_t \ i_{t}^{2} ... i_{t}^{t} \\
+1 \ \ 0 \ \ 0 ... 0 
+
+
+\end{array}
+\right) 
+\times
+\left (
+\begin{array}{c}
+a_0 \\
+a_1 \\
+... \\
+a_t  
+\end{array}
+\right)
+=
+\left(
+\begin{array}{c}
+d_{i_1} \\
+d_{i_2} \\
+... \\
+d_{i_t}
+\end{array}
+\right)
+\]
+
+Această matrice este o matrice Vandermonde. Determinantul unei astfel de matrici este:
+$$ \det(A) = \prod_{1 \leqslant j < k <t+1}^{} (i_k - i_j) \ mod \ M$$
+Unde $i_{t+1} = 0$. Cum toți $i_j$ sunt distincți în $\mathbb{Z}_{M}$, $i_k - i_j \neq 0 \ mod \ M$ deoarece $l < B$. Prin urmare, toate valorile lui $d$ sunt posibile. Prin urmare, un grup de $t$ jucători nu pot obține informații despre $d$ din partajări ale lui $d$
+
+\subsubsection{Informația dezvăluită prin verificare cheilor}
+Ăentru toți $u \in [1,k]$, cheile de verificare $v_{u,i}$ ale serverelor non corupte nu dezvăluie vreo informație pentru că ele pot fi foarte ușor simulate din părți ale serverlor corupte. Simulatorul alege random $y_u \in \mathbb{Z}_{N}^{*}$, calculează 
+$$v_u = y_{u}^{2 \delta e} \ mod \ N$$ 
+Prin urmare $y_{u}^{d} = y_{u}^{2 \delta}$. Putem face notația: 
+$$\delta d_i = \sum_{k=1}^{t+1} \lambda_{i,k}^{S} d_j \ mod \ \phi(N)$$
+Notăm cu $S$ un grupt de $t+1$ valori dacă definim coeficienții Lagrange ca fiind:
+$$\lambda_{i,j}^{S} = \delta \times \prod_{j^{'} \in S \smallsetminus j}^{} \frac{i - j^{'}}{j - j^{'}} \in \mathbb{Z}  $$
+Simulatorul poate calcula pentru fiecare $u \ in [1,k]$:
+$$v_{u}^{\delta d_i} = y_{u}^{2 \delta \lambda_{i,0}^{S}}  \times \prod_{j=1}^{t} = v_{u}^{\lambda_{i.j}^{S} d_{i_j}    } \ mod \ N     $$
+unde $S = \lbrace 0,i_1,...,i_t \rbrace$. Prin urmare, un grup de t jucători nu pot lua informația de la cheile de validare ale serverelor non corupte.
+\subsubsection{Protocol pentru semnătură}
+Pentru a genera o semnătură a unui mesaj $m$, fiecare server $i$ calculează $x=H(m)$,$S_i = x^{2 \delta d_i}  \ mod \ N$ și trimite $S_i$ către combinatori fără vreo dovadă deoarece sunt în modelul onest dar curios. Combinatorul selectează un grup $S$ de $t+1$ valori și calculează $ w = \prod_{j=1}^{t+1} S_{i_j}^{2 \lambda_{0,i_{j}}^{S} } \ mod \ N$. \\
+De aici rezultă că $w^{e} = x^{4 \delta^2}$ pentru că $s_{i_j}^{2} = x^{4 \delta d_j}$. De aici putem extrage $e$ rădăcina $x$ din $w$. Pentru că suntem în modelul onest dar curios, semnătura va fi tot timpul corectă.
+
+\subsection{Îmbunătățirea schemei lui Shoup împotriva adversarillor activi}
+\subsubsection{Dovada corectitudinii}
+Fie $N$ modulul astfel încât $N=PQ$ și $P = 2p^{'} +1 $ și $Q= 2q^{'} +1 $ unde $p^{'}$ și $q^{'}$ nu au factori primi mai mici și $cmmdc(P-1,Q-1)=2$. Prin urmare, logaritmul discret al oricărui element $S_i^{2}$ în baza $g$ există, unde $S_i = x^{2 \delta d_i}$ și $\delta = l!$. Putem nota cu $v_1,...,v_k$ un $k$-tuplu de elemente aleatoare în $(Q_N)^k$ astfel încât acest tuplu poate genera cu o probabilitate mare tot grupul $Q_N$ de ordin $M=p'q'$ astfel încât pentru fiecare $x \in Q_N, \exists (a_1,...,a_k) \ in [0,M] $ astfel încât $x = \prod_{i=1}^{k} v_i^{a_i} \ mod \ N$
+Fiecare server $i$ are un $k$-tuplu de chei de verificare $v_{1,i} = v_1^{d_i} \ mod \ N,...,v_{k,i} = v_k^{d_i} \ mod \ N$. El calculează o semnătură, $S_i = x^{2 \delta d_i} \ mod \ N$, unde $d_i$ este semnătura $i$ a lui $d$, și dovedim că:
+$$ \log_{v_1} (v_1,i) = ... = \log_{v_k} (v_k,i) = \log_{x^{4 \delta}} (s-{i}^{2}) = d_i \ mod \ M $$
+Acum, descriem "dovada corectitudinii" și lăsăm $d_i \in [0,M]$ să fie secretul partajat al serverelor și $A$ și $B^{'}$ două numere întregi astfel încât $\log(A) \geqslant \log(B^{'} Mh) +k_2$ unde $B^{'}$ și $k_2$ sunt parametri de securitate și $h$ este numărul de runde. În final, $k_1$ este un parametru, astfel încăt probabilitatea de falsificare este:
+$$1/B^{'^{h}} \leqslant \frac{1}{2^{k_1}}$$
+Cel care face verificarea, generează aleator un $r \in [0,A]$. Apoi el calculează:
+$$t= (v_{1}^{'},...,v{k}^{'},x^{'})=(v_{1}^{r},...,v_{k}^{r},x^{4 \delta r})$$
+Fie $e$, reprezentând primii $b^{'} =\log(B^{'})-1$ biți din valuarea hashului.
+$$ e= [H(v_1,...,v_k,x^{4 \delta},v_{1,i},..v_{k,i},S_{i}^{2},v_{1}^{'},...,v_{k}^{'},x^{'})]_{b^{'}} $$
+Și verificăm dacă $0 \leqslant z \leqslant A $
+
+
+\subsection{Concluzia}
+Am arătat cum trebuie să evităm numerele prime sigure în schema lui Shoup în așa fel încât dovada să rămână corectă. Am considerat că mediile în care am lucrat sunt cu grad de securitate ridicat(ex scheme de vot electronic).
+\\ Pe scurt, folosim diferit tehnici pentru a dovedi că:
+\begin{enumerate}
+\item Grupul pătratelor este ciclic.
+
+\item Generăm $P$ și $Q$ astfel încât $P^{'}$ și $Q^{'}$ să nu conțină factori primi mici
+
+\item Generăm un set de generatori $Q_N$ generând aleator diferiți generatori $Q_N$
+\end{enumerate} 
+În final, arătăm cum trebuie adaptată schema lui Shoup pentru a lucra cu diferite elemente care generează $Q_N$, în loc de unul singur.
+
+
+
+
+
+
+
+
+\medskip
+
+
+\begin{thebibliography}{9}
+\bibitem{desmet}
+Y.Desmedt and Y.Frankel. Share Generation of Authenticators and Signature. In Crypto 91, LNCS 576, paginile 457-469.
+\bibitem{boneh}
+D.Boneh și M.Franklin. Efficient Generation of Shared RSA keys. In Crypto 97, LNCS 1233, paginile 425-439. Springer-Verlag, 1997
+
+\bibitem{catalano}
+D.Catalanoși S.Halevi. Computing Inverses over a Shared Secret Modulus. In Eurocrypt '00, LNCS 1355, paginile 190-207. Springer Verlag, 2000.
+\bibitem{cooper}
+D.Coppersmith. Finding a small root of a univariate modular equation. In U. M. Maurer, edution EUROCRYPT, volume 1070 of Lecture Notes in Computer Science, pagini 155-165. Springer, 1996
+\bibitem{cooper2}
+D. Coppersmith. Small solution to polynomial equations, and low exponent RSA vulnerabilities. Journal of Cryptology, paginile 233-260, 1997.
+
+
+\
+\end{thebibliography}
+
+\end{document}
