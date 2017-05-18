@@ -240,6 +240,64 @@ Este destul de clar că atunci când implementăm RSA, vom dori să evităm aces
 Putem dovedi că, dacă $q<p \leqslant 2q$ și $ d \leqslant \frac{1}{3} \sqrt[4]{N}$ atacul Wiener va reuși. \\
 Astea înseamnă că noi trebuie să alegem $d > \frac{1}{3} \sqrt[4]{N}$. Și așa, există o șansă ca atacul Wiener să reușească.
 
+\subsubsection{Numere prime parțial cunoscute}
+La acest atac, trebuie să ne bazăm pe faptul că $N$ este o aproximare a lui $\phi(N)$. În particular, atacurile depind de inecuația $ | N-\phi(N)|=|s| < 3N^{1/2}$. Pentru îmbunătățirea acestui atac, va trebui să găsim o aproximare mai bună pentru $\phi(N)$. \\
+Când măcar unul din cele două numere prime ale modulului RSA, are cel mai semnificativ bit cunoscut, atunci noi putem să formăm o aproximare mai bună pentru $\phi(N)$. Fie $P^{'}$ o aproximare pentru $P$ care satisface următoarea relație:
+$$ |P - P^{'}| < N^{\gamma} $$
+cu $ \frac{1}{4} < \gamma \leqslant \frac{1}{2} $. Cu $P^{'} $ cunoscut, îl putem calcula foarte ușor și pe $ Q^{'} $
+$$ |Q - Q^{'} | = \left| \frac{N}{P} - \frac{N}{P^{'}} \right| = \left|\frac{N(P-P^{'})}{PP^{'}}\right| < 5 N^{\gamma} $$ 
+
+Folosind aceste relații, vom putea calcula și o aproximare a lui $N$ notată $N^{'}$ care corespune următoarei formule:
+$$ N^{'}= N-P^{'} - Q^{'} +1 $$
+Iar de aici putem scoate o aproximare și pentru $s^{'}$
+$$ \left| \phi(N) - N^{'} \right| = | (P-1)(Q-1) - (N-P^{'} - Q^{'} +1) | $$
+$$ = |PQ - P - Q + 1 - N + P^{'} + Q^{'} -1 | $$
+$$|P-P^{'} + Q - Q^{'}| $$
+Știm că $ |P-P^{'}| < N^{\gamma} | $ și $|Q-Q^{'}| < 4N^{\gamma}$ rezultă
+$$ | P-P^{'} + Q -Q^{'}| < 5N^{\gamma} $$ 
+Având toate aceste date, ecuația finală va fi:
+$$ ed=1+k\phi(N) =1 + k(N^{'} -s^{'})$$
+Folosind această relația, putem dezvolta următorul atac de tip exponent de decriptare mic. În realizarea acestui atac, vom folosi următoarea teoremă: \\
+\textbf{Teoremă} fie $N=PQ$ modulul RSA, $e$ exponentul de criptare și $d$ exponentul de decriptare. Fie $k$ un număr întreg care satisface relația $1 + k \lambda(N),g=cmmdc(P-1,Q-1),g_0=\frac{g}{cmmdc(g,k)}$ și $k_0=\frac{k}{cmmdc(k,g)}$. Folosind $P^{'}$ cu proprietatea $|P - P^{'}|<N^{\gamma}$, exponentul de decriptare are următoarea proprietate:
+$$d<\frac{N^{'}}{2s^{'}g_0k_0}$$
+Totuși, această primă relație este posibil să nu fie suficientă pentru a putea dezvolta atacul, și vom avea nevoie de o inecuația care să-l conțină și pe $N^{\gamma}$.
+$$ N^{'} = N - P^{'} - Q^{'} + 1 \Rightarrow N^{'}  < N$$
+$$ s^{'} = |P-P^{'} + Q - Q^{'}| < 5N^{\gamma}$$
+Împărțind aceste două relații vom obține:
+$$\frac{N^{'}}{s^{'}} < \frac{N}{5N^{\gamma}} \Rightarrow \frac{N^{'}}{s^{'}} < \frac{N^{1-\gamma}}{5} $$
+Înmulțind îm ambele părțti cu $\frac{1}{2g_0k_0}$ obținem
+$$ \frac{N^{'}}{2s^{'}g_0k_0} < \frac{N^{1-\gamma}}{10g_0k_0}$$
+Așadar,am aflat că 
+$$ d<\frac{N^{'}}{2s^{'}g_0k_0}<\frac{N^{1-\gamma}}{10g_0k_0}$$
+Folosind această inecuație, îl vom putea factoriza pe $N$ în timp polinomial.
+De asemenea, dacă vom considera un parametru $\deg$ astfel încât $d=N^{\delta}$, atunci atacul se va simplifica la 
+\[
+\delta \leqslant
+\left\{ 
+\begin{array}{c}
+\frac{1}{4} - \frac{\alpha}{2} - \epsilon, \ \ \ \lambda=1/2  \\
+1 - \frac{\alpha}{2} - \frac{\lambda}{2} - \epsilon, \ \ \ \lambda<1/2  
+\end{array}
+\right. 
+\]
+Pentru un exponent arbitrat fixat va rezulta:
+\[
+\delta \leqslant
+\left\{ 
+\begin{array}{c}
+\frac{3}{4} -  \epsilon, \ \ \ \lambda=1/2 , \ \alpha=1  \\
+\frac{1}{2} - \frac{\lambda}{2} - \epsilon, \ \ \ \lambda<1/2, \ \alpha=1 
+\end{array}
+\right. 
+\]
+\\
+Pentru $\forall \epsilon > 0, \exists n_0$ astfel încât $n>n_0$ unde $n$ este lungimea în biți a lui $N$. Fie $N=PQ$ modulul RSA cu $e$ cheia publică și $d=N^{\gamma}$ cheia privată, ce corespunde modulului $\phi(N)$. Dată cheia publică $<N,e>$ și $\lambda$ cu $\frac{1}{4}<\lambda\leqslant \frac{1}{2}$ și 
+$$ \delta \leqslant \frac{2}{5} - \frac{6}{5}\lambda + \frac{2}{5} \sqrt{4\lambda^{2}- \lambda +1} - \epsilon $$,
+atunci modulul $N$ poate fi calculat în timp polinomial. \\
+O altă formă, cea a lui Boneh și Durfee \cite{bonehsidurfe} este dată de următoarea teoremă \\
+\textbf{Teoremă} $\forall \epsilon > 0, \exists n >n_0$. Fie $N=PQ$ modulul RSA cu $e$ exponentul public și $d=N^{\delta}$ exponentul privat definitit modulo $\phi(N)$. Date fiind cheia publică $<N,e>$ și $\lambda$ cu $\frac{1}{4} < \lambda \leqslant \frac{1}{2} $ satisfac următoarea relație
+$$ 1- 2\lambda < \delta \leqslant 1 - \sqrt{\lambda}-\epsilon$$
+atunci putem găsi modulul RSA în timp polinomial.
 \section{RSA varianta distribuită (Schema lui Shoup)}
 \subsection{Introducere}
 Varianta partajată a RSA (schemă prin semnături) prezintă câteva aspecte foarte interesante. În primul rând, este securizată și robustă deoarece problema criptanalizei este foarte grea. Apoi, partajarea, generarea semnăturii și verificarea sunt non interactive și în final, dimensiunea unei semnături partajate este legată de o constantă înmulțită cu dimensiunea modulului RSA. \\
