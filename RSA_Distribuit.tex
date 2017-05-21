@@ -10,11 +10,23 @@
 \usepackage{flexisym}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,     
+}
+ 
+\urlstyle{same}
 \begin{document}
+
+
+
+
 \tableofcontents
 \chapter{Introducere în RSA}
 \section{RSA Clasic}
 \subsection{Descriere}
+
 RSA este un algoritm criptografic cu chei publice, primul algoritm utilizat atât pentru criptare, cât și pentru semnătura electronică. Algoritmul a fost dezvoltt în 1977 și publicat în 1978 de Ron Rivest, Adi Shamir și Leonard Adleman la MIT, iar numele algoritmului provine din inițialele lor. \\
 Securitatea sa se bazează pe dificultatea problemei factorizării numerelor întregi, problemă la care se reduce criptanaliza RSA și pentru care toți algoritmii de rezolvare cunoscuți au complexitate exponențială. Există câteva metode de criptanaliză care ocolesc factorizarea efectivă, exploatând maniere de implementare efectivă a schemei de criptare.
 \subsection{Funcționare}
@@ -43,7 +55,7 @@ Problema decriptării unui mesaj criptat cu RSA este denumită problema RSA. Ace
 Factorizarea întregilor prin metode comune ajută la găsirea soluțiilor în timp util doar pentru numere mici. Pentru numere mari, algoritmii de factorizare, cu complexitatea exponențială. dau soluția după foarte mult timp. Cea mai rapidă metodă de factorizare a întregilor, algoritmul ”Number Field Siev”, are o complexitate de $O(e^{c((\log n)^{\frac{1}{3}} (\log \log n)^{\frac{2}{3}}       })$. Aici, $c$ este un număr ce ia valori în jur de $1,9$ pentru numere de tipul lui $N$, adică numere cu 2 factori primi. Cel mai mare număr factorizat vreodată prin acest algoritm, rulat în anul 2005, de către specialiștii de la Agenția Federală Germană pentru Securitatea Tehnologiei Informației, are 200 de cifre zecimale, iar reprezentarea binară a factorilor primi obținuți ocupă 663 de biți. Cheile de criptare RSA cele mai sigure au lungimi de peste 1024 de biți.\\
 Atacul RSA forței brute, adică încercarea fiecărei chei secrete posibile, consumă chiar mai mult timp decât factorizarea.
 \chapter{Criptanaliză RSA}
-\section{Atacuri}
+\section{Criptanaliză pe RSA clasic}
 Deși securitatea algoritmului RSA constă în legătura dintre aceasta și factorizarea întregilor, el trebuie folosit u grijă în implementări, deoarece, în caz de folosire eronată, sistemele bazate pe RSA pot fi atacate în anumite maniere care ocolesc factorizarea efectiva a modului, atacatorul ajungând să obțină mesajul clar sau cheia secreă.
 \subsection{Atac cu criptotext ales}
 În cazul acestui atac, adversarul dispune de cheia publică a entității atacate (exponentul de criptare $e$ și modulul $N$), și interceptează mesaje criptate trimise acestuia. Pentru a obține mesajul clar $m$ dintr-un mesaj criptat $c$ atacatorul poate proceda în felul următor:
@@ -303,6 +315,46 @@ O altă formă, este dată de următoarea teoremă \\
 \textbf{Teoremă} $\forall \epsilon > 0, \exists n >n_0$. Fie $N=PQ$ modulul RSA cu $e$ exponentul public și $d=N^{\delta}$ exponentul privat definitit modulo $\phi(N)$. Date fiind cheia publică $<N,e>$ și $\lambda$ cu $\frac{1}{4} < \lambda \leqslant \frac{1}{2} $ satisfac următoarea relație
 $$ 1- 2\lambda < \delta \leqslant 1 - \sqrt{\lambda}-\epsilon$$
 atunci putem găsi modulul RSA în timp polinomial.
+\section{Criptanaliză pe variante RSA}
+\subsection{CRT-RSA}
+Puterea computațională necesară decriptării RSA-ului poate fi redusă exploatțnd factorizarea modulului $N$. Fie $<N,e>$ cheia publică RSA și $<d,P,Q>$ cheia privată unde exponenții sunt definiți modulo $\lambda(N)$. Pentru un criptotext $c=m^e \ mod \ N$ decriptarea standard se obține făcând calculul
+$$ m=c^d \ mod \ N$$
+Acest calcul fiid o singură exponențiere pe $n$ biți. Totuși, plaintextul poate fi obținut prin decriptări parțiale, una modulo $P$ și alta modulo $Q$. Folosind teorema Chineză a resturilor  va trebui să calculăm:
+$$ m_P = c^d \ mod \ P$$
+$$ m_Q = c^d \ mod \ Q$$
+Deoarece $P$ și $Q$ sunt numere prime (înseamnă că sunt și relativ prime), combințnd aceste două ecuații folosind teorema Chineză a resturilor, vom putea obține rezultatul. Folosind algoritmul lui Garner \cite{garner}, atunci plaintextul se calculează astfel:
+$$ m=m_P+P((m_Q-m_P)p^{-1} \ mod \ Q)$$
+Totuși, când exponentul de decriptare este mai mare decțât $\sqrt{N}$,un exponent redus poate fi folosit. Fie $d_P$ și $d_Q$ astfel încât:
+$$ d_P = d \ mod \ (P-1) $$
+$$ d_Q = d \ mod \ (Q-1) $$
+De unde rezultă:
+$$ m_P = c^{d_P} \ mod \ P $$
+$$ m_Q = c^{d_Q} \ mod \ Q $$
+Îi vom numi pe $ d_P $ și $d_Q$ exponenții CRT. Din ecuațiile de mai sus și din faptul că $ed = 1+ k\phi(N)$ următoarele:
+$$ ed_P \equiv 1 \ mod \ (P-1)$$
+$$ ed_Q \equiv 1 \ mod \ (Q-1)$$
+De asemenea, $\exists k_P$ și $k_Q$ astfel încât:
+$$ ed_P = 1 + k_P(P-1)$$
+$$ ed_Q = 1+ k_Q(Q-1)$$
+\subsubsection{Spargerea CRT-RSA}
+Calculând exponenții CRT este suficient pentru a sparge această variantă de RSA. Dacă avem ambții exponenți $d_P$ și $d_Q$ putem obține următoarea relație:
+$$ed_P = 1 + k_P(P-1) \Rightarrow ed_P -1 = k_P(P-1)$$
+$$ed_Q = 1 + k_Q(Q-1) \Rightarrow ed_Q -1 =k_Q(Q-1)$$
+Înmulțind aceste două relații obținem:
+$$ (ed_P -1 ) (ed_Q -1) = [k_P(P-1)][k_Q(Q-1)] \Rightarrow $$
+$$ \Rightarrow e^2e_Pd_Q - ed_P - ed_Q +1 = k_P(P-1)k_Q(Q-1) \Rightarrow$$
+$$ \Rightarrow e(ed_Pd_Q - d_P -d_Q)+1 = k_P(P-1)k_Q(Q-1)$$
+Unde, fiecare membru din partea stângă este cunoscut.  Așadar, putem calcula un multiplu de $\phi(N)$ ce ne va permite într-un mod probabilistic să factorizăm modulul folosind Miller \cite{miller}.
+Cunoscând doar un singur exponent CRT, existp totuși o șansă ca modulul $N$ să poate fi factorizat.\\
+Să presupunem că $d_P$ este termenul cunoscut. Dacă $d$ cheia privată este mai mică decât fiecare număr prim, astfel încât $d = d_P = d_Q$ atunci $ed_P-1$ este un multiplu de $\lambda(N)$ și modulul poate fi factorizat folosind Miller \cite{miller}. Dacă exponentul privat $d$ este mai mare decât fiecare dintre numerele prime, atunci vom obsera folosind $ed_P = 1 + k_P(P-1)$ că $m^{ed_P} \equiv m \ mod \ P$, pentru orice plaintext $m \in \mathbb{Z}_{P}^{*}$, atunci:
+$$ m^{ed_P} - m = cp$$
+unde $c$ este un număr întreg. Fie $M=(m^{ed_P} - m) \ mod \ N$. Când $c$ nu este un multiplu al numărului prim $Q$ , factorizarea modulului este dată de $cmmdc(M,N)=P$. Atunci când $c$ este un multiplu al lui $q$ atunci $m^{ed_P} \equiv m \ mod \ N$. De aici rezulltă că $\forall m \in \mathbb{Z}_{P}^{*}$, atunci modulul $N$ poate fi factorizat, deoarece $d_P$ este un exponent valid de decriptare și $ed_P-1$ dezvăluie un multiplu al lui $\lambda(N)$.
+\subsubsection{Reconstruirea cheii folosind erori aleatoare}
+
+
+
+
+
 \chapter{Variante și Optimizări RSA}
 \section{RSA varianta distribuită (Schema lui Shoup)}
 \subsection{Introducere}
