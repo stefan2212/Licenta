@@ -1,0 +1,62 @@
+\select@language {romanian}
+\contentsline {chapter}{\numberline {1}Optimiz\IeC {\u a}ri RSA}{2}
+\contentsline {section}{\numberline {1.1}Bazele matematice}{2}
+\contentsline {subsection}{\numberline {1.1.1}Comportamentul asimptotic}{2}
+\contentsline {subsubsection}{Analiza unui algoritm}{2}
+\contentsline {subsubsection}{Viteza unui algoritm}{2}
+\contentsline {subsubsection}{Notatia $O$}{2}
+\contentsline {subsection}{\numberline {1.1.2}Aritmetica numerelor \IeC {\^\i }ntregi}{2}
+\contentsline {subsubsection}{Opera\IeC {\textcommabelow t}iile de baz\IeC {\u a}}{2}
+\contentsline {subsubsection}{Reprezentarea Radix}{3}
+\contentsline {subsection}{\numberline {1.1.3}Aritmetica modular\IeC {\u a}}{3}
+\contentsline {subsubsection}{Reducerea modular\IeC {\u a}}{3}
+\contentsline {subsubsection}{Inversiunea}{3}
+\contentsline {section}{\numberline {1.2}RSA Clasic}{3}
+\contentsline {subsection}{\numberline {1.2.1}Exponen\IeC {\textcommabelow t}iere Rapid\IeC {\u a}}{3}
+\contentsline {subsubsection}{Descrierea algoritmului left-to-right}{3}
+\contentsline {subsubsection}{Corectitudinea algoritmului left-to-right}{4}
+\contentsline {subsection}{\numberline {1.2.2}Teorema chinez\IeC {\u a} a resturilor}{4}
+\contentsline {subsubsection}{Descrierea}{4}
+\contentsline {subsubsection}{Corectitudinea teoremei}{5}
+\contentsline {subsection}{\numberline {1.2.3}Algoritmul lui Garner}{5}
+\contentsline {subsubsection}{Descrierea algoritmului}{5}
+\contentsline {subsubsection}{Corectitudinea algoritmului}{6}
+\contentsline {subsection}{\numberline {1.2.4}Implement\IeC {\u a}ri rapide RSA}{6}
+\contentsline {subsubsection}{Generarea cheilor, criptare \IeC {\textcommabelow s}i decriptare}{6}
+\contentsline {section}{\numberline {1.3}RSA Rebalansat}{7}
+\contentsline {subsection}{\numberline {1.3.1}Generarea cheilor, criptare \IeC {\textcommabelow s}i decriptare}{7}
+\contentsline {subsubsection}{Generarea cheilor}{7}
+\contentsline {subsubsection}{Criptarea}{8}
+\contentsline {subsubsection}{Decriptarea}{8}
+\contentsline {section}{\numberline {1.4}Multi-Prime RSA}{8}
+\contentsline {subsection}{\numberline {1.4.1}Algoritmul Garner cand $N=PQR$}{8}
+\contentsline {subsubsection}{Descrierea algoritmului}{8}
+\contentsline {subsubsection}{Corectitudinea algoritmului}{8}
+\contentsline {subsection}{\numberline {1.4.2}Multi-Prime RSA modulo $N=PQR$}{9}
+\contentsline {subsubsection}{Descrierea cryptosistemului}{9}
+\contentsline {subsection}{\numberline {1.4.3}Generalizarea algoritmului Garner}{9}
+\contentsline {subsubsection}{Descrierea algoritmului \IeC {\^\i }n forma general\IeC {\u a}}{10}
+\contentsline {section}{\numberline {1.5}Multi-Power RSA}{10}
+\contentsline {subsection}{\numberline {1.5.1}Hensel lifting}{10}
+\contentsline {subsubsection}{Ideea de baza la Hensel lifting}{10}
+\contentsline {subsubsection}{Justificarea matematic\IeC {\u a}}{10}
+\contentsline {subsection}{\numberline {1.5.2}Multi-Power RSA modulo $N=P^2Q$}{11}
+\contentsline {subsubsection}{Algoritmul}{11}
+\contentsline {subsection}{\numberline {1.5.3}Generalizarea ideii}{11}
+\contentsline {subsubsection}{Ideea de baz\IeC {\u a}}{11}
+\contentsline {subsection}{\numberline {1.5.4}Multi-Power RSA modulo $N=P^bQ$}{12}
+\contentsline {subsubsection}{Algoritmul}{12}
+\contentsline {section}{\numberline {1.6}Batch RSA}{12}
+\contentsline {subsection}{\numberline {1.6.1}Ideea de baz\IeC {\u a}}{13}
+\contentsline {subsubsection}{Nota\IeC {\textcommabelow t}ie}{13}
+\contentsline {subsubsection}{Formule de baz\IeC {\u a} pentru decriptare}{13}
+\contentsline {subsubsection}{Decriptarea a dou\IeC {\u a} texte}{13}
+\contentsline {subsection}{\numberline {1.6.2}Optimiz\IeC {\u a}ri}{13}
+\contentsline {subsubsection}{Teorema chinez\IeC {\u a} a resturilor}{13}
+\contentsline {subsubsection}{Calcului unui singur invers modular}{14}
+\contentsline {subsection}{\numberline {1.6.3}\IeC {\^I}mbun\IeC {\u a}t\IeC {\u a}\IeC {\textcommabelow t}irea batch RSA: Tehnica lui Mongomery}{14}
+\contentsline {subsubsection}{Descrierea algoritmului}{14}
+\contentsline {subsubsection}{Corectitudinea algoritmului}{14}
+\contentsline {subsection}{\numberline {1.6.4}\IeC {\^I}mbun\IeC {\u a}t\IeC {\u a}\IeC {\textcommabelow t}irea RSA folosind tehnica lui Shamir}{15}
+\contentsline {subsubsection}{Descrierea algoritmului}{15}
+\contentsline {subsubsection}{Explica\IeC {\textcommabelow t}ie}{15}
