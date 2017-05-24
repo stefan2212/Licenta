@@ -350,7 +350,14 @@ Să presupunem că $d_P$ este termenul cunoscut. Dacă $d$ cheia privată este m
 $$ m^{ed_P} - m = cp$$
 unde $c$ este un număr întreg. Fie $M=(m^{ed_P} - m) \ mod \ N$. Când $c$ nu este un multiplu al numărului prim $Q$ , factorizarea modulului este dată de $cmmdc(M,N)=P$. Atunci când $c$ este un multiplu al lui $q$ atunci $m^{ed_P} \equiv m \ mod \ N$. De aici rezulltă că $\forall m \in \mathbb{Z}_{P}^{*}$, atunci modulul $N$ poate fi factorizat, deoarece $d_P$ este un exponent valid de decriptare și $ed_P-1$ dezvăluie un multiplu al lui $\lambda(N)$.
 \subsubsection{Reconstruirea cheii folosind erori aleatoare}
-
+Aceasta este o altă modalitate pentru reconstrucția cheii atunci când se folosește CRT-RSA.\\
+Este menționat în \cite{95}, că atacul poate fi îmbunătățit folosind mai multe informații despre cheia privată. Întradevăr, există un atac îmbunătățit realizat de Heninger și Shacham \cite{heninger} pentru exponenți publici mici, folosesc aproximări pentru fiecare $P,Q,d,d_P,d_Q$, din CRT-RSA și exploatează următoarele 4 ecuații:
+$$ N=PQ $$
+$$ ed=k(N-P-Q+1)+1$$
+$$ ed_P=k_P(P-1)+1$$
+$$ ed_Q=k_Q(Q-1)+1$$
+care conțin 8 necunoscute. Deoarece exponentul public este mic, $2^10+1$ spre exemplu, constantele $k$,$k_P$ și $k_Q$ poate fi ușor determinate ceea ce reduce numărul de necunoscute la 5.\\
+Pentru determinarea lui $k$ 
 
 
 
