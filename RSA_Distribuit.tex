@@ -353,13 +353,77 @@ unde $c$ este un număr întreg. Fie $M=(m^{ed_P} - m) \ mod \ N$. Când $c$ nu 
 \subsubsection{Reconstruirea cheii folosind erori aleatoare}
 Aceasta este o altă modalitate pentru reconstrucția cheii atunci când se folosește CRT-RSA.\\
 Este menționat în \cite{95}, că atacul poate fi îmbunătățit folosind mai multe informații despre cheia privată. Întradevăr, există un atac îmbunătățit realizat de Heninger și Shacham \cite{heninger} pentru exponenți publici mici, folosesc aproximări pentru fiecare $P,Q,d,d_P,d_Q$, din CRT-RSA și exploatează următoarele 4 ecuații:
-$$ N=PQ $$
-$$ ed=k(N-P-Q+1)+1$$
-$$ ed_P=k_P(P-1)+1$$
-$$ ed_Q=k_Q(Q-1)+1$$
-care conțin 8 necunoscute. Deoarece exponentul public este mic, $2^10+1$ spre exemplu, constantele $k$,$k_P$ și $k_Q$ poate fi ușor determinate ceea ce reduce numărul de necunoscute la 5.\\
-Pentru determinarea lui $k$ 
+\begin{align*}
+N&=PQ \\
+ed&=k(N-P-Q+1)+1\\
+ed_P&=k_P(P-1)+1\\
+ed_Q&=k_Q(Q-1)+1 
+\end{align*}
+care conțin 8 necunoscute. Deoarece exponentul public este mic, $2^{10}+1$ spre exemplu, constantele $k$,$k_P$ și $k_Q$ poate fi ușor determinate ceea ce reduce numărul de necunoscute la 5.\\
+Pentru determinarea lui $k$ ne folosim de faptul că $1/2$ din cei mai semnificativi biți al exponentului privat sunt arătați de către $\lceil (kN+1)/e \rceil $ , calculând această valuare pentru fiecare $2 \leqslant k^{'} < e$, valuarea corectă a lui $k$ este arătată atunci când un număr semnificativ de biți este același ca și în ecuația $ \lceil (k^{'}M+1)/e   \rceil$. \\
+Cu $k$ cunoscut, Heninger și Shacham demonstrează că se pot afla foarte ușor $k_P$ și $k_Q$, folosind următoarele ecuații: 
 
+\begin{align*}
+-1 &\equiv k(P-1)(Q-1) \ mod \ e \\
+-1 &\equiv k_P(P-1) \ mod \ e \\
+-1 &\equiv k_Q(Q-1) \ mod \ e
+\end{align*}
+Vom observa că dacă înmulțim ultimele două ecuații vom obție $ 1 \equiv k_Pk_Q(P-1)(Q-1) \ mod \ e$. Comparând rezultatul cu prima ecuația vom constata următorul lucru:
+$$ k \equiv -k_Pk_Q \ mod \ e $$
+Modificând prima ecuație, vom obține:
+
+$$ -1 \equiv k(N-P-Q+1) \ mod \ e \Rightarrow $$
+$$ -1 \equiv kN - kP - kQ +k \ mod \ e \Rightarrow$$
+$$ -1 \equiv kN-kP-kQ + k - k + k \ mod \ e \Rightarrow$$
+$$ -1 \equiv (kN-k) - (kP - k ) - (kQ - k ) \ mod \ e \Rightarrow$$
+$$ -1 \equiv k(N-1) -k(P-1) - k(Q-1) \ mod \ e $$
+
+Putem substitui:
+
+\begin{align*}
+k &\equiv -k_P k_Q \ mod \ e \\
+(P-1) &\equiv -1/k_P \ mod \ e \\
+(Q-1) &\equiv -1/k_Q \ mod \ e
+\end{align*}
+
+și obținem:
+$$ -1 \equiv k(N-1) - k(P-1) - k(Q-1) \ mod \ e \Rightarrow $$
+$$ -1 \equiv k(N-1) + k_Pk_Q(P-1) + k(Q-1) \ mod \ \Rightarrow e$$
+$$ k(N-1) + k_Pk_Q(P-1) + k(Q-1) \equiv 0 \ mod \ \Rightarrow e$$
+$$ k(N-1) - \frac{1}{k_P} - k_P + 1 \equiv 0 \ mod \ e$$
+
+Înmulțind această ecuație cu $k_P$, obținem următoarea ecuație de gradul 2:
+$$ k_P k (N-1) - k_{P}^{2} - k + k_P \equiv 0 \ mod \ e \Rightarrow $$
+$$ k_P(k(N-1)+1) - k_{P}^{2} - k \equiv \ mod \ e \Rightarrow $$
+$$ k_{P}^{2} - k_P(k(N-1)+1) + k \equiv \ mod \ e $$
+
+\subsection{Multi-Prime RSA}
+Multi-Prime RSA este o simplă extensie a criptosistemului, în care modulul $N$ este format din produsul a mai multor numere prime. \\
+În această prezentare, vom folosi $r$ ca și cardinal pentru numerele prime.\\
+Pentru Multi-Prime RSA cu $r$ numere prime, $N=P_1 P_2 \dots P_r$, așadar modulul $N$ este un simplu produs de $r$ numere prime. Dacă sortăm aceste numere prime, în așa fel încât $P_i < P_{i+1}$ pentru $i=1, \dots, r-1$, atunci putem afirma că:
+\begin{equation}
+4<\frac{1}{2}N^{\frac{1}{r}}<P_1<N^{\frac{1}{r}}<P_r <2N^{\frac{1}{r}}
+\end{equation}
+
+Generarea cheilor pentru algoritmul Multi-Prime RSA este în general același ca și pentru RSA clasic, diferența fiind doar faptul că vom avea $r$ numere prime distrincte. Exponentul public și cel private sunt definite ca și inverse modulare modulo $\phi(N)$, deci:
+$$ ed \equiv 1 \ mod \ \phi(N)$$
+Iar din această afirmație putem scoate ecuația:
+$$ ed=1+k\phi(N)$$
+unde $k$ este un număr întreg pozitiv. Ca și în RSA, putem înlocui $\phi(N)$ cu $N-s$. Dezvoltând $\phi(N)$, vom observa că $s$ poate fi scris ca:
+\begin{align*}
+s &= N - \phi(N) \\
+&= N - \prod_{i=1}^{r} (P_i-1) \\
+&= \sum_{i=1}^{r}\frac{N}{P_i} - \sum_{\substack{i,j=1 \\  i<j}}^{r} \frac{N}{P_iP_j} + \sum_{
+\substack{i,j,k=1 \\ i<j<k}}^{r} \frac{N}{P_i P_j P_k} + \dots + (-1)^{r}
+\end{align*}
+După cum a fost prezentat în \cite{osutanoua}, aceastătă expresie pentru un anumit $s$, combinată cu condiția $(2.1)$, implică o nouă dimensiune pentru $s$
+\begin{equation}
+|s| < (2r-1)N^{1-1/r}
+\end{equation}
+Deoarece,$\phi(N)$ și $N$ au aproximativ $(r-1)/r$ din cei mai semnificativi biți în comun, atunci $N$ este o bună aproximare pentru $\phi(N)$. Cu cât cardinalul numerelor prime este mai mare, numărul de biți pe care acestea îl au în comun scade. Așadar, majoritatea atacurilor pot fi extinse ca și extensii pentru multi-prime RSA folosind pur și simplu marginea lui $|s|$ când sunt $r$ numere prime.\\
+Algoritmul de criptare pentru multi-prime RSA este identic ca și cel clasic. Pentru orice plaintext $m$, criptotextul lui va fi $c = m^e \ mod \ N$. Exponentul public $e$ va fi notat ca și $e=N^{\alpha}$ cu $0<\alpha<1$.\\
+La fel ca și cu variante clasică, există două tipuri de decriptări pentru acest algoritm, abemele variante fiind identice ca și la RSA clasic. 
+\subsubsection{Spargerea Multi-Prime RSA}
 
 
 
@@ -951,7 +1015,8 @@ D.Coppersmith. Finding a small root of a univariate modular equation. In U. M. M
 D. Coppersmith. Small solution to polynomial equations, and low exponent RSA vulnerabilities. Journal of Cryptology, paginile 233-260, 1997.
 \bibitem{sarkar}
 S.Sarkar și S.Maitra. Partial key exposure attacks on RSA and its variants by guessing a fre bits of one of the prime factors. To appear in B-KMS, the Bulletin of Korean Mathematical Society.
-
+\bibitem{osutanoua}
+M. J. Hinek, M. J. Low și E. Teske. On some attack on multi-prime RSA. K.Nyberg și H. M. Heys, editorii, Selected Areas in Cryptography, volume 2595 of Lecture Notes in Computer Science, paginile 385-404. Springer, 2002.
 
 \end{thebibliography}
 

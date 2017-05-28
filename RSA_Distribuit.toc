@@ -23,89 +23,91 @@
 \contentsline {subsection}{\numberline {2.2.1}CRT-RSA}{17}{subsection.2.2.1}
 \contentsline {subsubsection}{Spargerea CRT-RSA}{18}{section*.8}
 \contentsline {subsubsection}{Reconstruirea cheii folosind erori aleatoare}{19}{section*.9}
-\contentsline {chapter}{\numberline {3}Variante \IeC {\textcommabelow s}i Optimiz\IeC {\u a}ri RSA}{20}{chapter.3}
-\contentsline {section}{\numberline {3.1}RSA varianta distribuit\IeC {\u a} (Schema lui Shoup)}{20}{section.3.1}
-\contentsline {subsection}{\numberline {3.1.1}Introducere}{20}{subsection.3.1.1}
-\contentsline {subsection}{\numberline {3.1.2}Dovada robuste\IeC {\textcommabelow t}ii \IeC {\textcommabelow s}i folosirea numerelor prime sigure}{22}{subsection.3.1.2}
-\contentsline {subsubsection}{Grupuri}{22}{section*.10}
-\contentsline {subsection}{\numberline {3.1.3}Problema}{22}{subsection.3.1.3}
-\contentsline {subsection}{\numberline {3.1.4}Modele de securitate}{23}{subsection.3.1.4}
-\contentsline {subsubsection}{Re\IeC {\textcommabelow t}eaua}{23}{section*.11}
-\contentsline {subsubsection}{Adversarul}{23}{section*.12}
-\contentsline {subsubsection}{Defini\IeC {\textcommabelow t}ii formale}{23}{section*.13}
-\contentsline {subsubsection}{Juc\IeC {\u a}torul \IeC {\textcommabelow s}i adversarul}{24}{section*.14}
-\contentsline {subsubsection}{Propriet\IeC {\u a}\IeC {\textcommabelow t}i}{24}{section*.15}
-\contentsline {subsubsection}{Generarea cheii \IeC {\textcommabelow s}i protocolul de semnare}{24}{section*.16}
-\contentsline {subsection}{\numberline {3.1.5}Un nou mod de a genera modulul RSA (schema Boneh-Franklin \cite {boneh})}{25}{subsection.3.1.5}
-\contentsline {subsubsection}{Un nou modul distribuit}{25}{section*.17}
-\contentsline {subsubsection}{Calculul cmmdc a unei valori publice \IeC {\textcommabelow s}i a unei valori secrete partajate}{25}{section*.18}
-\contentsline {subsubsection}{\IeC {\^I}mbun\IeC {\u a}t\IeC {\u a}\IeC {\textcommabelow t}irea gener\IeC {\u a}rii numerelor f\IeC {\u a}r\IeC {\u a} factori mici}{26}{section*.19}
-\contentsline {subsubsection}{Generarea lui $N$ \IeC {\^\i }ntruc\IeC {\^a}t $Q_N$ este ciclic}{26}{section*.20}
-\contentsline {subsubsection}{Metoda distribuit\IeC {\u a} de generare de chei \IeC {\^\i }n protocolul lui Shoup}{27}{section*.21}
-\contentsline {subsection}{\numberline {3.1.6}Schema lui Shoup \IeC {\^\i }mpotriva adversarilor activi}{27}{subsection.3.1.6}
-\contentsline {subsubsection}{Generarea cheilor}{27}{section*.22}
-\contentsline {subsubsection}{Informa\IeC {\textcommabelow t}ia dezv\IeC {\u a}luit\IeC {\u a} prin verificare cheilor}{28}{section*.23}
-\contentsline {subsubsection}{Protocol pentru semn\IeC {\u a}tur\IeC {\u a}}{29}{section*.24}
-\contentsline {subsection}{\numberline {3.1.7}\IeC {\^I}mbun\IeC {\u a}t\IeC {\u a}\IeC {\textcommabelow t}irea schemei lui Shoup \IeC {\^\i }mpotriva adversarillor activi}{29}{subsection.3.1.7}
-\contentsline {subsubsection}{Dovada corectitudinii}{29}{section*.25}
-\contentsline {subsection}{\numberline {3.1.8}Concluzia}{29}{subsection.3.1.8}
-\contentsline {section}{\numberline {3.2}Bazele matematice}{30}{section.3.2}
-\contentsline {subsection}{\numberline {3.2.1}Comportamentul asimptotic}{30}{subsection.3.2.1}
-\contentsline {subsubsection}{Analiza unui algoritm}{30}{section*.26}
-\contentsline {subsubsection}{Viteza unui algoritm}{30}{section*.27}
-\contentsline {subsubsection}{Notatia $O$}{30}{section*.28}
-\contentsline {subsection}{\numberline {3.2.2}Aritmetica numerelor \IeC {\^\i }ntregi}{30}{subsection.3.2.2}
-\contentsline {subsubsection}{Opera\IeC {\textcommabelow t}iile de baz\IeC {\u a}}{30}{section*.29}
-\contentsline {subsubsection}{Reprezentarea Radix}{31}{section*.30}
-\contentsline {subsection}{\numberline {3.2.3}Aritmetica modular\IeC {\u a}}{31}{subsection.3.2.3}
-\contentsline {subsubsection}{Reducerea modular\IeC {\u a}}{31}{section*.31}
-\contentsline {subsubsection}{Inversiunea}{31}{section*.32}
-\contentsline {section}{\numberline {3.3}RSA Clasic}{31}{section.3.3}
-\contentsline {subsection}{\numberline {3.3.1}Exponen\IeC {\textcommabelow t}iere Rapid\IeC {\u a}}{31}{subsection.3.3.1}
-\contentsline {subsubsection}{Descrierea algoritmului left-to-right}{31}{section*.33}
-\contentsline {subsubsection}{Corectitudinea algoritmului left-to-right}{32}{section*.34}
-\contentsline {subsection}{\numberline {3.3.2}Teorema chinez\IeC {\u a} a resturilor}{32}{subsection.3.3.2}
-\contentsline {subsubsection}{Descrierea}{32}{section*.35}
-\contentsline {subsubsection}{Corectitudinea teoremei}{33}{section*.36}
-\contentsline {subsection}{\numberline {3.3.3}Algoritmul lui Garner}{33}{subsection.3.3.3}
-\contentsline {subsubsection}{Descrierea algoritmului}{33}{section*.37}
-\contentsline {subsubsection}{Corectitudinea algoritmului}{34}{section*.38}
-\contentsline {subsection}{\numberline {3.3.4}Implement\IeC {\u a}ri rapide RSA}{34}{subsection.3.3.4}
-\contentsline {subsubsection}{Generarea cheilor, criptare \IeC {\textcommabelow s}i decriptare}{34}{section*.39}
-\contentsline {section}{\numberline {3.4}RSA Rebalansat}{35}{section.3.4}
-\contentsline {subsection}{\numberline {3.4.1}Generarea cheilor, criptare \IeC {\textcommabelow s}i decriptare}{35}{subsection.3.4.1}
-\contentsline {subsubsection}{Generarea cheilor}{35}{section*.40}
-\contentsline {subsubsection}{Criptarea}{36}{section*.41}
-\contentsline {subsubsection}{Decriptarea}{36}{section*.42}
-\contentsline {section}{\numberline {3.5}Multi-Prime RSA}{36}{section.3.5}
-\contentsline {subsection}{\numberline {3.5.1}Algoritmul Garner cand $N=PQR$}{36}{subsection.3.5.1}
-\contentsline {subsubsection}{Descrierea algoritmului}{36}{section*.43}
-\contentsline {subsubsection}{Corectitudinea algoritmului}{36}{section*.44}
-\contentsline {subsection}{\numberline {3.5.2}Multi-Prime RSA modulo $N=PQR$}{37}{subsection.3.5.2}
-\contentsline {subsubsection}{Descrierea cryptosistemului}{37}{section*.45}
-\contentsline {subsection}{\numberline {3.5.3}Generalizarea algoritmului Garner}{37}{subsection.3.5.3}
-\contentsline {subsubsection}{Descrierea algoritmului \IeC {\^\i }n forma general\IeC {\u a}}{37}{section*.46}
-\contentsline {section}{\numberline {3.6}Multi-Power RSA}{38}{section.3.6}
-\contentsline {subsection}{\numberline {3.6.1}Hensel lifting}{38}{subsection.3.6.1}
-\contentsline {subsubsection}{Ideea de baza la Hensel lifting}{38}{section*.47}
-\contentsline {subsubsection}{Justificarea matematic\IeC {\u a}}{38}{section*.48}
-\contentsline {subsection}{\numberline {3.6.2}Multi-Power RSA modulo $N=P^2Q$}{39}{subsection.3.6.2}
-\contentsline {subsubsection}{Algoritmul}{39}{section*.49}
-\contentsline {subsection}{\numberline {3.6.3}Generalizarea ideii}{39}{subsection.3.6.3}
-\contentsline {subsubsection}{Ideea de baz\IeC {\u a}}{39}{section*.50}
-\contentsline {subsection}{\numberline {3.6.4}Multi-Power RSA modulo $N=P^bQ$}{40}{subsection.3.6.4}
-\contentsline {subsubsection}{Algoritmul}{40}{section*.51}
-\contentsline {section}{\numberline {3.7}Batch RSA}{40}{section.3.7}
-\contentsline {subsection}{\numberline {3.7.1}Ideea de baz\IeC {\u a}}{41}{subsection.3.7.1}
-\contentsline {subsubsection}{Nota\IeC {\textcommabelow t}ie}{41}{section*.52}
-\contentsline {subsubsection}{Formule de baz\IeC {\u a} pentru decriptare}{41}{section*.53}
-\contentsline {subsubsection}{Decriptarea a dou\IeC {\u a} texte}{41}{section*.54}
-\contentsline {subsection}{\numberline {3.7.2}Optimiz\IeC {\u a}ri}{41}{subsection.3.7.2}
-\contentsline {subsubsection}{Teorema chinez\IeC {\u a} a resturilor}{41}{section*.55}
-\contentsline {subsubsection}{Calcului unui singur invers modular}{42}{section*.56}
-\contentsline {subsection}{\numberline {3.7.3}\IeC {\^I}mbun\IeC {\u a}t\IeC {\u a}\IeC {\textcommabelow t}irea batch RSA: Tehnica lui Mongomery}{42}{subsection.3.7.3}
-\contentsline {subsubsection}{Descrierea algoritmului}{42}{section*.57}
-\contentsline {subsubsection}{Corectitudinea algoritmului}{42}{section*.58}
-\contentsline {subsection}{\numberline {3.7.4}\IeC {\^I}mbun\IeC {\u a}t\IeC {\u a}\IeC {\textcommabelow t}irea RSA folosind tehnica lui Shamir}{43}{subsection.3.7.4}
-\contentsline {subsubsection}{Descrierea algoritmului}{43}{section*.59}
-\contentsline {subsubsection}{Explica\IeC {\textcommabelow t}ie}{43}{section*.60}
+\contentsline {subsection}{\numberline {2.2.2}Multi-Prime RSA}{20}{subsection.2.2.2}
+\contentsline {subsubsection}{Spargerea Multi-Prime RSA}{21}{section*.10}
+\contentsline {chapter}{\numberline {3}Variante \IeC {\textcommabelow s}i Optimiz\IeC {\u a}ri RSA}{22}{chapter.3}
+\contentsline {section}{\numberline {3.1}RSA varianta distribuit\IeC {\u a} (Schema lui Shoup)}{22}{section.3.1}
+\contentsline {subsection}{\numberline {3.1.1}Introducere}{22}{subsection.3.1.1}
+\contentsline {subsection}{\numberline {3.1.2}Dovada robuste\IeC {\textcommabelow t}ii \IeC {\textcommabelow s}i folosirea numerelor prime sigure}{24}{subsection.3.1.2}
+\contentsline {subsubsection}{Grupuri}{24}{section*.11}
+\contentsline {subsection}{\numberline {3.1.3}Problema}{24}{subsection.3.1.3}
+\contentsline {subsection}{\numberline {3.1.4}Modele de securitate}{25}{subsection.3.1.4}
+\contentsline {subsubsection}{Re\IeC {\textcommabelow t}eaua}{25}{section*.12}
+\contentsline {subsubsection}{Adversarul}{25}{section*.13}
+\contentsline {subsubsection}{Defini\IeC {\textcommabelow t}ii formale}{25}{section*.14}
+\contentsline {subsubsection}{Juc\IeC {\u a}torul \IeC {\textcommabelow s}i adversarul}{26}{section*.15}
+\contentsline {subsubsection}{Propriet\IeC {\u a}\IeC {\textcommabelow t}i}{26}{section*.16}
+\contentsline {subsubsection}{Generarea cheii \IeC {\textcommabelow s}i protocolul de semnare}{26}{section*.17}
+\contentsline {subsection}{\numberline {3.1.5}Un nou mod de a genera modulul RSA (schema Boneh-Franklin \cite {boneh})}{27}{subsection.3.1.5}
+\contentsline {subsubsection}{Un nou modul distribuit}{27}{section*.18}
+\contentsline {subsubsection}{Calculul cmmdc a unei valori publice \IeC {\textcommabelow s}i a unei valori secrete partajate}{27}{section*.19}
+\contentsline {subsubsection}{\IeC {\^I}mbun\IeC {\u a}t\IeC {\u a}\IeC {\textcommabelow t}irea gener\IeC {\u a}rii numerelor f\IeC {\u a}r\IeC {\u a} factori mici}{28}{section*.20}
+\contentsline {subsubsection}{Generarea lui $N$ \IeC {\^\i }ntruc\IeC {\^a}t $Q_N$ este ciclic}{28}{section*.21}
+\contentsline {subsubsection}{Metoda distribuit\IeC {\u a} de generare de chei \IeC {\^\i }n protocolul lui Shoup}{29}{section*.22}
+\contentsline {subsection}{\numberline {3.1.6}Schema lui Shoup \IeC {\^\i }mpotriva adversarilor activi}{29}{subsection.3.1.6}
+\contentsline {subsubsection}{Generarea cheilor}{29}{section*.23}
+\contentsline {subsubsection}{Informa\IeC {\textcommabelow t}ia dezv\IeC {\u a}luit\IeC {\u a} prin verificare cheilor}{30}{section*.24}
+\contentsline {subsubsection}{Protocol pentru semn\IeC {\u a}tur\IeC {\u a}}{31}{section*.25}
+\contentsline {subsection}{\numberline {3.1.7}\IeC {\^I}mbun\IeC {\u a}t\IeC {\u a}\IeC {\textcommabelow t}irea schemei lui Shoup \IeC {\^\i }mpotriva adversarillor activi}{31}{subsection.3.1.7}
+\contentsline {subsubsection}{Dovada corectitudinii}{31}{section*.26}
+\contentsline {subsection}{\numberline {3.1.8}Concluzia}{31}{subsection.3.1.8}
+\contentsline {section}{\numberline {3.2}Bazele matematice}{32}{section.3.2}
+\contentsline {subsection}{\numberline {3.2.1}Comportamentul asimptotic}{32}{subsection.3.2.1}
+\contentsline {subsubsection}{Analiza unui algoritm}{32}{section*.27}
+\contentsline {subsubsection}{Viteza unui algoritm}{32}{section*.28}
+\contentsline {subsubsection}{Notatia $O$}{32}{section*.29}
+\contentsline {subsection}{\numberline {3.2.2}Aritmetica numerelor \IeC {\^\i }ntregi}{32}{subsection.3.2.2}
+\contentsline {subsubsection}{Opera\IeC {\textcommabelow t}iile de baz\IeC {\u a}}{32}{section*.30}
+\contentsline {subsubsection}{Reprezentarea Radix}{33}{section*.31}
+\contentsline {subsection}{\numberline {3.2.3}Aritmetica modular\IeC {\u a}}{33}{subsection.3.2.3}
+\contentsline {subsubsection}{Reducerea modular\IeC {\u a}}{33}{section*.32}
+\contentsline {subsubsection}{Inversiunea}{33}{section*.33}
+\contentsline {section}{\numberline {3.3}RSA Clasic}{33}{section.3.3}
+\contentsline {subsection}{\numberline {3.3.1}Exponen\IeC {\textcommabelow t}iere Rapid\IeC {\u a}}{33}{subsection.3.3.1}
+\contentsline {subsubsection}{Descrierea algoritmului left-to-right}{33}{section*.34}
+\contentsline {subsubsection}{Corectitudinea algoritmului left-to-right}{34}{section*.35}
+\contentsline {subsection}{\numberline {3.3.2}Teorema chinez\IeC {\u a} a resturilor}{34}{subsection.3.3.2}
+\contentsline {subsubsection}{Descrierea}{34}{section*.36}
+\contentsline {subsubsection}{Corectitudinea teoremei}{35}{section*.37}
+\contentsline {subsection}{\numberline {3.3.3}Algoritmul lui Garner}{35}{subsection.3.3.3}
+\contentsline {subsubsection}{Descrierea algoritmului}{35}{section*.38}
+\contentsline {subsubsection}{Corectitudinea algoritmului}{36}{section*.39}
+\contentsline {subsection}{\numberline {3.3.4}Implement\IeC {\u a}ri rapide RSA}{36}{subsection.3.3.4}
+\contentsline {subsubsection}{Generarea cheilor, criptare \IeC {\textcommabelow s}i decriptare}{36}{section*.40}
+\contentsline {section}{\numberline {3.4}RSA Rebalansat}{37}{section.3.4}
+\contentsline {subsection}{\numberline {3.4.1}Generarea cheilor, criptare \IeC {\textcommabelow s}i decriptare}{37}{subsection.3.4.1}
+\contentsline {subsubsection}{Generarea cheilor}{37}{section*.41}
+\contentsline {subsubsection}{Criptarea}{38}{section*.42}
+\contentsline {subsubsection}{Decriptarea}{38}{section*.43}
+\contentsline {section}{\numberline {3.5}Multi-Prime RSA}{38}{section.3.5}
+\contentsline {subsection}{\numberline {3.5.1}Algoritmul Garner cand $N=PQR$}{38}{subsection.3.5.1}
+\contentsline {subsubsection}{Descrierea algoritmului}{38}{section*.44}
+\contentsline {subsubsection}{Corectitudinea algoritmului}{38}{section*.45}
+\contentsline {subsection}{\numberline {3.5.2}Multi-Prime RSA modulo $N=PQR$}{39}{subsection.3.5.2}
+\contentsline {subsubsection}{Descrierea cryptosistemului}{39}{section*.46}
+\contentsline {subsection}{\numberline {3.5.3}Generalizarea algoritmului Garner}{39}{subsection.3.5.3}
+\contentsline {subsubsection}{Descrierea algoritmului \IeC {\^\i }n forma general\IeC {\u a}}{39}{section*.47}
+\contentsline {section}{\numberline {3.6}Multi-Power RSA}{40}{section.3.6}
+\contentsline {subsection}{\numberline {3.6.1}Hensel lifting}{40}{subsection.3.6.1}
+\contentsline {subsubsection}{Ideea de baza la Hensel lifting}{40}{section*.48}
+\contentsline {subsubsection}{Justificarea matematic\IeC {\u a}}{40}{section*.49}
+\contentsline {subsection}{\numberline {3.6.2}Multi-Power RSA modulo $N=P^2Q$}{41}{subsection.3.6.2}
+\contentsline {subsubsection}{Algoritmul}{41}{section*.50}
+\contentsline {subsection}{\numberline {3.6.3}Generalizarea ideii}{41}{subsection.3.6.3}
+\contentsline {subsubsection}{Ideea de baz\IeC {\u a}}{41}{section*.51}
+\contentsline {subsection}{\numberline {3.6.4}Multi-Power RSA modulo $N=P^bQ$}{42}{subsection.3.6.4}
+\contentsline {subsubsection}{Algoritmul}{42}{section*.52}
+\contentsline {section}{\numberline {3.7}Batch RSA}{42}{section.3.7}
+\contentsline {subsection}{\numberline {3.7.1}Ideea de baz\IeC {\u a}}{43}{subsection.3.7.1}
+\contentsline {subsubsection}{Nota\IeC {\textcommabelow t}ie}{43}{section*.53}
+\contentsline {subsubsection}{Formule de baz\IeC {\u a} pentru decriptare}{43}{section*.54}
+\contentsline {subsubsection}{Decriptarea a dou\IeC {\u a} texte}{43}{section*.55}
+\contentsline {subsection}{\numberline {3.7.2}Optimiz\IeC {\u a}ri}{43}{subsection.3.7.2}
+\contentsline {subsubsection}{Teorema chinez\IeC {\u a} a resturilor}{43}{section*.56}
+\contentsline {subsubsection}{Calcului unui singur invers modular}{44}{section*.57}
+\contentsline {subsection}{\numberline {3.7.3}\IeC {\^I}mbun\IeC {\u a}t\IeC {\u a}\IeC {\textcommabelow t}irea batch RSA: Tehnica lui Mongomery}{44}{subsection.3.7.3}
+\contentsline {subsubsection}{Descrierea algoritmului}{44}{section*.58}
+\contentsline {subsubsection}{Corectitudinea algoritmului}{44}{section*.59}
+\contentsline {subsection}{\numberline {3.7.4}\IeC {\^I}mbun\IeC {\u a}t\IeC {\u a}\IeC {\textcommabelow t}irea RSA folosind tehnica lui Shamir}{45}{subsection.3.7.4}
+\contentsline {subsubsection}{Descrierea algoritmului}{45}{section*.60}
+\contentsline {subsubsection}{Explica\IeC {\textcommabelow t}ie}{45}{section*.61}
