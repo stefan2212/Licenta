@@ -130,10 +130,12 @@ Dacă exponentul de decriptare (cel secret) este mic, pe lângă faptul că mult
 \subsubsection{Atacul fracțiilor continue: Atacul Wiener}
 Primul atac semnificativ asupra exponenților privați mici. Dată doar cheia publică RSA $<N,e>$, atacul factorizează modulul folosind doar informații obținute din convergența fracției continue $e/N$. Atacul Wiener folosește următoarea teoremă:
 \textbf{Teorema} Fie $N=PQ$ modulul RSA cu $e$ cheia de criptare publică și $d$ cheia privată definită ca și $\lambda(N)$. Fie $k$ să fie un număr întreg care satisface următoarele:
-$$ ed=1+k \lambda(N)$$
-$$ g=cmmdc(P-1,Q-1) $$
-$$g_0=\frac{g}{cmmdc(g,k)}$$
-$$k_0=\frac{k}{cmmdc(k,g)}$$
+\begin{align*}
+ed&=1+k \lambda(N) \\
+g&=cmmdc(P-1,Q-1) \\
+g_0&=\frac{g}{cmmdc(g,k)} \\
+k_0&=\frac{k}{cmmdc(k,g)}
+\end{align*}
 Dacă $d$ satisface:
 $$ d< \frac{PQ}{2(P+Q-q)g_0k_0} = \frac{N}{2(P+Q-1)g_0k_0}$$
 Atunci $N$ poate fi factorizat în timpul $\log(N)$ \\
@@ -166,48 +168,75 @@ $$ \left| \frac{e}{N} - \frac{k_0}{dg_0} \right| < \frac{1}{2(dg_0)^2}$$
 Știm din teorema fracțiilor continue, că $\frac{k_0}{dg_0}$ este una din convergențe din fracția continuă $\frac{e}{N}$. Dacă avem $c_i = \frac{a_i}{b_i}$ să fie convergența $i$ a lui $\frac{e}{N}$ atunci știm că $\frac{k_0}{dg_0} = \frac{a_j}{b_j}$ pentru un anumit $j$. \\
 \textbf{Fracții continue} \\
 Fie $a$ și $b$ numere naturale, $b \neq 0$, folosind algoritmul lui Euclid obținem:
-$$a= q_1 *b+r_1, \ \ \ 0<r_1<b$$
-$$b=q_2*r_1+r_2, \ \ \ 0<r_2<r_1$$
-$$r_1= q_3*r_2+r_3, \ \ \ 0<r_3<r_2$$
-$$ ...$$
-$$ r_{k-2} = q_k *r_{k-1} +r_k , \ \ \ 0<r_k<r_{k-1}$$
-$$ r_{k-1} = q_{k+1} * r_k$$
+\begin{align*}
+a&= q_1 *b+r_1, \ \ \ 0<r_1<b \\
+b&=q_2*r_1+r_2, \ \ \ 0<r_2<r_1 \\
+r_1&= q_3*r_2+r_3, \ \ \ 0<r_3<r_2 \\
+&\dots \\
+r_{k-2} &= q_k *r_{k-1} +r_k , \ \ \ 0<r_k<r_{k-1} \\
+r_{k-1} &= q_{k+1} * r_k \\
+\end{align*}
+
 Frația $\frac{a}{b} $ poate fi scrisă după cum urmează:
-$$ \frac{a}{b} = \frac{q_1b+r_1}{b} $$
-$$ = q_1 + \frac{1}{\frac{b}{r_1}}$$
-$$ = q_1 + \frac{1}{q_2 + \frac{1}{ \frac{b}{r_1}}} $$
-$$ ...$$
-$$ = q_1 + \frac{1}{q_2 + \frac{1}{\vdotswithin{q_k} q_k + \frac{1}{q_{k+1}}}} $$
+\begin{align*}
+ \frac{a}{b} &= \frac{q_1b+r_1}{b} \\
+ &= q_1 + \frac{1}{\frac{b}{r_1}}\\
+ &= q_1 + \frac{1}{q_2 + \frac{1}{ \frac{b}{r_1}}} \\
+&\dots \\
+ &= q_1 + \frac{1}{q_2 + \frac{1}{\vdotswithin{q_k} q_k + \frac{1}{q_{k+1}}}} \\
+\end{align*}
+
 Ultimul termen va fi referit ca fracția continuă asociată fracției $\frac{a}{b}$ și va finotat prin $[ q_1,q_2,...,q_{k+1}]$. Expresiile $[q_1,q_2,...,q_i]$ , $1 \leqslant i \leqslant k+1$, vor fi numite convergențele fracției continue $[q_1,q_2,...,q_{k+1}]$.\\
 Considerăm numerele naturale $\alpha_{i}$ și $\beta_{i}$ date prinȘ
-$$ \alpha_1 =q_1, \ \ \ \beta_1=1$$
-$$ \alpha_2 = q_1 * q_2 + 1, \ \ \ \beta_2=q_2$$
-$$ \alpha_i = q_i * \alpha_{i-1} + \alpha_{i-2}, \ \ \ \beta_i = q_i * \beta_{i-1} + \beta_{i-2}$$
+\begin{align*}
+ \alpha_1 &=q_1,   &\beta_1&=1 \\
+ \alpha_2 &= q_1 * q_2 + 1,   &\beta_2&=q_2 \\
+ \alpha_i &= q_i * \alpha_{i-1} + \alpha_{i-2},    &\beta_i &= q_i * \beta_{i-1} + \beta_{i-2} \\
+\end{align*}
+
 Pentru orice $3 \leqslant i \leqslant k+1$ \\
-Atunci are loc relația 
-$$[q_1,q_2,...,q_i] = \frac{\alpha_i}{\beta_i}$$
-$$(\alpha_i,\beta_i)=1$$
+Atunci are loc relația
+\begin{align*}
+[q_1,q_2,\dots,q_i] &= \frac{\alpha_i}{\beta_i}\\
+(\alpha_i,\beta_i)&=1
+\end{align*} 
+
 Pentru orice $1 \leqslant i \leqslant k+1$ \\
 \textbf{Exemplu} Pentru $a=4$,$b=11$ obținem:\\
-$$4=0*11+4$$
-$$11=2*4+3$$
-$$4=1*3+1$$
-$$3=3*1$$
+\begin{align*}
+4&=0*11+4\\
+11&=2*4+3\\
+4&=1*3+1\\
+3&=3*1
+\end{align*}
+
 și $[0,2,1,3]= 0 + \frac{1}{2+\frac{1}{1+\frac{1}{3}}}$,$[0]=\frac{0}{1},[0,2]=\frac{1}{2}$ și $[0,2,1]=\frac{1}{3}$  \\
 Acum să s-a înțeles conceptul de fracție continuă, vom încerca să scriem  ecuația $ed=1+k\lambda(N)$ sub o altă formă folosindu-ne de faptul că $\lambda(N)= \frac{N-s}{g}$
-$$ ed = 1+k * \frac{N-s}{g} = 1 + \frac{kN-ks}{g}$$
-$$ = 1+ \frac{k}{g}(N-s) = 1 + \frac{k}{g} (PQ - P - Q +1)$$
-$$ = 1+\frac{k}{g}\phi(N)$$
+\begin{align*}
+ ed &= 1+k * \frac{N-s}{g} \\ 
+ &= 1 + \frac{kN-ks}{g} \\
+ &= 1+ \frac{k}{g}(N-s) \\ 
+ &= 1 + \frac{k}{g} (PQ - P - Q +1)\\
+ &= 1+\frac{k}{g}\phi(N)
+\end{align*}
+
 Am demonstrat și faptul că $\frac{k_0}{g_0} = \frac{k}{g}$. Deci ecuația finală va fi:
 $$ ed=1+\frac{k_0}{g_0}\phi(N)$$
 De aici putem observa următorul lucru:
-$$\phi(N) = (ed - 1 )\frac{g_0}{k_0}=ed \frac{g_0}{k_0} - \frac{g_0}{k_0}$$
-$$ = e \left(  \frac{dg_0}{k_0}  \right) - \frac{g_0}{k_0} = e \left( \frac{b_j}{a_j}  \right) - \frac{g_0}{k_0}$$
+\begin{align*}
+\phi(N) &= (ed - 1 )\frac{g_0}{k_0}\\
+&=ed \frac{g_0}{k_0} - \frac{g_0}{k_0} \\
+ &= e \left(  \frac{dg_0}{k_0}  \right) - \frac{g_0}{k_0}\\ 
+ &= e \left( \frac{b_j}{a_j}  \right) - \frac{g_0}{k_0} \\
+\end{align*}
+
 Așadar, putem calcula $\phi(N)$ dacă cunoaștem convergența corectă $c+j$ și putem afla valorile $\frac{g_0}{k_0}$. Știm că putem calcula $\phi(N)$ în momentul în care putem să-l factorizăm pe $N$ deoarece $\phi(N)=(P-1)(Q-1)$ și $N=PQ$. \\
 Pentru ușurința în calcul, vom presupune că $g=2$ și $k$ este un număr suficient de mic, deci $\frac{k_0}{g_0} \approx k$, atunci $ed = 1+k\phi(N)$ de unde rezultă:
-$$ ed-k\phi(N)=1$$
-$$ \frac{e}{\phi(N)} - \frac{k}{d} = \frac{1}{d\phi(N)}$$
-$$ \frac{e}{N} \approx \frac{k}{d} $$ 
+\begin{align*}
+ ed-k\phi(N)&=1\\
+ \frac{e}{\phi(N)} - \frac{k}{d} &= \frac{1}{d\phi(N)}\\ \frac{e}{N} &\approx \frac{k}{d} \\
+\end{align*}
+ 
 Deoarece $PQ - (P+Q)+1 \approx N$
 Pentru găsirea lui $\frac{e}{N}$ trebuie să găsim fracția $\frac{k}{d}$. Trebuie să ținem cont de următoare observații:
 \begin{enumerate}
@@ -218,12 +247,18 @@ Pentru găsirea lui $\frac{e}{N}$ trebuie să găsim fracția $\frac{k}{d}$. Tre
 \end{enumerate}
 \textbf{Ecuația pătratică} \\
 Din
-$$ \phi(N)=N-(P+Q)+1$$
-$$ P+Q = N - \phi(N) +1$$
+\begin{align*}
+ \phi(N)&=N-(P+Q)+1 \\
+ P+Q &= N - \phi(N) +1 
+\end{align*}
+
 Considerăm ecuația de gradul 2 $(x-P)(x-Q)$ cu rădăcinile $P$ și $Q$. Atunci vom avea:
-$$(x-P)(x-Q)=0$$
-$$x^2 - (P+Q)x + PQ = 0$$
-$$x^2 - (N- \phi(N)+1)x + N =0$$
+\begin{align*}
+(x-P)(x-Q)&=0\\
+x^2 - (P+Q)x + PQ &= 0\\
+x^2 - (N- \phi(N)+1)x + N &=0
+\end{align*}
+
 Dacă valuarea lui $\phi(N)$ este corectă, atunci rădăcinile ecuației de gradul 2 vor fi numere întregi, numerele fiind chiar factorii lui $N$. \\
 
 \textbf{Exemplu} vom avea modului RSA $N=64741$ și exponentul public $e=42667$. Exponentul de decriptare fiind $d$.\\
@@ -238,9 +273,11 @@ $$ \frac{22074}{20593} = 1 \ rest \ 1481 \Rightarrow \frac{k}{d} \approx 0 + \fr
 De aici ne rezultă $k=2,d=3$, acesta fiind un rezultat posibil. Acum trebuie să verificăm dacă $\phi(N)$ este un număr întreg:
 $$\phi(N)=\frac{ed-1}{k}=\frac{42667 * 3 -1}{2}=64000$$
 Am trecut de ambele condiții, acum trebuie să vedem dacă ecuația de gradul 2 $x^2 - (N- \phi(N) +1)x +N=0$ are soluții întregi.
-$$x^2 - (N- \phi(N)+1)x+N=0$$
-$$x^2 - (64741 - 64000 +1)x + 64741=0$$
-$$x^2 - 742x + 64741=0$$
+\begin{align*}
+x^2 - (N- \phi(N)+1)x+N&=0\\
+x^2 - (64741 - 64000 +1)x + 64741&=0\\
+x^2 - 742x + 64741&=0
+\end{align*}
 $$ \Delta = b^2 - 4ac = 742^2 + 4*64741 = 550564 - 258964 = 291600 = 540^{2} $$
 $$x_1 = \frac{-b + \sqrt{\Delta}}{2a} = \frac{742 + 540}{2} = 641$$ 
 $$x_2 = \frac{-b - \sqrt{\Delta}}{2a} = \frac{742 - 540}{2} = 101$$
@@ -267,11 +304,14 @@ $$ |Q - Q^{'} | = \left| \frac{N}{P} - \frac{N}{P^{'}} \right| = \left|\frac{N(P
 Folosind aceste relații, vom putea calcula și o aproximare a lui $N$ notată $N^{'}$ care corespune următoarei formule:
 $$ N^{'}= N-P^{'} - Q^{'} +1 $$
 Iar de aici putem scoate o aproximare și pentru $s^{'}$
-$$ \left| \phi(N) - N^{'} \right| = | (P-1)(Q-1) - (N-P^{'} - Q^{'} +1) | $$
-$$ = |PQ - P - Q + 1 - N + P^{'} + Q^{'} -1 | $$
-$$|P-P^{'} + Q - Q^{'}| $$
-Știm că $ |P-P^{'}| < N^{\gamma} | $ și $|Q-Q^{'}| < 4N^{\gamma}$ rezultă
-$$ | P-P^{'} + Q -Q^{'}| < 5N^{\gamma} $$ 
+\begin{align*}
+ \left| \phi(N) - N^{'} \right| &= \left| (P-1)(Q-1) - (N-P^{'} - Q^{'} +1) \right| \\
+ &= \left|PQ - P - Q + 1 - N + P^{'} + Q^{'} -1 \right| \\
+&=\left|P-P^{'} + Q - Q^{'}\right| 
+\end{align*}
+
+Știm că $ \left|P-P^{'}\right| < N^{\gamma}  $ și $\left|Q-Q^{'}\right| < 4N^{\gamma}$ rezultă
+$$ \left| P-P^{'} + Q -Q^{'}\right| < 5N^{\gamma} $$ 
 Având toate aceste date, ecuația finală va fi:
 $$ ed=1+k\phi(N) =1 + k(N^{'} -s^{'})$$
 Folosind această relația, putem dezvolta următorul atac de tip exponent de decriptare mic. În realizarea acestui atac, vom folosi următoarea teoremă: \\
@@ -279,7 +319,7 @@ Folosind această relația, putem dezvolta următorul atac de tip exponent de de
 $$d<\frac{N^{'}}{2s^{'}g_0k_0}$$
 Totuși, această primă relație este posibil să nu fie suficientă pentru a putea dezvolta atacul, și vom avea nevoie de o inecuația care să-l conțină și pe $N^{\gamma}$.
 $$ N^{'} = N - P^{'} - Q^{'} + 1 \Rightarrow N^{'}  < N$$
-$$ s^{'} = |P-P^{'} + Q - Q^{'}| < 5N^{\gamma}$$
+$$ s^{'} = \left|P-P^{'} + Q - Q^{'}\right| < 5N^{\gamma}$$
 Împărțind aceste două relații vom obține:
 $$\frac{N^{'}}{s^{'}} < \frac{N}{5N^{\gamma}} \Rightarrow \frac{N^{'}}{s^{'}} < \frac{N^{1-\gamma}}{5} $$
 Înmulțind îm ambele părțti cu $\frac{1}{2g_0k_0}$ obținem
@@ -290,22 +330,19 @@ Folosind această inecuație, îl vom putea factoriza pe $N$ în timp polinomial
 De asemenea, dacă vom considera un parametru $\deg$ astfel încât $d=N^{\delta}$, atunci atacul se va simplifica la 
 \[
 \delta \leqslant
-\left\{ 
-\begin{array}{c}
-\frac{1}{4} - \frac{\alpha}{2} - \epsilon, \ \ \ \lambda=1/2  \\
-1 - \frac{\alpha}{2} - \frac{\lambda}{2} - \epsilon, \ \ \ \lambda<1/2  
-\end{array}
-\right. 
+\begin{cases}
+\frac{1}{4} - \frac{\alpha}{2} - \epsilon,  &\lambda=1/2  \\
+1 - \frac{\alpha}{2} - \frac{\lambda}{2} - \epsilon,  &\lambda<1/2
+\end{cases}
 \]
 Pentru un exponent arbitrat fixat va rezulta:
+
 \[
 \delta \leqslant
-\left\{ 
-\begin{array}{c}
-\frac{3}{4} -  \epsilon, \ \ \ \lambda=1/2 , \ \alpha=1  \\
-\frac{1}{2} - \frac{\lambda}{2} - \epsilon, \ \ \ \lambda<1/2, \ \alpha=1 
-\end{array}
-\right. 
+\begin{cases}
+\frac{3}{4} -  \epsilon,  &\lambda=1/2 , \ \alpha=1  \\
+\frac{1}{2} - \frac{\lambda}{2} - \epsilon,  &\lambda<1/2, \ \alpha=1
+\end{cases}
 \]
 \\
 Toate atacurile de tip "latice-bassed" bazate pe exponenți de decriptare mici, au fost îmbunătățite de către Sarkar,Maitra și Sarka \cite{sarkar}. Pentru a generaliza atacul Blomer și May inpsirat din \cite{sarkar}, vom considera: \\
@@ -342,9 +379,12 @@ Calculând exponenții CRT este suficient pentru a sparge această variantă de 
 $$ed_P = 1 + k_P(P-1) \Rightarrow ed_P -1 = k_P(P-1)$$
 $$ed_Q = 1 + k_Q(Q-1) \Rightarrow ed_Q -1 =k_Q(Q-1)$$
 Înmulțind aceste două relații obținem:
-$$ (ed_P -1 ) (ed_Q -1) = [k_P(P-1)][k_Q(Q-1)] \Rightarrow $$
-$$ \Rightarrow e^2e_Pd_Q - ed_P - ed_Q +1 = k_P(P-1)k_Q(Q-1) \Rightarrow$$
-$$ \Rightarrow e(ed_Pd_Q - d_P -d_Q)+1 = k_P(P-1)k_Q(Q-1)$$
+\begin{align*}
+ (ed_P -1 ) (ed_Q -1) &= [k_P(P-1)][k_Q(Q-1)] \Rightarrow \\ 
+ e^2e_Pd_Q - ed_P - ed_Q +1 &= k_P(P-1)k_Q(Q-1) \Rightarrow \\
+ e(ed_Pd_Q - d_P -d_Q)+1 &= k_P(P-1)k_Q(Q-1)
+\end{align*}
+
 Unde, fiecare membru din partea stângă este cunoscut.  Așadar, putem calcula un multiplu de $\phi(N)$ ce ne va permite într-un mod probabilistic să factorizăm modulul folosind Miller \cite{miller}.
 Cunoscând doar un singur exponent CRT, existp totuși o șansă ca modulul $N$ să poate fi factorizat.\\
 Să presupunem că $d_P$ este termenul cunoscut. Dacă $d$ cheia privată este mai mică decât fiecare număr prim, astfel încât $d = d_P = d_Q$ atunci $ed_P-1$ este un multiplu de $\lambda(N)$ și modulul poate fi factorizat folosind Miller \cite{miller}. Dacă exponentul privat $d$ este mai mare decât fiecare dintre numerele prime, atunci vom obsera folosind $ed_P = 1 + k_P(P-1)$ că $m^{ed_P} \equiv m \ mod \ P$, pentru orice plaintext $m \in \mathbb{Z}_{P}^{*}$, atunci:
@@ -371,12 +411,14 @@ Cu $k$ cunoscut, Heninger și Shacham demonstrează că se pot afla foarte ușor
 Vom observa că dacă înmulțim ultimele două ecuații vom obție $ 1 \equiv k_Pk_Q(P-1)(Q-1) \ mod \ e$. Comparând rezultatul cu prima ecuația vom constata următorul lucru:
 $$ k \equiv -k_Pk_Q \ mod \ e $$
 Modificând prima ecuație, vom obține:
+\begin{align*}
+ -1 &\equiv k(N-P-Q+1) \ mod \ e \Rightarrow \\
+ -1 &\equiv kN - kP - kQ +k \ mod \ e \Rightarrow \\
+ -1 &\equiv kN-kP-kQ + k - k + k \ mod \ e \Rightarrow \\
+ -1 &\equiv (kN-k) - (kP - k ) - (kQ - k ) \ mod \ e \Rightarrow \\
+ -1 &\equiv k(N-1) -k(P-1) - k(Q-1) \ mod \ e 
+\end{align*}
 
-$$ -1 \equiv k(N-P-Q+1) \ mod \ e \Rightarrow $$
-$$ -1 \equiv kN - kP - kQ +k \ mod \ e \Rightarrow$$
-$$ -1 \equiv kN-kP-kQ + k - k + k \ mod \ e \Rightarrow$$
-$$ -1 \equiv (kN-k) - (kP - k ) - (kQ - k ) \ mod \ e \Rightarrow$$
-$$ -1 \equiv k(N-1) -k(P-1) - k(Q-1) \ mod \ e $$
 
 Putem substitui:
 
@@ -387,15 +429,21 @@ k &\equiv -k_P k_Q \ mod \ e \\
 \end{align*}
 
 și obținem:
-$$ -1 \equiv k(N-1) - k(P-1) - k(Q-1) \ mod \ e \Rightarrow $$
-$$ -1 \equiv k(N-1) + k_Pk_Q(P-1) + k(Q-1) \ mod \ \Rightarrow e$$
-$$ k(N-1) + k_Pk_Q(P-1) + k(Q-1) \equiv 0 \ mod \ \Rightarrow e$$
-$$ k(N-1) - \frac{1}{k_P} - k_P + 1 \equiv 0 \ mod \ e$$
+\begin{align*}
+k(N-1) - k(P-1) - k(Q-1)  &\equiv -1  \ mod \ e \Rightarrow \\ 
+k(N-1) + k_Pk_Q(P-1) + k(Q-1)  &\equiv -1  \ mod \ e \Rightarrow  \\
+ k(N-1) + k_Pk_Q(P-1) + k(Q-1) +1 &\equiv 0 \ mod \ e \Rightarrow \\
+ k(N-1) - \frac{1}{k_P} - k_P + 1 &\equiv 0 \ mod \ e
+\end{align*}
+
 
 Înmulțind această ecuație cu $k_P$, obținem următoarea ecuație de gradul 2:
-$$ k_P k (N-1) - k_{P}^{2} - k + k_P \equiv 0 \ mod \ e \Rightarrow $$
-$$ k_P(k(N-1)+1) - k_{P}^{2} - k \equiv \ mod \ e \Rightarrow $$
-$$ k_{P}^{2} - k_P(k(N-1)+1) + k \equiv \ mod \ e $$
+\begin{align*}
+ k_P k (N-1) - k_{P}^{2} - k + k_P &\equiv 0 \ mod \ e \Rightarrow \\
+ k_P(k(N-1)+1) - k_{P}^{2} - k &\equiv \ mod \ e \Rightarrow  \\
+ k_{P}^{2} - k_P(k(N-1)+1) + k &\equiv \ mod \ e 
+\end{align*}
+
 
 \subsection{Multi-Prime RSA}
 Multi-Prime RSA este o simplă extensie a criptosistemului, în care modulul $N$ este format din produsul a mai multor numere prime. \\
@@ -441,16 +489,25 @@ $$ \lambda_{i,j}^{'S} = \prod_{j^{'} \in S \setminus j}^{} \frac{i-j^{'}}{j-j^{'
 De unde rezultă:
 $$ d= \sum_{i \in S}^{} \lambda_{0,i}^{'S} d_i \ mod \ \phi(N)$$
 O problemă majoră o reprezint faptul că $\lambda_{i,j}^{'}$ nu poate fi calculat în $\mathbb{Z}_{\phi(N)}$ deoarece $\phi(N)$ poate fi par. Apoi combinatorul trebuie să calculeze:
-$$s=\prod_{i \in S}^{} S_{i}^{\lambda_{0,i}^{'S} d_i}$$
-$$ = S^{\sum_{i \in S}^{}\lambda_{0,i}^{'S} d_i} = S^d \ mod \ N$$.
+\begin{align*}
+s&=\prod_{i \in S}^{} S_{i}^{\lambda_{0,i}^{'S} d_i}\\
+ &= S^{\sum_{i \in S}^{}\lambda_{0,i}^{'S} d_i} \\
+ &= S^d \ mod \ N
+\end{align*}
+.
 Cum numerele din mulțimea $ \lambda_{i,j}^{'S}$ nu sunt numere întregi, combinatorul nu poate calcula rădăcina modulo a unui număr compus. Ideea esențială este să spunem că $\delta \times \lambda_{i,j}^{'S}$ sunt numere întregi. Atunci putem spune că 
 $$l_{0,i}^{S} = \delta \times \lambda_{i,j}^{'S} \ , \ i \in \mathbb{Z} $$
 Și:
 $$ S^{'} = x^{l_{0,i}^{S} \times * d_i } \ mod \ N   $$
 Combinatorul va calcula:
-$$S = \prod_{i \in S}^{} S_{i}^{'} = \prod_{i \in S}^{} x^{l_{0,i}^{S} \times d_i    } $$
-$$ = \prod_{i \in S}^{}  x^{\delta \times \lambda_{i,j}^{'S} \times d_i} = \prod_{i \in S}^{} 
-x^{\lambda_{0,j}^{'S} d_i} = x^d \ mod \ N  $$
+\begin{align*}
+S &= \prod_{i \in S}^{} S_{i}^{'}\\ 
+&= \prod_{i \in S}^{} x^{l_{0,i}^{S} \times d_i    } \\
+ &= \prod_{i \in S}^{}  x^{\delta \times \lambda_{i,j}^{'S} \times d_i} \\ 
+ &= \prod_{i \in S}^{} 
+x^{\lambda_{0,j}^{'S} d_i}\\ &= x^d \ mod \ N  
+\end{align*}
+
 
 Dacă semnătura nu este bună, atunci combinatorul înlătură serverele rele. După $t$ iterații, toate serverele rele sunt înlăturate din setul $S$ iar semnăturile rămase vor fi corecte. Totuși, nici această redefinire a subgrupului nu părea să fie foarte bună, și Shoup a propus o nouă tehnică. \\
 Problema a fost rezolvată folosind o lemă cunoscută pentru a extrage $e$-rădăcina lui $w$ modulo un număr compus dintr-o $e$-rădăcină a unei puteri $w$ cunoscute fără a folosi secrete. Soluția a fost să multiplicăm coeficienții Lagrange cu $\delta$ ca aceștia să devină întregi. 
@@ -690,10 +747,6 @@ Am arătat cum trebuie să evităm numerele prime sigure în schema lui Shoup î
       Pentru algoritmii noștri, noi trebuie să alegem operația cea mai critică pentru a estima viteza 
       (pentru un algoritm de sortate, acest lucru îl poate reprezenta operatorul de comparație). În cazul
       nostru, operatorul critic este înmulțirea. 
-     \subsubsection{Notatia $O$}
-      De obicei, se va folosi această notație pentru a evalua viteza unui algoritm. Notația matematică arată 
-      în felul următor \\
-      $$ f = O(g) \Leftrightarrow \frac{f(x)}{g(x)} \longrightarrow 0 , x\longrightarrow +\infty $$
       
      \subsection{Aritmetica numerelor întregi}
       \subsubsection{Operațiile de bază}
@@ -714,15 +767,21 @@ Am arătat cum trebuie să evităm numerele prime sigure în schema lui Shoup î
      \subsection{Exponențiere Rapidă}
       \subsubsection{Descrierea algoritmului left-to-right}
        Această metodă de exponențiere este bazată pe reprezentarea binară a exponentului și ne permite să calculăm un exponent cu un număr mic de înmulțimiri și pătrate. Luăm baza $M$, exponentul e și modulul $N$ ca și input, și rezultatetul exponențierrii $C = M^e \ mod \ N$ ca și output. Pe lângă faptul că avem o reprezentare arbitrară a lui $ e = \sum_{i=0} ^ {k-1} e_i * 2^i $, unde $ e_i $ este $0$ sau $1$. Putem transforma exponentul în următoarea expresie: \\
-       $$ M^e = M^{\sum_{i=0} ^ {k-1} e_i * 2^i} $$ 
-       $$ =  \prod_{i=0}^{k-1} M^{e_i*2^i} $$ 
+       \begin{align*}
+        M^e &= M^{\sum_{i=0} ^ {k-1} e_i * 2^i} \\ 
+        &=  \prod_{i=0}^{k-1} M^{e_i*2^i} 
+       \end{align*}
+        
        Folosind acea relație, vom putea calcula recursiv rezultatul: prima dată îl vom înițializa cu $1$, apoi vom merge prin reprezentarea binară a exponentului. Dacă cifra de la poziția $i$ este $1$, atunci o vom multiplica cu rezultatul $ M^{2^i}$. Dar acest lucru se poate face mai rapid: dacă inițializăm rezultatul cu 1 și mergem prin reprezentarea binară a exponentului de la stânga către d_Reapta. La fiecare pas, ridicăm la pătrat rezultatul și în înmulțim cu M dacă unitatea de pe acea poziție este $1$. La final, rezultatul va fi multiplicarea acestuia cu $ M^{2^i}$.
       \subsubsection{Corectitudinea algoritmului left-to-right}
       Vom dovedi prin inducție că acest aloritm funcționează. Să spunem că la un anumit pas $i$ avem $ C_i = \prod_{j=i}^{k-1} {M^{e_j*2^{j-i}}} mod N$. La următorul pas, vom calcula pătratul și o înmulțire dacă $ e_{i-1} = 1 $. Prin urmare: \\
-      $$ C_{i-1} = M^{e_{i-1}}*C_{i}^2 \ mod \ N$$
-      $$ = M^{e_{i-1}} * \left( \prod_{j=i}^{k-1} M^{e_j*2^{j-i}} \right)^2 \ mod \ N $$
-      $$ = M^{e_{i-1}} * \prod_{j=i}^{k-1} M^{e_j*2^{j-i+1}} \ mod \ N$$
-      $$ = \prod_{j=i-1}^{k-1} M^{e_j*2^{j+)i-1)}} \ mod \ N $$
+      \begin{align*}
+       C_{i-1} &= M^{e_{i-1}}*C_{i}^2 \ mod \ N\\
+       &= M^{e_{i-1}} * \left( \prod_{j=i}^{k-1} M^{e_j*2^{j-i}} \right)^2 \ mod \ N \\ 
+       &= M^{e_{i-1}} * \prod_{j=i}^{k-1} M^{e_j*2^{j-i+1}} \ mod \ N \\
+       &= \prod_{j=i-1}^{k-1} M^{e_j*2^{j+)i-1)}} \ mod \ N 
+      \end{align*}
+      
       
       La începutul buclei, la pasul $ k-1 $ afirmația este adevărată deoarece $ C = M^{e_{k-1}} mod N$. Prin inducție, afirmația este adevărată cât timp $ i=0$. Iar pentru $i=0$ avem: \\
       $$ C= \prod_{j=0}^{k-1} M^{e_j * 2^j}  \ mod \ N $$
@@ -762,11 +821,17 @@ Prin \textbf{Izomorfism} se înțelege o funcție între două mulțimi peste ca
 	  $$ M=M_P + V*P \ mod \ N$$
 	  unde $ V=P_{inv_Q} * (M_Q-M_P) \ mod \ Q$ \\
 	  $M = M_P \ mod \ P$ și : \\
-	  $$P*V= P* P_{inv_Q} * (M_Q - M_P) \ mod \ Q$$
-	  $$ = M_Q - M_P \ mod \ Q$$
+	  \begin{align*}
+	  P*V&= P* P_{inv_Q} * (M_Q - M_P) \ mod \ Q \\
+	   &= M_Q - M_P \ mod \ Q
+	  \end{align*}
+	  
 	  În final: \\
-	  $$ M= M_P + M_Q \ mod \ Q$$
-	  $$ = M_Q \ mod \ Q $$
+	  \begin{align*}
+	   M&= M_P + M_Q \ mod \ Q \\
+	   &= M_Q \ mod \ Q 
+	  \end{align*}
+	  
 	  
 	  \subsection{Implementări rapide RSA}
 	  Am prezentat o optimizare a algoritmului RSA folosind teorema chineză a resturilor și o exponențiere mai rapidă. Cele doupă inverse sunt de obicei necesare pentru teorechema cineze sunt reduse la un singur invers. Prin acest mod, viteza de decriptare crește de aproximativ $4$ ori.
@@ -788,8 +853,8 @@ Prin \textbf{Izomorfism} se înțelege o funcție între două mulțimi peste ca
 	    Algoritmul primește $2$ parametri de securitate ca și input: $n$ (de obicei $1024$ biți) și $k$(de obicei $160$ biți) unde $k<n/2$. Apoi se aleg două numere prime $P$ și $Q$ verificând că $cmmdc(P-1,Q-1)=2$ și care au lungimea $n/2$. Modulul N este $N=PQ$. Apoi alegem random două valori pe $k$ biți $d_P$ și $d_Q$ astfel încât $cmmdc(d_P,P-1)=1, cmmdc(d_Q,Q-1)=1$ și $(d_P=d_Q \ mod \ 2$. Exponentul secret $d$ trebuie să verifice: $d=d_P \ mod \ P-1$ și $d=d_Q \ mod \ Q-i$. Nu putem calcula direct $d$ folosind teorema chineză a resturilor pentru că $P-1$ și $Q-1$ nu sunt relativ prime, dar noi le alegem astfel încât $cmmdc(P-1,Q-1)=2$ prin urmare:
 	    $$cmmdc(\frac{P-1}{Q-1},\frac{Q-1}{2} )=1  $$
 	     De asemenea știm că $ d_P=d_Q \ mod \ 2$. Fie $ a=d_P \ mod \ 2 $. Datorită teoremei chineze a resturilor, putem calcula un $d\textprime$ care verifică:
-	    $$d\textprime = \frac{d_P-a}{2} \ mod \ \frac{P-1}{2} $$
-	    $$d\textprime = \frac{d_Q-a}{2} \ mod \ \frac{Q-1}{2} $$
+	    $$d\textprime = \frac{d_P-a}{2} \ mod \ \left( \frac{P-1}{2} \right) $$
+	    $$d\textprime = \frac{d_Q-a}{2} \ mod \ \left( \frac{Q-1}{2} \right) $$
 	    În alte cuvinte, există două numere întregi $k_1 și k_2$ astfel încât: 
 	    $$d\textprime = \frac{d_P-a}{2} + k_1 * \frac{P-1}{2} $$
 	    $$d\textprime = \frac{d_Q-a}{2} + k_2 * \frac{Q-1}{2} $$
@@ -797,8 +862,8 @@ Prin \textbf{Izomorfism} se înțelege o funcție între două mulțimi peste ca
 	    $$ d=(d_P-a) + k_1 * (P-1) +a$$
 	    $$ d=(d_Q-a) + k_2 * (Q-1) +a$$
 	    Modulo $P-1$ și $Q-1$ obținem:
-	    $$d=d_P \ mod \ P-1$$
-	    $$d=d_Q \ mod \ Q-1$$
+	    $$d=d_P \ mod \ \left( P-1 \right)$$
+	    $$d=d_Q \ mod \ \left( Q-1 \right)$$
 	    Pentru a calcula exponentul public e, trebuie doar să calculăm inversul lui $d$ modulo $\phi(N)=(P-1)(Q-1)$. Acest lucru este permis deoarece $cmmdc(d_P,P-1)=cmmdc(d_Q,Q-1)=1$. Prin urmare, $cmmdc(d,P-1)=cmmdc(d,Q-1)=1$. În final $cmmdc(d,\phi(N))=1$. Nu avem control asupra lui e care este de ordinul lui $N$. Criptarea nu va fi la fel de rapida ca și criptarea clasică RSA dar vom putea mări viteza decriptării.
 	   \subsubsection{Criptarea}
 	    Aceasta este exact ca și în RSA standard, doar că $e$ este mult mai mare. Cheia publică este $<N,e>$.
@@ -823,8 +888,11 @@ M=M_R \ mod \ R
 		Dorim să calculăm $M=M_P \ mod \ P$, $M=M_Q \ mod \ Q $ și $M=M_R \ mod \ R $. Lafel dorim să avem calculat și $P_inv_Q=P^{-1} \ mod  \ Q$ și $PQ_{inv_R}=(PQ)^{-1} \ mod \ R$. M verifică: 
 		$$M=M_{PQ} + P*Q(M_R-M_{PQ})*(PQ_{inv_R}) \ mod \ N$$
 		Știind faptul că  $P*Q*(PQ_{inv_R})=1 \ mod \ R$ obținem:
-		$$M=M_{PQ}+(P*Q*(PQ_{inv_R}))*(M_R-M_{PQ}) \ mod \ R$$
-		$$M=M_{PQ} + M_R - M_{PQ} \ mod \ R$$
+		\begin{align*}
+	M&=M_{PQ}+(P*Q*(PQ_{inv_R}))*(M_R-M_{PQ}) \ mod \ R \Rightarrow \\
+	M&=M_{PQ} + M_R - M_{PQ} \ mod \ R
+		\end{align*}
+
 		în final obținem $ M=M_R \ mod \ R $
 		La fel vom proceda pentru această ecuație $mod \ Q$ și $mod \ P$ și vom obține:
 		$$M=M_Q \ mod \ Q$$
@@ -865,8 +933,11 @@ M=M_R \ mod \ R
 		  Vom încerca să scriem reprezentarea plaintext $M_P \ modulo \ P^2$
 		  $$ M_P=K_0 + P*K_1 \ mod \ P^2$$
 		  Dacă vom calcula $C_P=M_{P}^{e}$ obținem:
-		  $$ C_P = (K_0 + P*K_1)^e \ mod \ P^2$$
-		  $$ = \sum_{i=0}^{e} \binom ie * K_{0}^{i} * P^{e-i} * K_{i}^{e-i} mod P^2 $$
+		  \begin{align*}
+		   C_P &= (K_0 + P*K_1)^e \ mod \ P^2 \\
+		   &= \sum_{i=0}^{e} \binom ie * K_{0}^{i} * P^{e-i} * K_{i}^{e-i} mod P^2 
+		  \end{align*}
+		  
 		  Acest binom se va reduce la :
 		  $$ C_P = K_{0}^{e}  + e*P*K_{0}^{e-1} * K_1 \ mod \ P^2 $$
 		  Putem calcula foarte ușor pe $K_0$:
@@ -894,8 +965,11 @@ M=M_R \ mod \ R
 		  Având $M \ mod \ P$, putem recupera plaintextul inițial $ M \ mod \ P^2$ datorită algoritmului Hensel. Totuși, dacă executăm acest algoritm într-o buclă vom putea recupera mesajul chiar și cu o putere mai mare decât 2. După fiecare buclă, vom obține $ M  \ mod \ P^i$, început cu i de la 1 până la $b$. La final, obținem $M \ mod \ P^b$. Vom avea $M_{P,i}$, plaintextul modulo $P^i$. Vom arăta ca se poate recupera plaintextul folosind modulo $P^{i+1}.$
 		  $$M_{P,i+1} = K_0 +K_1 * P^i \ mod \ P^{i+1}$$
 		  Putem scrie criptotextul $C_{P,i+1}$ modulo $P^{i+1}$ în următorul fel:
-		  $$C_{P,i+1} = M_{P,i+1}^{e} \ mod \ P^{i+1}$$
-		  $$ = (K_0+K_1*P^i)^e \ mod \ P^{i+1} $$
+		  \begin{align*}
+		  C_{P,i+1} &= M_{P,i+1}^{e} \ mod \ P^{i+1}\\
+		   &= (K_0+K_1*P^i)^e \ mod \ P^{i+1} 
+		  \end{align*}
+		  
 		  După ce vom desface acea paranteză aplicând Binomul lui Newton, ecuația se va reduce la:
 		  $$ C_{P,i+1} = K_{0}^{e} + e*K_{0}^{e-1} *P^i*K_1 \ mod \ P^{i+1}$$
 		  Mai departe, vom înlocui pe $K_0$ cu $M_{P,i}$, și vom aduce primul termen $M_{P,i}^{e}$ în partea stângă. Vom obține:
@@ -987,8 +1061,11 @@ M=M_R \ mod \ R
 		   La pasul de evaluare, vom proceda la fel ca și în algoritmul left-to-right (metoda de exponențiere), dar în lo să înmulțim cu o singură bază $M$, va trebui să alegem o bază corectă, această putând fi diferită de $M$. Va trebui să calculăm: 
 		   $$ C = \prod_{i=1}^{k} M_{i}^{e_i} \ mod \ N$$
 		   Putem folosi reprezentarea binară a lui $e_i$:
-		   $$ C = \prod_{i=1}^{k} M_{i}^{\sum_{j=0}^{p-1} e_{i,j} * 2^j} \ mod \ N$$
-		   $$ C = \prod_{i=1}^{k} \prod_{j=0}^{p-1} M_{i}^{e_{i,j}2^j} \ mod \ N$$
+		   \begin{align*}
+		    C &= \prod_{i=1}^{k} M_{i}^{\sum_{j=0}^{p-1} e_{i,j} * 2^j} \ mod \ N \Rightarrow \\
+		    C &= \prod_{i=1}^{k} \prod_{j=0}^{p-1} M_{i}^{e_{i,j}2^j} \ mod \ N
+		   \end{align*}
+		   
 		   Putem să interschimbăm cele două produse și să introducem primul termen într-o paranteză (acest termen din paranteză va reprezenta baza):
 		   $$C = \prod_{j=0}^{p-1} \left(   \prod_{i=1}^{k} M_{i}^{e_{i,j}}     \right)^{2^j} \ mod \ N $$
 		   Putem face și notația $E=(e_{1,j},...,e_{k,j})$ și vom obține folosind bijecția $b$ :
