@@ -507,7 +507,25 @@ Folosind ecuația $(2.3)$ și faptul că $k<d$, ne vom da seama că partea din s
 \end{align*}
 Dacă ultima inegalitate este adevărată, putem aplica modelul fracțiilor continue pentru $\frac{e}{N}$, vom obține $\frac{k}{d}$ ca fiind convergența. Pentru a obține convergența, adversarul va trebui doar să testeze toate convergențele de forma $\frac{k\textprime}{d\textprime}$ ale lui $\frac{e}{N}$. \\
 Deoarece algoritmul pentru fracții continue are timp polinomial, numărul de convergențe alui factorului $\frac{e}{N}$ este $O(\log(N))$, iar costul pentru testarea fiecărui candidat $\frac{k\textprime}{d\textprime} $ este de asemenea timp polinomial.
- 
+
+\subsection{Multi-Power RSA}
+Multi-Power RSA reprezintă o altă variantă RSA unde $N=P^{b-1}Q$ cu $b\geqslant 3$ .\\
+Când exponentul public și cel privat sunt definite modulo funcției lui Euler $\phi(N)$, variantele sunt foarte asemănătoare cu cele asupra multi-prime RSA și majoritatea atacurilor de la multi-prime RSA se aplică direct la multi-power RSA. \\
+Focusul principal va fi o variantă multi-power RSA, varianta lu Takagi, unde exponentul public și cel privat sunt definiți :
+$$ \lambda \textprime (N) = cmmmc(P-1,Q-1) $$
+în loc de $\phi(N) = P^{b-2}(P-1)(Q-1)$. Decriptarea acestei variante folosește lema lui Hensel și teorema Chineză a resturilor, și este cea mai rapidă metodă de decriptare pentru toate variantele atunci când un exponent public mic este folosit. \\
+\subsubsection{Spargerea multi-power RSA (schema lui Takagi)}
+Vom considera că o instanța a schemei lui Takagi să fie spartă atunci când factorizarea modului este cunoscută. Pentru RSA, a fost suficient să recuperăm exponentul privat sau să calculăm modulul $\phi(N)$ deoarece există algoritmi determiniști ce pot rezolva problema în timp polinomial, dacă deținem măcar unul din aceste două necunoscute. Pentru schea lu Takagi, odată ce un multiplu de $\lambda \textprime (N)$ este cunoscut, rezultatul lui Miller \cite{Milner3} poate fi folosit pentru a factoriza modulul în mod probabilistic. Deoarece $ed= 1 + k \lambda \textprime (N)$, este suficient să obținem exponentul privat pentru a putea factoriza modulul. Când exponentul este definit sub forma $(P-1)(Q-1)$, în loc de $\lambda \textprime (N)$, a fost arătat de către Kunihiro și Kurosawa \cite{Kunihiro} că modulul $N=P^{b-1}$ poate fi factorizat deterinistic în timp polinomial când exponentul privat $d$ este cunoscut. \\
+Similar cu CRT-RSA, cunoașterea unui exponent CRT ne va permite să factorizăm modulul. Din definiția exponenților CRT, este de așteptat ca pentru un mesaj $ m \in \mathbb{Z}_{N}^{*}$,
+
+\begin{align*}
+cmmdc(m^{ed_P} -m ,N) &=P \\
+cmmdc(m^{ed_Q} -m ,N) &=Q
+\end{align*} 
+,așadar cunoașterea lui $d_P$ sau $d_Q$ ar trebui să ne aducă factorizarea modulului
+\subsection{Factorizarea modulului}
+Securitatea schemei lui Takagi, la fel ca și la multi-prime RSA, se bazează pe dificultatea factorizării modului. Aici, dificultatea factorizării unui modul în schema lui Takagi nu ar trebui să fie mai greu decât factorizarea unui modul pe $n$ biți. Dificultatea factorizării unui modul de forma $N=P^{b-1}Q$, pentru o dimensiune fixată a unui modul scade odată cu creșterea lui $b$    
+
 
 
 \chapter{Variante și Optimizări RSA}
@@ -1023,6 +1041,40 @@ M \equiv M_R \ mod \ R
 		  Vom calcula $M_P = C_{P}^{d} \ mod \ P^b $ unde $C_P = C \ mod \ P^b$ și  $M_P = M \ mod \ P^b$ folosind algoritmul Hensel. În final, vom recupera plaintextul înițial folosind teorema chineză a resturilor. De asemnea calculăm $M_Q= C_{Q}^{d} \ mod \ Q$ și obținem plaintextul folosind algoritul Garner.
 		  \end{enumerate}
 		  
+		  \subsection{Schema lui Takagi}
+		  Schema lui Takagi este o variantă de multi-power RSA \cite{takagi}. Această variantă folosește on modul $N=P{b-1}Q$, pentru $b \geqslant 3$ și definește exponentul public și cel privat ca fiind invers modularul lui $\lambda \textprime (N) =cmmc(P-1,Q-1)$. Deoarece $\lambda \textprime (N)$ nu este un multiplu a lui $\lambda(N)$ unde ( $ed=1+k\lambda(N)$ ), înseamnă că decriptarea standard nu va funcționa, deci $m^{ed} \not\equiv m \ mod \ N$. Pentru a putea decripta un criptotext, trebuie să decriptăm parțial modulo $P^{b-1}$ și modulo $Q$ apoi el trebuie combinate folosind teorema Chineză a resturilor. Totuși, pentru a putea calcul calcula decriptarea parțială $m_{P^{b-1}}$ trebuie să folosin și lema lui Hensel.\\
+		  Pentru numere aleator balansate $P$ și $Q$, modulul schemei Takagi este dat de $N=P^{b-1}Q$, pentru $b \geqslant 3$. Un exponent public mic $e$ este ales astfel încât$cmmdc(e,P)=1$ și exponentul privat este definit ca și inversul modular modulo $\lambda \textprime (N)$. Așadar, exponentul privat $d$ este ales astfel încât $ed \equiv 1+k\lambda \textprime (N)$. Odată ce $d$ este determinat, exponenții  teoremei Chineze
+		  \begin{align*}
+		  d_P &= d \ mod \ (P-1) \\
+		  d_Q &= d \ mod \ (Q-1)
+		  \end{align*}
+sunt calculați. Cheia publică este $<N,e>$ și cheia privată este$<d_P,d_Q,P,Q,b>$. \\
+Criptarea în schema lui Takagi este aceeași ca și pentru RSA. Fiind dat un plaintext $ m \in \mathbb{Z}_N$,criptotextul $ c= m^d \ mod \ N$. Menționat ca și mai sus, decripția standar nu poate fi folosită deoarece $ \lambda \textprime (N)$ nu este un multiplu a lui $\lambda(N)$. Decriptarea în  schema lui Takagi constă în decriptarea parțială
+\begin{align*}
+m_P &= c^{d_P} \ mod \ P = m \ mod \ P \\
+m_Q &= c^{d_Q} \ mod \ Q = m \ mod \ Q 
+\end{align*} 
+Atunci când $N=PQ$ aceste decriptări parțiale pot fi combinate folosind doar teorema Chineză a resturilor pentru a recupera plaintextul modulo $N$. În schema lui Takagi, decriptarea parțială $m_P$ are nevoie de lema lui Hensel pentru a putea decripta modulo  $P^{b-1}$. Folosind $b-2$ iterații a lemei lui Hensel, decriptarea parțială modulo $P$ poate fi transformată într-o decriptare partițială modulo $P^{b-1}$. Decriptarea parțială modulo $Q$ și modulo $P^{b-1}$ sunt combinate folosind teorema Chineză a resturilor pentru a recupera un plaintext modulo $N=P^{b-1}Q$.
+\subsubsection{Eficiența schemei lui Takagi}
+Schema lui Takagi este mai eficientă decât RSA atât la generarea cheilor cât și la decriptare. Pentru o anumită dimensiune, în schema lui Takagi este necesară doar generarea a două numere prime de dimensiune $N^{1/b}$ în loc de $N^{1/2}$ ca la RSA clasic. Chiar dacă generarea numerelor prime are timp liniar, dimensiunea redusă a acestora va îmbunătăți cu siguranță viteza de generare. Condiția extra pentru exponentul public $cmmdc(e,P)=1$ nu a reprezenta o problemă dacă $e$ este suficient de mic. În particular, folosind un exponent public mult mai mic decât $N^{1/b}$ ne va asigura de fiecare dată faptul că $cmmdc(e,P)=1$. \\
+Am prezentat mai sus că decriptarea parțială modulo $P$ poate fi transformată într-o decriptare modulo $P^{b-1}$. O versiune completă și optimizată a algoritmului de decriptare a lui Takagi poate fi găsit în \cite{takagi}. Algoritmul de decriptare va calcula decriptările parțiale $m_P$ și $m_Q$, folosește algoritmul de decriptare a lui Takagi pentru a calcula $m_{P^{b-1}}$ și îl combină cu $m_Q$ și folosește algoritmul lui Garner pentru rezolvarea sistemului. \\
+Complexitatea algoritmului următor va depinde de exponentul public
+\begin{algorithm}[H]
+		   \caption{Lema Hensel în schema lui Takagi}
+		   \textbf{Input:} $<c,e,d_P.p.b>$ \\
+		   \textbf{Output:} Decriptarea parțială a lui $ m_{P^{b-1}} $
+		   \begin{algorithmic}
+		   	\State $m_P \textprime \gets c^{d_P -1} \ mod \ P$
+		   	\State $m_P \gets c^{d_P} \ mod \ P$
+		   	\For {$i$ from $1$ to $b-1$}
+		   	\State $x \gets (c-m_{e}^{P^i}) \ mod \ P^{i+1}$
+		   	\State $y \gets xm_P \textprime (e^{-1} \ mod \ P) \ mod \ P^{i+1}$
+		   	\State $m_{P^{i+1}} \gets m_{P^i} +y $
+		   	\EndFor
+		   \end{algorithmic}
+		   \end{algorithm} 	  
+		   
+		  
 		  \section{RSA pe grupuri}
 		  Ideea este destul de schimbată pentru această variantă. Această constă în gruparea unor criptotexte.
 		  \subsection{Ideea de bază}
@@ -1130,6 +1182,10 @@ S.Sarkar și S.Maitra. Partial key exposure attacks on RSA and its variants by g
 M. J. Hinek, M. J. Low și E. Teske. On some attack on multi-prime RSA. K.Nyberg și H. M. Heys, editorii, Selected Areas in Cryptography, volume 2595 of Lecture Notes in Computer Science, paginile 385-404. Springer, 2002.
 \bibitem{Milner3}
 G. L. Miller. Riemann’s hypothesis and tests for primality. Journal of Computer and System Sciences, 13:300–317, 1976. 
+\bibitem{takagi}
+ T. Takagi. A fast RSA-type public-key primitive modulo pkq using Hensel lifting. IEICE Transactions, 87-A(1):94–101, 2004. 
+\bibitem{Kunihiro}
+ N. Kunihiro and K. Kurosawa. Deterministic polynomial time equivalence between factoring and key-recovery attack on Takagi’s RSA. In T. Okamoto and X. Wang, editors, Public Key Cryptography, volume 4450 of Lecture Notes in Computer Science, paginile 412–425. Springer, 2007.
 \end{thebibliography}
 
 \end{document}
