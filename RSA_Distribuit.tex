@@ -419,7 +419,8 @@ Modificând prima ecuație, vom obține:
  -1 &\equiv kN - kP - kQ +k \ mod \ e \Rightarrow \\
  -1 &\equiv kN-kP-kQ + k - k + k \ mod \ e \Rightarrow \\
  -1 &\equiv (kN-k) - (kP - k ) - (kQ - k ) \ mod \ e \Rightarrow \\
- -1 &\equiv k(N-1) -k(P-1) - k(Q-1) \ mod \ e 
+ -1 &\equiv k(N-1) -k(P-1) - k(Q-1) \ mod \ e  \Rightarrow \\
+ -1 &\equiv k(N-1) -k(P-1+Q-1) \Rightarrow \\
 \end{align*}
 
 
@@ -433,21 +434,21 @@ k &\equiv -k_P k_Q \ mod \ e \\
 
 și obținem:
 \begin{align*}
-k(N-1) - k(P-1) - k(Q-1)  &\equiv -1  \ mod \ e \Rightarrow \\ 
-k(N-1) + k_Pk_Q(P-1) + k(Q-1)  &\equiv -1  \ mod \ e \Rightarrow  \\
- k(N-1) + k_Pk_Q(P-1) + k(Q-1) +1 &\equiv 0 \ mod \ e \Rightarrow \\
- k(N-1) - \frac{1}{k_P} - k_P + 1 &\equiv 0 \ mod \ e
+-1 &\equiv k(N-1) -(-k_Pk_Q)(-\frac{-1}{k_P} - \frac{-1}{k_Q}) \Rightarrow  \\
+-1 &\equiv k(N-1) - (\frac{k_Pk_Q}{k_P} + \frac{k_Pk_Q}{k_Q}) \Rightarrow  \\
+0  &\equiv  k(N-1) - (k_P + k_Q) +1 \Rightarrow \\
+0  &\equiv k(N-1) - (k_P - \frac{k}{k_P}) +1
 \end{align*}
 
 
 Înmulțind această ecuație cu $k_P$, obținem următoarea ecuație de gradul 2:
 \begin{align*}
- k_P k (N-1) - k_{P}^{2} - k + k_P &\equiv 0 \ mod \ e \Rightarrow \\
- k_P(k(N-1)+1) - k_{P}^{2} - k &\equiv 0 \ mod \ e \Rightarrow  \\
- k_{P}^{2} - k_P(k(N-1)+1) + k &\equiv 0 \ mod \ e 
+k_Pk(N-1) - (k_{P}^{2} - k) +k_P &\equiv 0 \Rightarrow \\
+k_P[k(N-1)+1] - k_{P}^{2} + k &\equiv 0 \Rightarrow \\
+k_{P}^{2} - k_P[k(N-1)+1] - k &\equiv 0
 \end{align*}
 
-Această ecuație, cu exonentul public $e$ fiind un numă prim va avea următoarele soluții: $k_P \ mod \ e$ și $-k_Q \ mod \ e$. Deoarece $k_P,k_Q <e$ înseamnă ca valorile exacte pentru $k_P$ și $k_Q$ vor fi descoperite. \\
+Această ecuație, cu exonentul public $e$ fiind un numă prim va avea următoarele soluții: $k_P \ mod \ e$ și $k_Q \ mod \ e$. Deoarece $k_P,k_Q <e$ înseamnă ca valorile exacte pentru $k_P$ și $k_Q$ vor fi descoperite. \\
 Cu constantele $<k,k_P,k_Q$ fiind descoperite, reconstruirea cheii înseamnă doar enumerarea cheilor posibile $<P,Q,d,d_P,d_Q>$ care respectă ecuația $(2.1)$
 
 
@@ -524,7 +525,29 @@ cmmdc(m^{ed_Q} -m ,N) &=Q
 \end{align*} 
 ,așadar cunoașterea lui $d_P$ sau $d_Q$ ar trebui să ne aducă factorizarea modulului
 \subsection{Factorizarea modulului}
-Securitatea schemei lui Takagi, la fel ca și la multi-prime RSA, se bazează pe dificultatea factorizării modului. Aici, dificultatea factorizării unui modul în schema lui Takagi nu ar trebui să fie mai greu decât factorizarea unui modul pe $n$ biți. Dificultatea factorizării unui modul de forma $N=P^{b-1}Q$, pentru o dimensiune fixată a unui modul scade odată cu creșterea lui $b$    
+Securitatea schemei lui Takagi, la fel ca și la multi-prime RSA, se bazează pe dificultatea factorizării modului. Aici, dificultatea factorizării unui modul în schema lui Takagi nu ar trebui să fie mai greu decât factorizarea unui modul pe $n$ biți. Dificultatea factorizării unui modul de forma $N=P^{b-1}Q$, pentru o dimensiune fixată a unui modul scade odată cu creșterea lui $b$ când folosim un algoritmul de genul ECM(Lenstra's elliptic curve factorization), așadar valoarea lui $b$ trebuie aleasă cu foarte mare grijă. Orice număr $b$ care satisface condiția este cunoscut ca și nunăr sigur. Deoarece algoritmul ECM depinde foarte multe de dimensiunea celui mai mic factor a lui $N$. 
+\subsubsection{Exponent de decriptare mic}
+Sunt două tipuri de atac prin exponent de decriptare mic, fiecare fiind mai puternic decât cel prezentat în multi-prime RSA. Ambele atacuri au fost decoperite de May \cite{may}, care se aplică asupra schemei lui Takagi când o parte din biții CRT sunt cunoscuți. \\
+Primul atac se aplică asupra instanțelor de forma $ N^{(b-1)/b^2}$ și necesită o parte din ce mai semnificativi biți a unei exponențieri CRT. Atacul lui May \cite{may} este dat de următoarea teoremă:
+\begin{theorem}
+Fie $N=P^{b-1}Q$ să fie modulul RSA, pentru $b \geqslant 3$. Fie $e= N^{\alpha} \leqslant N^{(b-1)/b^2}$ un exponent public valid pentru schema lui Takagi, iar $d_P$ și $d_Q$ să fie exponenții CRT ce satisfac condiția $ed \equiv 1 \ mod \ (P-1)$ și $ed \equiv 1 \ mod \ (Q-1)$. Dat $d_P \textprime$ astfel încât 
+$$  \left| d_P - d_P \textprime \right| \leqslant N^{\frac{b-1}{b^2}- \alpha}  $$ 
+sau $d_Q \textprime$ astfel încât 
+$$ \left| d_Q - d_Q \textprime \right| \leqslant N^{\frac{1}{b^2}- \alpha} $$
+Atunci modulul poate fi factorizat în timpul polinomial $n$
+\end{theorem}
+Următorul atac poate fi inițiat când o parte din cei mai puțin semnificativi biți al exponențerii CRT sunt cunoscuți. Totuși, exponentul public trebuie să fie foarte mic pentru ca acest atac să fie eficient, deoarece atacul are complexitatea liniară $e$. Acest atac folosește următoarea teoremă
+\begin{theorem}
+Fie $N=P^{b-1}Q$ modulul RSA cu $b \geqslant 3$. Fie $e << N^{1/b}$ ($<<$ însemnând că este mult mai mic) exponentul public valid pentru schema lui Takagi, iar $d_P$ și $d_Q$ să fie exponentul CRT ce satisface relațiile $ed \equiv 1 \ mod \ (P-1)$ și $ed \equiv 1 \ mod \ (Q-1)$ Date oricare din relațiile:
+\begin{enumerate}
+\item $  M_P \geqslant N^{1/b^2}$ și $d_P \textprime \equiv d_P \ mod \ M_P$
+\item $d_P \textprime$ astfel încât $ \left| d_P - d_P \textprime \right| \leqslant N^{(b-1)/b^2}$
+\item $M_Q \geqslant N^{(b-1)/b^2}$ și $d_Q \textprime \equiv d_P \ mod \ M_Q$
+\item $d_Q \textprime$ astfel încât $ \left| d_Q - d_Q \textprime \right| \leqslant N^{1/b^2}$
+\end{enumerate}
+Atunci modulul poate fi factorizat în timpul liniar $e$
+\end{theorem}
+
 
 
 
@@ -1186,6 +1209,9 @@ G. L. Miller. Riemann’s hypothesis and tests for primality. Journal of Compute
  T. Takagi. A fast RSA-type public-key primitive modulo pkq using Hensel lifting. IEICE Transactions, 87-A(1):94–101, 2004. 
 \bibitem{Kunihiro}
  N. Kunihiro and K. Kurosawa. Deterministic polynomial time equivalence between factoring and key-recovery attack on Takagi’s RSA. In T. Okamoto and X. Wang, editors, Public Key Cryptography, volume 4450 of Lecture Notes in Computer Science, paginile 412–425. Springer, 2007.
+\bibitem{may}
+ A. May. Computing the RSA secret key is deterministic polynomial time equivalent to factoring. In M. K. Franklin, editor, CRYPTO, volume 3152 of Lecture Notes in Computer Science, paginile 213–219. Springer, 2004. 
 \end{thebibliography}
+
 
 \end{document}
