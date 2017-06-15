@@ -28,7 +28,6 @@
 
 \section{RSA Clasic}
 \subsection{Descriere}
-
 RSA este un algoritm criptografic cu chei publice, primul algoritm utilizat atât pentru criptare, cât și pentru semnătura electronică. Algoritmul a fost dezvoltt în 1977 și publicat în 1978 de Ron Rivest, Adi Shamir și Leonard Adleman la MIT, iar numele algoritmului provine din inițialele lor. \\
 Securitatea sa se bazează pe dificultatea problemei factorizării numerelor întregi, problemă la care se reduce criptanaliza RSA și pentru care toți algoritmii de rezolvare cunoscuți au complexitate exponențială. Există câteva metode de criptanaliză care ocolesc factorizarea efectivă, exploatând maniere de implementare efectivă a schemei de criptare.
 \subsection{Funcționare}
@@ -187,7 +186,7 @@ Frația $\frac{a}{b} $ poate fi scrisă după cum urmează:
  &= q_1 + \frac{1}{q_2 + \frac{1}{\vdotswithin{q_k} q_k + \frac{1}{q_{k+1}}}} \\
 \end{align*}
 
-Ultimul termen va fi referit ca fracția continuă asociată fracției $\frac{a}{b}$ și va finotat prin $[ q_1,q_2, \dots ,q_{k+1}]$. Expresiile $[q_1,q_2, \dots ,q_i]$ , $1 \leqslant i \leqslant k+1$, vor fi numite convergențele fracției continue $[q_1,q_2, \dots ,q_{k+1}]$.\\
+Ultimul termen va fi referit ca fracția continuă asociată fracției $\frac{a}{b}$ și va finotat prin $[ q_1,q_2, \dots ,q_{k+1}]$. Expresiile $[q_1,q_2, \dots ,q_i]$ , $1 \leq i \leq k+1$, vor fi numite convergențele fracției continue $[q_1,q_2, \dots ,q_{k+1}]$.\\
 Considerăm numerele naturale $\alpha_{i}$ și $\beta_{i}$ date prinȘ
 \begin{align*}
  \alpha_1 &=q_1,   &\beta_1&=1 \\
@@ -195,14 +194,14 @@ Considerăm numerele naturale $\alpha_{i}$ și $\beta_{i}$ date prinȘ
  \alpha_i &= q_i \cdot   \alpha_{i-1} + \alpha_{i-2},    &\beta_i &= q_i \cdot   \beta_{i-1} + \beta_{i-2} \\
 \end{align*}
 
-Pentru orice $3 \leqslant i \leqslant k+1$ \\
+Pentru orice $3 \leq i \leq k+1$ \\
 Atunci are loc relația
 \begin{align*}
 [q_1,q_2,\dots,q_i] &= \frac{\alpha_i}{\beta_i}\\
 (\alpha_i,\beta_i)&=1
 \end{align*} 
 
-Pentru orice $1 \leqslant i \leqslant k+1$ \\
+Pentru orice $1 \leq i \leq k+1$ \\
 \textbf{Exemplu} Pentru $a=4$,$b=11$ obținem:\\
 \begin{align*}
 4&=0 \cdot 11+4\\
@@ -292,14 +291,14 @@ Este destul de clar că atunci când implementăm RSA, vom dori să evităm aces
 \item Găsim $ed$ astfel încât $ed \equiv 1 \ mod \ \phi(N)$
 
 \end{itemize}
-Putem dovedi că, dacă $q<p \leqslant 2q$ și $ d \leqslant \frac{1}{3} \sqrt[4]{N}$ atacul Wiener va reuși. \\
+Putem dovedi că, dacă $q<p \leq 2q$ și $ d \leq \frac{1}{3} \sqrt[4]{N}$ atacul Wiener va reuși. \\
 Astea înseamnă că noi trebuie să alegem $d > \frac{1}{3} \sqrt[4]{N}$. Și așa, există o șansă ca atacul Wiener să reușească.
 
 \subsubsection{Numere prime parțial cunoscute}
 La acest atac, trebuie să ne bazăm pe faptul că $N$ este o aproximare a lui $\phi(N)$. În particular, atacurile depind de inecuația $ | N-\phi(N)|=|s| < 3N^{1/2}$. Pentru îmbunătățirea acestui atac, va trebui să găsim o aproximare mai bună pentru $\phi(N)$. \\
 Când măcar unul din cele două numere prime ale modulului RSA, are cel mai semnificativ bit cunoscut, atunci noi putem să formăm o aproximare mai bună pentru $\phi(N)$. Fie $P^{'}$ o aproximare pentru $P$ care satisface următoarea relație:
 $$ |P - P^{'}| < N^{\gamma} $$
-cu $ \frac{1}{4} < \gamma \leqslant \frac{1}{2} $. Cu $P^{'} $ cunoscut, îl putem calcula foarte ușor și pe $ Q^{'} $
+cu $ \frac{1}{4} < \gamma \leq \frac{1}{2} $. Cu $P^{'} $ cunoscut, îl putem calcula foarte ușor și pe $ Q^{'} $
 $$ |Q - Q^{'} | = \left| \frac{N}{P} - \frac{N}{P^{'}} \right| = \left|\frac{N(P-P^{'})}{PP^{'}}\right| < 5 N^{\gamma} $$ 
 
 Folosind aceste relații, vom putea calcula și o aproximare a lui $N$ notată $N^{'}$ care corespune următoarei formule:
@@ -330,7 +329,7 @@ $$ d<\frac{N^{'}}{2s^{'}g_0k_0}<\frac{N^{1-\gamma}}{10g_0k_0}$$
 Folosind această inecuație, îl vom putea factoriza pe $N$ în timp polinomial.
 De asemenea, dacă vom considera un parametru $\deg$ astfel încât $d=N^{\delta}$, atunci atacul se va simplifica la 
 \[
-\delta \leqslant
+\delta \leq
 \begin{cases}
 \frac{1}{4} - \frac{\alpha}{2} - \epsilon,  &\lambda=1/2  \\
 1 - \frac{\alpha}{2} - \frac{\lambda}{2} - \epsilon,  &\lambda<1/2
@@ -339,7 +338,7 @@ De asemenea, dacă vom considera un parametru $\deg$ astfel încât $d=N^{\delta
 Pentru un exponent arbitrat fixat va rezulta:
 
 \[
-\delta \leqslant
+\delta \leq
 \begin{cases}
 \frac{3}{4} -  \epsilon,  &\lambda=1/2 , \ \alpha=1  \\
 \frac{1}{2} - \frac{\lambda}{2} - \epsilon,  &\lambda<1/2, \ \alpha=1
@@ -347,12 +346,12 @@ Pentru un exponent arbitrat fixat va rezulta:
 \]
 \\
 Toate atacurile de tip "latice-bassed" bazate pe exponenți de decriptare mici, au fost îmbunătățite de către Sarkar,Maitra și Sarka \cite{sarkar}. Pentru a generaliza atacul Blomer și May inpsirat din \cite{sarkar}, vom considera: \\
-Pentru $\forall \epsilon > 0, \exists n_0$ astfel încât $n>n_0$ unde $n$ este lungimea în biți a lui $N$. Fie $N=PQ$ modulul RSA cu $e$ cheia publică și $d=N^{\gamma}$ cheia privată, ce corespunde modulului $\phi(N)$. Dată cheia publică $<N,e>$ și $\lambda$ cu $\frac{1}{4}<\lambda\leqslant \frac{1}{2}$ și 
-$$ \delta \leqslant \frac{2}{5} - \frac{6}{5}\lambda + \frac{2}{5} \sqrt{4\lambda^{2}- \lambda +1} - \epsilon $$,
+Pentru $\forall \epsilon > 0, \exists n_0$ astfel încât $n>n_0$ unde $n$ este lungimea în biți a lui $N$. Fie $N=PQ$ modulul RSA cu $e$ cheia publică și $d=N^{\gamma}$ cheia privată, ce corespunde modulului $\phi(N)$. Dată cheia publică $<N,e>$ și $\lambda$ cu $\frac{1}{4}<\lambda\leq \frac{1}{2}$ și 
+$$ \delta \leq \frac{2}{5} - \frac{6}{5}\lambda + \frac{2}{5} \sqrt{4\lambda^{2}- \lambda +1} - \epsilon $$,
 atunci modulul $N$ poate fi calculat în timp polinomial. \\
 O altă formă, este dată de următoarea teoremă \\
-\textbf{Teoremă} $\forall \epsilon > 0, \exists n >n_0$. Fie $N=PQ$ modulul RSA cu $e$ exponentul public și $d=N^{\delta}$ exponentul privat definitit modulo $\phi(N)$. Date fiind cheia publică $<N,e>$ și $\lambda$ cu $\frac{1}{4} < \lambda \leqslant \frac{1}{2} $ satisfac următoarea relație
-$$ 1- 2\lambda < \delta \leqslant 1 - \sqrt{\lambda}-\epsilon$$
+\textbf{Teoremă} $\forall \epsilon > 0, \exists n >n_0$. Fie $N=PQ$ modulul RSA cu $e$ exponentul public și $d=N^{\delta}$ exponentul privat definitit modulo $\phi(N)$. Date fiind cheia publică $<N,e>$ și $\lambda$ cu $\frac{1}{4} < \lambda \leq \frac{1}{2} $ satisfac următoarea relație
+$$ 1- 2\lambda < \delta \leq 1 - \sqrt{\lambda}-\epsilon$$
 atunci putem găsi modulul RSA în timp polinomial.
 \section{Criptanaliză pe variante RSA}
 \subsection{CRT-RSA}
@@ -401,7 +400,7 @@ ed_P&=k_P(P-1)+1\\
 ed_Q&=k_Q(Q-1)+1 
 \end{align*}
 care conțin 8 necunoscute. Deoarece exponentul public este mic, $2^{10}+1$ spre exemplu, constantele $k$,$k_P$ și $k_Q$ poate fi ușor determinate ceea ce reduce numărul de necunoscute la 5.\\
-Pentru determinarea lui $k$ ne folosim de faptul că $1/2$ din cei mai semnificativi biți al exponentului privat sunt arătați de către $\lceil (kN+1)/e \rceil $ , calculând această valuare pentru fiecare $2 \leqslant k^{'} < e$, valuarea corectă a lui $k$ este arătată atunci când un număr semnificativ de biți este același ca și în ecuația $ \lceil (k^{'}M+1)/e   \rceil$. \\
+Pentru determinarea lui $k$ ne folosim de faptul că $1/2$ din cei mai semnificativi biți al exponentului privat sunt arătați de către $\lceil (kN+1)/e \rceil $ , calculând această valuare pentru fiecare $2 \leq k^{'} < e$, valuarea corectă a lui $k$ este arătată atunci când un număr semnificativ de biți este același ca și în ecuația $ \lceil (k^{'}M+1)/e   \rceil$. \\
 Cu $k$ cunoscut, Heninger și Shacham demonstrează că se pot afla foarte ușor $k_P$ și $k_Q$, folosind următoarele ecuații: 
 
 \begin{equation}
@@ -530,10 +529,10 @@ Securitatea schemei lui Takagi, la fel ca și la multi-prime RSA, se bazează pe
 Sunt două tipuri de atac prin exponent de decriptare mic, fiecare fiind mai puternic decât cel prezentat în multi-prime RSA. Ambele atacuri au fost decoperite de May \cite{may}, care se aplică asupra schemei lui Takagi când o parte din biții CRT sunt cunoscuți. \\
 Primul atac se aplică asupra instanțelor de forma $ N^{(b-1)/b^2}$ și necesită o parte din ce mai semnificativi biți a unei exponențieri CRT. Atacul lui May \cite{may} este dat de următoarea teoremă:
 \begin{theorem}
-Fie $N=P^{b-1}Q$ să fie modulul RSA, pentru $b \geqslant 3$. Fie $e= N^{\alpha} \leqslant N^{(b-1)/b^2}$ un exponent public valid pentru schema lui Takagi, iar $d_P$ și $d_Q$ să fie exponenții CRT ce satisfac condiția $ed \equiv 1 \ mod \ (P-1)$ și $ed \equiv 1 \ mod \ (Q-1)$. Dat $d_P \textprime$ astfel încât 
-$$  \left| d_P - d_P \textprime \right| \leqslant N^{\frac{b-1}{b^2}- \alpha}  $$ 
+Fie $N=P^{b-1}Q$ să fie modulul RSA, pentru $b \geqslant 3$. Fie $e= N^{\alpha} \leq N^{(b-1)/b^2}$ un exponent public valid pentru schema lui Takagi, iar $d_P$ și $d_Q$ să fie exponenții CRT ce satisfac condiția $ed \equiv 1 \ mod \ (P-1)$ și $ed \equiv 1 \ mod \ (Q-1)$. Dat $d_P \textprime$ astfel încât 
+$$  \left| d_P - d_P \textprime \right| \leq N^{\frac{b-1}{b^2}- \alpha}  $$ 
 sau $d_Q \textprime$ astfel încât 
-$$ \left| d_Q - d_Q \textprime \right| \leqslant N^{\frac{1}{b^2}- \alpha} $$
+$$ \left| d_Q - d_Q \textprime \right| \leq N^{\frac{1}{b^2}- \alpha} $$
 Atunci modulul poate fi factorizat în timpul polinomial $n$
 \end{theorem}
 Următorul atac poate fi inițiat când o parte din cei mai puțin semnificativi biți al exponențerii CRT sunt cunoscuți. Totuși, exponentul public trebuie să fie foarte mic pentru ca acest atac să fie eficient, deoarece atacul are complexitatea liniară $e$. Acest atac folosește următoarea teoremă
@@ -541,9 +540,9 @@ Următorul atac poate fi inițiat când o parte din cei mai puțin semnificativi
 Fie $N=P^{b-1}Q$ modulul RSA cu $b \geqslant 3$. Fie $e << N^{1/b}$ ($<<$ însemnând că este mult mai mic) exponentul public valid pentru schema lui Takagi, iar $d_P$ și $d_Q$ să fie exponentul CRT ce satisface relațiile $ed \equiv 1 \ mod \ (P-1)$ și $ed \equiv 1 \ mod \ (Q-1)$ Date oricare din relațiile:
 \begin{enumerate}
 \item $  M_P \geqslant N^{1/b^2}$ și $d_P \textprime \equiv d_P \ mod \ M_P$
-\item $d_P \textprime$ astfel încât $ \left| d_P - d_P \textprime \right| \leqslant N^{(b-1)/b^2}$
+\item $d_P \textprime$ astfel încât $ \left| d_P - d_P \textprime \right| \leq N^{(b-1)/b^2}$
 \item $M_Q \geqslant N^{(b-1)/b^2}$ și $d_Q \textprime \equiv d_P \ mod \ M_Q$
-\item $d_Q \textprime$ astfel încât $ \left| d_Q - d_Q \textprime \right| \leqslant N^{1/b^2}$
+\item $d_Q \textprime$ astfel încât $ \left| d_Q - d_Q \textprime \right| \leq N^{1/b^2}$
 \end{enumerate}
 Atunci modulul poate fi factorizat în timpul liniar $e$
 \end{theorem}
@@ -555,7 +554,7 @@ Atunci modulul poate fi factorizat în timpul liniar $e$
 \section{RSA varianta distribuită (Schema lui Shoup)}
 \subsection{Introducere}
 Varianta partajată a RSA (schemă prin semnături) prezintă câteva aspecte foarte interesante. În primul rând, este securizată și robustă deoarece problema criptanalizei este foarte grea. Apoi, partajarea, generarea semnăturii și verificarea sunt non interactive și în final, dimensiunea unei semnături partajate este legată de o constantă înmulțită cu dimensiunea modulului RSA. \\
-Când un mesaj trebuie să fie semnat de măcar $ t+1 $ server unde $ 2t+1 \leqslant l $, un server special numit combinator, direcționează mesajul $m$ sau $x$, unde $x=H(x)$ către toate serverele, apoi fiecare server calculează semnătura cu o dovadă de corectitudine, apoi combinatorul selectează un subgrup de $t+1$ servere și le combină. \\
+Când un mesaj trebuie să fie semnat de măcar $ t+1 $ server unde $ 2t+1 \leq l $, un server special numit combinator, direcționează mesajul $m$ sau $x$, unde $x=H(x)$ către toate serverele, apoi fiecare server calculează semnătura cu o dovadă de corectitudine, apoi combinatorul selectează un subgrup de $t+1$ servere și le combină. \\
 Folosind distributivitatea aditivă, $d=\sum_{i=1}^{l} d_i \ mod \ \phi(N)$, combinatorul poate alcula ușor semnăturile $S$, $s_i=x^{d_i} \ mod \ N$, unde $x=H(m)$, este mesajul semnat folosind formula:
 $$ S= \prod_{i=1}^{l} S_i = \prod_{i=1}^{l} x^{d_i} = x^{\sum_{i}^{l} d_i} = x^d \ mod \ N $$
 Principalul dezavantaj al acestor tehnici îl reprezintă mărimea cheilor, din cauza necesității diferitelor partajări și a tehnicilor de reconstruire a semnăturilor. Ulterior, Shoup a propus prima schemă bazată pe partajarea polinomială (schema Desmedt și Frankel \cite{desmet}). Protocolul trebuie să revină de $t$ ori pentru a putea înlătura serverele rele, semnătura depinzând e un subgrup de $t+1$ servere. \\
@@ -638,7 +637,7 @@ Adversarii pot corupe servere în orice moment prin verificarea memoriei servere
 O schemă RSA de semnături folosește următoarele componente:
 \begin{enumerate}
 \item Un algoritm de generare de chei care primește ca input parametrii de securitate $N$, numărul $k$ de elemente care trebuie să genereze $Q_N$, numărul de $l$ servere care trebuie să semneze, parametrul $t$ și un string random $w$. Are ca și output o cheie publică $<N,e>$, cu cheile private $d_1, \dots ,d_t$ cunoscute doar de servere corecte pentru fiecare $u \in [1,k]$ o listă $v_u,v_{u,1}, \dots v{u,t}=v_{u}^{d_i} \ mod \ N$ verificări de chei. 
-\item Un algoritm de partajare de semnături primește ca input o cheie publică $<N,e>$, un index $ 1\leqslant i \leqslant l$, cheia privată $d_i$, și un mesaj $m$; are ca output o semnătură $s_i = x^{d_i} \ mod \ N$ unde $x=H(m)$ și $H()$ este o funcție de hash și padare, și dovada validității este:
+\item Un algoritm de partajare de semnături primește ca input o cheie publică $<N,e>$, un index $ 1\leq i \leq l$, cheia privată $d_i$, și un mesaj $m$; are ca output o semnătură $s_i = x^{d_i} \ mod \ N$ unde $x=H(m)$ și $H()$ este o funcție de hash și padare, și dovada validității este:
 $$ validity \ proof_i \ (for \ all \ u \in [1,k], \log_{v_u} v_{u,i}=\log_x S_i)$$
 \item Un algoritm combinat de verificare primește ca input o cheie publică $<N,e>$, un mesaj $m$, o listă $s_1, \dots ,s_l$ de semnături partajate, pentru fiecare $u \in [1,k]$ lista $v_u,v_{u,1}, \dots ,v_{u,l}$ de chei de verificare și o listă $proof_1, \dots ,proof_l$ de validări, și ca output o semnătură sau fail.
 \item Un algoritm de verificare primește ca input o cheie publică $<N,e>$, un mesaj $m$, o semnătură $S$ și are ca output un bit $b$ indicând dacă semnătura este corectă sau nu.
@@ -706,7 +705,7 @@ Demonstrație: Ne asumăm faptul că avem un modul RSA în care $P-1$ și $Q-1$ 
 $$\lim_{n-> \infty} Pr_{P^{'},Q^{'}  \in [1,n] } [cmmdc(P^{'},Q^{'}]= 1 =  \frac{6}{\Pi^{2}} > 1/2 $$ 
 Adică, ne asumăm faptul că numerele prime din intervalul $ \left[  2^{\frac{n-1}{2}}, 2^{\frac{n}{2}}         \right] $ sunt uniform distribuite. Singurul factor lent la generarea cheii este verificarea dacă $cmmdc(P^{'},P-1)=2$ unde $P^{'} = 4P$. Putem nota că:
 $$Pr_{P^{'}}[ cmmdc(2P^{'},P^{'}) =2 ]$$
-$$ = Pr_{P^{'}} [2 \nmid P^{'} \wedge 3 \nmid P^{'}  \dots    \wedge B \nmid P^{'} ] =(1- \frac{1}{2})(1 - \frac{1}{3}) \dots (1- \frac{1}{B}) = \prod_{p_i \leqslant B}^{} (1- \frac{1}{P^i}) \approx \frac{1}{e^{\lambda} \ln(B)}  $$
+$$ = Pr_{P^{'}} [2 \nmid P^{'} \wedge 3 \nmid P^{'}  \dots    \wedge B \nmid P^{'} ] =(1- \frac{1}{2})(1 - \frac{1}{3}) \dots (1- \frac{1}{B}) = \prod_{p_i \leq B}^{} (1- \frac{1}{P^i}) \approx \frac{1}{e^{\lambda} \ln(B)}  $$
 Conform teoremei a doua a lui Merts, unde $\lambda$ este onstanta lui Euler. Așadar, va trebui să rulăm algoritmul de $ 4 \times (e^{\lambda} \ln(B)$ ori în medie pentru a putea genera un astfel de modul RSA. 
 \subsubsection{Metoda distribuită de generare de chei în protocolul lui Shoup}
 De ăndată ce $N$ este generat, fie $e$ primul număr mai mare decât $4 \delta^{2}$  în așa fel încât serverul îl poate calcula. Apoi, protocolul Catalano \cite{catalano} este rulat pentru a genera cheia partajată într-o manieră distribuită. La finalul protocolului, fiecare server calculează cheia ei de verificare în felul următor:
@@ -768,7 +767,7 @@ d_{i_t}
 \]
 
 Această matrice este o matrice Vandermonde. Determinantul unei astfel de matrici este:
-$$ \det(A) = \prod_{1 \leqslant j < k <t+1}^{} (i_k - i_j) \ mod \ M$$
+$$ \det(A) = \prod_{1 \leq j < k <t+1}^{} (i_k - i_j) \ mod \ M$$
 Unde $i_{t+1} = 0$. Cum toți $i_j$ sunt distincți în $\mathbb{Z}_{M}$, $i_k - i_j \neq 0 \ mod \ M$ deoarece $l < B$. Prin urmare, toate valorile lui $d$ sunt posibile. Prin urmare, un grup de $t$ jucători nu pot obține informații despre $d$ din partajări ale lui $d$
 
 \subsubsection{Informația dezvăluită prin verificare cheilor}
@@ -791,12 +790,12 @@ Fie $N$ modulul astfel încât $N=PQ$ și $P = 2p^{'} +1 $ și $Q= 2q^{'} +1 $ u
 Fiecare server $i$ are un $k$-tuplu de chei de verificare $v_{1,i} = v_1^{d_i} \ mod \ N, \dots ,v_{k,i} = v_k^{d_i} \ mod \ N$. El calculează o semnătură, $S_i = x^{2 \delta d_i} \ mod \ N$, unde $d_i$ este semnătura $i$ a lui $d$, și dovedim că:
 $$ \log_{v_1} (v_1,i) =  \dots  = \log_{v_k} (v_k,i) = \log_{x^{4 \delta}} (s-{i}^{2}) = d_i \ mod \ M $$
 Acum, descriem "dovada corectitudinii" și lăsăm $d_i \in [0,M]$ să fie secretul partajat al serverelor și $A$ și $B^{'}$ două numere întregi astfel încât $\log(A) \geqslant \log(B^{'} Mh) +k_2$ unde $B^{'}$ și $k_2$ sunt parametri de securitate și $h$ este numărul de runde. În final, $k_1$ este un parametru, astfel încăt probabilitatea de falsificare este:
-$$1/B^{\prime ^{h}} \leqslant \frac{1}{2^{k_1}}$$
+$$1/B^{\prime ^{h}} \leq \frac{1}{2^{k_1}}$$
 Cel care face verificarea, generează aleator un $r \in [0,A]$. Apoi el calculează:
 $$t= (v_{1}^{'}, \dots ,v{k}^{'},x^{'})=(v_{1}^{r}, \dots ,v_{k}^{r},x^{4 \delta r})$$
 Fie $e$, reprezentând primii $b^{'} =\log(B^{'})-1$ biți din valuarea hashului.
 $$ e= [H(v_1, \dots ,v_k,x^{4 \delta},v_{1,i},..v_{k,i},S_{i}^{2},v_{1}^{'}, \dots ,v_{k}^{'},x^{'})]_{b^{'}} $$
-Și verificăm dacă $0 \leqslant z \leqslant A $
+Și verificăm dacă $0 \leq z \leq A $
 
 
 \subsection{Concluzia}
@@ -831,9 +830,67 @@ Am arătat cum trebuie să evităm numerele prime sigure în schema lui Shoup î
         $$ x = r  \ mod \ N \ \Leftrightarrow \exists q \in \mathbb{Z} , x = r+q*N$$
        \subsubsection{Inversul modular}
          Inversul modular poate fi calculat folosind algoritmului Euclid Extins, care nu calculează doar cel mai mare divizor comun a două numere întregi $x$ și $y$, dar găsește și două numere întregi $ \alpha $ și $  \beta $ astfel încât $ cmmdc(x,y) = \alpha \cdot   x + \beta \cdot   y$ \\
-        Dacă dorim să aflăm inversul lui  $x \ mod \ N$ (presupunând faptul că numerele sunt coprime, adică $cmmdc(x,N)=1)$ apoi calculăm $Xcmmdc(x,N)$ și obținem $ \alpha \cdot   x + \beta \cdot   N = 1$. Modulo $N$, această expresie devine $\alpha \cdot   x  = 1 \ mod \ N$; în alte cuinte $\alpha= x^{-1} \ mod \ N$
+        Dacă dorim să aflăm inversul lui  $x \ mod \ N$ (presupunând faptul că numerele sunt coprime, adică $cmmdc(x,N)=1)$ apoi calculăm $Xcmmdc(x,N)$ (varianta extinsă a algoritmului lui Euclid) și obținem $ \alpha \cdot   x + \beta \cdot   N = 1$. Modulo $N$, această expresie devine $\alpha \cdot   x  = 1 \ mod \ N$; în alte cuinte $\alpha= x^{-1} \ mod \ N$ \\
+        Pentru ușurința înțelegerii, vom prezenta algoritmul extins al lui Euclid într-un pseudocod, precum și algoritmul pentru calculul inversului modular.  
+        \begin{algorithm}[H]
+		   \caption{Euclid extins}
+		   \textbf{Input:} $a,b \in \mathbb{Z}$ \\
+		   \textbf{Output:} $(a,b)$ și $V(\alpha, \beta)$ astfel încât $(a,b) = \alpha a + \beta b$
+		   \begin{algorithmic}
+		   \State $V_0 \gets (1,0)$
+		   \State $V_1 \gets (0,1)$
+		   \While {$ b \neq 0 $}
+		    \State $q \gets a  \ div \ b$
+		    \State $r \gets a \ mod  \ b$
+		    \State $a \gets b$
+		    \State $b \gets r$
+		    \State $V \gets V_0$
+		    \State $V_0 \gets V_1$
+		    \State $V_1 \gets V - qV_1$
+		   \EndWhile
+		   \State $(a,b) \ \gets \left| a \right|$
+		   \State $V \gets V_0$
+		   \State \textbf{return} $V$
+		   \end{algorithmic}
+		   \end{algorithm}
+		   
+		   
+		   \begin{algorithm}[H]
+		   \caption{Inversul modular}
+		   \textbf{Input:} $ m \geq 1$ și $ a \in \mathbb{Z}_m$ \\
+		   \textbf{Output:} $ a^{-1} \in \mathbb{Z}_m$, dacă $(a,m)=1$
+		   \begin{algorithmic}
+		   \State calculăm $cmmdc(a,m)= \alpha a + \beta b$
+		   \If{ $ cmmdc(a,m)=1 $ }
+		   \State $ a^{-1} = \alpha \ mod \ m$
+		   \Else
+    		\State Ecuația nu are soluții întregi 
+		   \EndIf
+		   \end{algorithmic}
+		   \end{algorithm}
         
-       
+    Pentru un exemplu concret, vom încerca să calculăm $7^{-1} \in \mathbb{Z}_{26}$.
+    Deoarece $ 7 < 26$, vom calcula $Xcmmdc(26,7)= \beta b + \alpha a$, deci la final vom inversa coordonatele obținute.
+    \begin{align*}
+    V_{26} &=(1,0) \\
+    V_{7} &=(0,1) \\
+    26 : 5 &= 3 \ rest \ 5 \Rightarrow \\
+    5 &= 26 -7 \cdot 3 \Rightarrow \\
+    V_5 &= (1,0) - 3 \cdot (0,1) = (1,-3) \Rightarrow \\
+    7 :5 &= 1 \ rest \ 2  \Rightarrow \\
+    2 &= 7-5 \Rightarrow \\
+    V_2 &= (0,1) - (1,-3) = (-1,4) \Rightarrow \\
+    5:2 &= 2 \ rest \ 1 \Rightarrow \\
+    V_1 &= V_5 - 2 \cdot V_2 = (1,-3) - 2 \cdot (-1,4)= (3,-11)
+    \end{align*}
+    
+    Știm că 1 este ultimul rest $\neq 0$ deci $V_1$ este combinația liniară pe care o căutam. $V_1 = (3,-11)$ dar, deoarece am făcut aceea, vom efectua o interschimbare la primul pas, $V_1$ este de fapt $(-11,3) \Rightarrow \alpha = -11 , \beta=3$ \\
+    Putem face și verificarea $ -11 * 7 + 3 * 26 = -77 + 78  =1 $.
+     Cu $ \alpha $ cunoscut, putem afla $ 7^{-1} \in \mathbb{Z}_{26} $ \\
+     7 și 26 sunt coprime (cel mai mare divizor comun al lor este 1) deci, am reușit să respectăm condiția inițială a algoritmului. $-11$ în $\mathbb{Z}_{26}$ este 15 iar $15 \ mod \ 26 = 15 \Rightarrow 7^{-1} = 15$. Verificând această afirmație, ajungem la $7 \cdot 15 \equiv 1 \mod \ 26$, deoarece $7*15 : 26 = 105 : 24 = 4 \ rest \ 1$ \\
+     O altă modalitate prin care putem determina inversul modular al unui număr modulo alt număr este prin rezolvarea unei ecuații diofantice. Vom încerca să aplicăm această variantă tot pe $7^{-1} \in \mathbb{Z}_{26}$. O ecuație diofantică are forma $ax +bx + c = 0$ iar din algoritmul extins al lui Euclid unde $ cmmdc(a,b) = \alpha a + \beta b$ va trebui să rezolvăm ecuația $ \alpha a + \beta b - cmmdc(a,b)=0$
+     
+    
     \section{RSA Clasic}
      \subsection{Exponențiere Rapidă}
       \subsubsection{Descrierea metodei binare (varianta de la stânga la dreapta)}
@@ -862,7 +919,7 @@ Am arătat cum trebuie să evităm numerele prime sigure în schema lui Shoup î
       \subsubsection{Descrierea}
       Teorema Chineză a resturilor ne permite să reducem timpul computațional pentru o decryptare clasică RSA. Mai general, teorema formează o bijecție între $ \mathbb{Z}_m $ și produsul cartezian \\
       $$ \prod_{i=0}^{k} \mathbb{Z}_{m_i} = \mathbb{Z}_{m_0} \times \mathbb{Z}_{m_1} \times \dots \times  \mathbb{Z}_{m_k}$$
-      Asumând faptul că $ m = \prod_{i=0}^{k} m_i $ și că $ m_i $ au divizor comun doar pe 1. Spre exemplu, există un izomorfism între $ \mathbb{Z}_N$ și $\mathbb{Z}_P \times \mathbb{Z}_Q  $ în loc de $ \mathbb{Z}_N $, $ P $ și $Q$ reprezentând două numere prime astfel încât $ N=PQ$. Spunem că lungimea în biți a lui $P$ și $Q$ este jumătate din lungimea în biți ai lui $N$, costul înmulțirii este teoretic divizat prin 2. Este ușor a calcula imaginea unui anumit a, dar dacă $ a= a_i \ mod \ m_i $ este dat, atunci reciproca nu este trivială. Obiectul teoremei este să dea soluția unică modulo $m$ a unui sistem de forma: \\
+      Asumând faptul că $ m = \prod_{i=0}^{k} m_i $ și că $ m_i $ au divizor comun doar pe 1. Spre exemplu, există un izomorfism între $ \mathbb{Z}_N$ și $\mathbb{Z}_P \times \mathbb{Z}_Q  $ în loc de $ \mathbb{Z}_N $, $ P $ și $Q$ reprezentând două numere prime astfel încât $ N=PQ$. Spunem că lungimea în biți a lui $P$ și $Q$ este jumătate din lungimea în biți ai lui $N$, costul înmulțirii este teoretic divizat prin 2. Este ușor a calcula imaginea unui anumit $a$, dar dacă $ a= a_i \ mod \ m_i $ este dat, atunci reciproca nu este trivială. Obiectul teoremei este să dea soluția unică modulo $m$ a unui sistem de forma: \\
     \[
 \left\{ 
 \begin{array}{c}
@@ -872,6 +929,46 @@ a \equiv a_k \ mod \ m_k
 \end{array}
 \right. 
 \]
+
+		  \begin{algorithm}[H]
+		   \caption{Teorema Chineză a resturilor}
+		   \textbf{Input:} Un sistem de $k$ ecuații de foma $x \equiv b \ mod \ m$ \\
+		   \textbf{Output:} Soluția unică a sistemului
+		   \begin{algorithmic}
+		   \For {$i$ from $1$ to $k$}
+		   	\State $c_i = \prod_{\substack{j=1 \\ j \neq i }}^{k} m_j$
+		   	\EndFor
+		   	\State calculăm solția ecuației $ c_ix \equiv b_i \ mod \ m_i $ folosind Euclid Extins 
+		   	\State \textbf{return} $(c_1x_1 + \dots c_kx_k) \ mod \ (m_1 \dots m_k) $ 
+		   \end{algorithmic}
+		   \end{algorithm}
+		   
+		   
+		   \begin{algorithm}[H]
+		   \caption{Rezolvarea unei ecuații liniare congruente}
+		   \textbf{Input:} $ m \geq 1$ și $ a,b \in \mathbb{Z}$  \\
+		   \textbf{Output:} toate soluțiile modulo $m$ ale ecuației $ax \equiv b \ mod \ m $
+		   \begin{algorithmic}
+		   \State calculăm $Xcmmdc(a,m)= \alpha a +  \beta m$
+		   \If {$cmmdc(a,m)|b$}
+		   \State listă_soluții $ \gets [ \ ] $
+		   \State $b \textprime \gets \frac{b}{cmmdc(a,m)} $
+		   \State $x_0 \gets \alpha b \textprime $
+		   \For {$i$ from 0 to $cmmdc(a,m)-1$}
+		   \State listă_soluții.push$\left(     \left( x_0 + \frac{im}{cmmdc(a,m)}    \right) \ mod \ m \right)$
+		   \EndFor
+		   \Else
+		   \State Nu există soluții întregi
+		   \EndIf
+		   	 
+		   \end{algorithmic}
+		   \end{algorithm}
+
+
+		  
+
+
+
 
 	 \subsubsection{Demonstrația teoremei}
 	 Căutăm să găsim acel $a$, astfel încât $ a \equiv a_i \ mod \ m_i $ pentru $i$ de la $1$ până la $k$. Să dovedim că $ a = \sum_{i=0}^{k} a_i \cdot   M_i \cdot   y_i $ este o soluție a sistemului. \\
