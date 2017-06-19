@@ -1,56 +1,13 @@
 \BOOKMARK [0][-]{chapter.1}{Introducere \356n RSA}{}% 1
 \BOOKMARK [1][-]{section.1.1}{RSA Clasic}{chapter.1}% 2
-\BOOKMARK [2][-]{subsection.1.1.1}{Descriere}{section.1.1}% 3
-\BOOKMARK [2][-]{subsection.1.1.2}{Functionare}{section.1.1}% 4
-\BOOKMARK [2][-]{subsection.1.1.3}{Generarea cheilor}{section.1.1}% 5
-\BOOKMARK [2][-]{subsection.1.1.4}{Criptare si Decriptare}{section.1.1}% 6
-\BOOKMARK [2][-]{subsection.1.1.5}{Implementari eficiente}{section.1.1}% 7
-\BOOKMARK [2][-]{subsection.1.1.6}{Securitatea}{section.1.1}% 8
-\BOOKMARK [0][-]{chapter.2}{Criptanaliza RSA}{}% 9
-\BOOKMARK [1][-]{section.2.1}{Criptanaliza pe RSA clasic}{chapter.2}% 10
-\BOOKMARK [2][-]{subsection.2.1.1}{Atac cu criptotext ales}{section.2.1}% 11
-\BOOKMARK [2][-]{subsection.2.1.2}{Mesaje necriptate}{section.2.1}% 12
-\BOOKMARK [2][-]{subsection.2.1.3}{Exponentul de criptare mic}{section.2.1}% 13
-\BOOKMARK [2][-]{subsection.2.1.4}{Exponent de decriptare mic}{section.2.1}% 14
-\BOOKMARK [1][-]{section.2.2}{Criptanaliza pe variante RSA}{chapter.2}% 15
-\BOOKMARK [2][-]{subsection.2.2.1}{CRT-RSA}{section.2.2}% 16
-\BOOKMARK [2][-]{subsection.2.2.2}{Multi-Prime RSA}{section.2.2}% 17
-\BOOKMARK [2][-]{subsection.2.2.3}{Factorizarea Modulului}{section.2.2}% 18
-\BOOKMARK [2][-]{subsection.2.2.4}{Multi-Power RSA}{section.2.2}% 19
-\BOOKMARK [2][-]{subsection.2.2.5}{Factorizarea modulului}{section.2.2}% 20
-\BOOKMARK [0][-]{chapter.3}{Variante si Optimizari RSA}{}% 21
-\BOOKMARK [1][-]{section.3.1}{RSA varianta distribuita \(Schema lui Shoup\)}{chapter.3}% 22
-\BOOKMARK [2][-]{subsection.3.1.1}{Introducere}{section.3.1}% 23
-\BOOKMARK [2][-]{subsection.3.1.2}{Dovada robustetii si folosirea numerelor prime sigure}{section.3.1}% 24
-\BOOKMARK [2][-]{subsection.3.1.3}{Problema}{section.3.1}% 25
-\BOOKMARK [2][-]{subsection.3.1.4}{Modele de securitate}{section.3.1}% 26
-\BOOKMARK [2][-]{subsection.3.1.5}{Un nou mod de a genera modulul RSA \(schema Boneh-Franklin boneh\)}{section.3.1}% 27
-\BOOKMARK [2][-]{subsection.3.1.6}{Schema lui Shoup \356mpotriva adversarilor activi}{section.3.1}% 28
-\BOOKMARK [2][-]{subsection.3.1.7}{\316mbunatatirea schemei lui Shoup \356mpotriva adversarillor activi}{section.3.1}% 29
-\BOOKMARK [2][-]{subsection.3.1.8}{Concluzia}{section.3.1}% 30
-\BOOKMARK [1][-]{section.3.2}{Bazele matematice}{chapter.3}% 31
-\BOOKMARK [2][-]{subsection.3.2.1}{Comportamentul asimptotic}{section.3.2}% 32
-\BOOKMARK [2][-]{subsection.3.2.2}{Aritmetica numerelor \356ntregi}{section.3.2}% 33
-\BOOKMARK [2][-]{subsection.3.2.3}{Aritmetica modulara}{section.3.2}% 34
-\BOOKMARK [1][-]{section.3.3}{RSA Clasic}{chapter.3}% 35
-\BOOKMARK [2][-]{subsection.3.3.1}{Exponentiere Rapida}{section.3.3}% 36
-\BOOKMARK [2][-]{subsection.3.3.2}{Teorema Chineza a resturilor}{section.3.3}% 37
-\BOOKMARK [2][-]{subsection.3.3.3}{Algoritmul lui Garner}{section.3.3}% 38
-\BOOKMARK [2][-]{subsection.3.3.4}{Implementari rapide RSA}{section.3.3}% 39
-\BOOKMARK [1][-]{section.3.4}{RSA Rebalansat}{chapter.3}% 40
-\BOOKMARK [2][-]{subsection.3.4.1}{Generarea cheilor, criptare si decriptare}{section.3.4}% 41
-\BOOKMARK [1][-]{section.3.5}{Multi-Prime RSA}{chapter.3}% 42
-\BOOKMARK [2][-]{subsection.3.5.1}{Algoritmul Garner cand N=PQR}{section.3.5}% 43
-\BOOKMARK [2][-]{subsection.3.5.2}{Multi-Prime RSA \(modulo N=PQR\)}{section.3.5}% 44
-\BOOKMARK [2][-]{subsection.3.5.3}{Generalizarea algoritmului Garner}{section.3.5}% 45
-\BOOKMARK [1][-]{section.3.6}{Multi-Power RSA}{chapter.3}% 46
-\BOOKMARK [2][-]{subsection.3.6.1}{Hensel lifting}{section.3.6}% 47
-\BOOKMARK [2][-]{subsection.3.6.2}{Multi-Power RSA modulo N=P^2Q}{section.3.6}% 48
-\BOOKMARK [2][-]{subsection.3.6.3}{Generalizarea ideii}{section.3.6}% 49
-\BOOKMARK [2][-]{subsection.3.6.4}{Multi-Power RSA modulo N=P^bQ}{section.3.6}% 50
-\BOOKMARK [2][-]{subsection.3.6.5}{Schema lui Takagi}{section.3.6}% 51
-\BOOKMARK [1][-]{section.3.7}{RSA pe grupuri}{chapter.3}% 52
-\BOOKMARK [2][-]{subsection.3.7.1}{Ideea de baza}{section.3.7}% 53
-\BOOKMARK [2][-]{subsection.3.7.2}{Optimizari}{section.3.7}% 54
-\BOOKMARK [2][-]{subsection.3.7.3}{\316mbunatatirea batch RSA: Tehnica lui Montgomery}{section.3.7}% 55
-\BOOKMARK [2][-]{subsection.3.7.4}{\316mbunatatirea RSA folosind tehnica lui Shamir}{section.3.7}% 56
+\BOOKMARK [0][-]{chapter.2}{Variante si Optimizari RSA}{}% 3
+\BOOKMARK [1][-]{section.2.1}{Bazele matematice}{chapter.2}% 4
+\BOOKMARK [1][-]{section.2.2}{RSA Clasic}{chapter.2}% 5
+\BOOKMARK [1][-]{section.2.3}{RSA Rebalansat}{chapter.2}% 6
+\BOOKMARK [1][-]{section.2.4}{Multi-Prime RSA}{chapter.2}% 7
+\BOOKMARK [1][-]{section.2.5}{Multi-Power RSA}{chapter.2}% 8
+\BOOKMARK [1][-]{section.2.6}{RSA pe grupuri}{chapter.2}% 9
+\BOOKMARK [1][-]{section.2.7}{RSA varianta distribuita \(Schema lui Shoup\)}{chapter.2}% 10
+\BOOKMARK [0][-]{chapter.3}{Criptanaliza RSA}{}% 11
+\BOOKMARK [1][-]{section.3.1}{Criptanaliza pe RSA clasic}{chapter.3}% 12
+\BOOKMARK [1][-]{section.3.2}{Criptanaliza pe variante RSA}{chapter.3}% 13

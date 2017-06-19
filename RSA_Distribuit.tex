@@ -1,4 +1,5 @@
-\documentclass[12]{report}
+\documentclass[12pt, oneside]{book}
+\usepackage[left=3.0cm,bottom=2.0cm, right=2.0cm,top=2.0cm]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage[romanian]{babel}
@@ -12,18 +13,84 @@
 \usepackage{algpseudocode}
 \usepackage{hyperref}
 \newtheorem{theorem}{Teorema}
+\usepackage{graphicx}
+\usepackage{mathptmx}
+\graphicspath{ {images/} }
 \hypersetup{
     colorlinks=true,
     linkcolor=black,     
 }
- 
+ \newcommand{\sign}[1]{%      
+  \begin{tabular}[t]{@{}l@{}}
+  \makebox[1.5in]{\dotfill}\\
+  \strut#1\strut
+  \end{tabular}%
+}
+\newcommand{\Date}{%
+  \begin{tabular}[t]{@{}p{1.5in}@{}}
+  \\[-2ex]
+  \strut Date: \dotfill\strut
+  \end{tabular}%
+}
 \urlstyle{same}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{1} 
 \begin{document}
 
+\begin{titlepage}
+\begin{center}
+\vspace*{1cm}
+{\Huge Universitatea Alexandru Ioan Cuza Iași} \\
+\vspace{0.5cm}
+{\huge \textbf{Facultatea de Informatică}} \\
+\vspace{1.5cm}
+\includegraphics[width=3cm,height=4.5cm,keepaspectratio]{logo_fii3.png} \\
+\vspace{1cm}
+Lucrare de Licență \\ 
+\vspace{0.5cm}
+{\Large \textbf{RSA - Variante și Criptanaliză}} \\
+\vspace{1cm}
+{ \small Propusă de: \\}
+{\large Cernescu Ștefan-Bogdan} \\
+\vspace{1cm}
+{\Large \textbf{Sesiunea} iulie,2017} \\
+\vspace{1cm}
+{\small Coordonator științific} \\
+{\large Lect.dr. Iftene Sorin}
+\end{center}
+\end{titlepage}
 
+\vspace{1cm}
+{ \Huge \center Declarație privind originalitatea originalitatea și respectarea drepturilor de autor} \\
 
+Prin prezenta declar că Lucrarea de licență cu titlul "RSA - Variante și criptanaliză" este scrisă de mine și nu a mai fost prezentată niciodată la o altă facultate sau instituție de învățământ superior din țară sau străinătate. De asemenea, declar că toate sursele utilizate, incuiv cele preluate de pe Internet, sunt indicate în lucrare, cu respectarea regulilor de evitare a plagiatului:
+\begin{itemize}
+\item toate fragmentele de text reproduse exact, chiar și în traducere proprie în altă limbă, sunt scrise între ghilimele și dețin referința precisă a sursei;
+\item reformularea în cuvinte proprii a textelor scrise de către alți autori deține referința precisă;
+\item codul sursă,imaginile etc. preluate din proiecte open-source sau alte surse sunt utilizate cu respectarea drepturilor de autor și dețin referințe precise;
+\item rezumarea ideilor altor autori precizează referința precisă la textul original.
+\end{itemize}
+\newcommand{\doubleSignature}[3]{
+\begin{minipage}[c]{\textwidth}
+\vspace{2cm}
 
+\makebox[12cm][c]{
+ #1, \today 
+}
+\vspace{3cm}
+
+\makebox[12cm][c]{
+\hfill \makebox[5cm][c] {\hrulefill} \hfill \makebox[5cm][c] {\hrulefill} \hfill
+}
+\makebox[12cm][c]{
+\hfill #2 \hfill #3 \hfill
+}
+\vspace{1cm}
+\end{minipage}
+}
+\doubleSignature{Trondheim}{Ivar Nesje}{Team mate's name}
 \tableofcontents
+\clearpage
 \chapter{Introducere în RSA}
 
 \section{RSA Clasic}
@@ -55,6 +122,840 @@ Există anumite modificări care pot aduce performanțe sporite, precum alegerea
 Problema decriptării unui mesaj criptat cu RSA este denumită problema RSA. Acesta constă în obținerea rădăcinii de ordin $e$ modulo $N$, unde $e$ și $N$ au proprietatea că $N$ este produsul a două numere prime mari $P$ și $Q$, iar $e$ este relativ prim cu produsul dintre $P-1$ și $Q-1$. În acest moment, cea mai eficientă de a realiza aeasta este descompunerea în factori primi ai lui $n$, și obținerea astfel a cheii secrete $d$ pe baza lui $e$. Astfel, este demonstrat că dificultatea spargerii unui mesaj criptat cu RSA nu este mai dificilă decât problema factorizării. Nu a fost descoperită încă o soluție generală a problemei RSA, dar nici nu s-a demonstrat matematic că nu există o altă soluție. \\
 Factorizarea întregilor prin metode comune ajută la găsirea soluțiilor în timp util doar pentru numere mici. Pentru numere mari, algoritmii de factorizare, cu complexitatea exponențială. dau soluția după foarte mult timp. Cea mai rapidă metodă de factorizare a întregilor, algoritmul ”Number Field Siev”, are o complexitate de $O(e^{c((\log n)^{\frac{1}{3}} (\log \log n)^{\frac{2}{3}}       })$. Aici, $c$ este un număr ce ia valori în jur de $1,9$ pentru numere de tipul lui $N$, adică numere cu 2 factori primi. Cel mai mare număr factorizat vreodată prin acest algoritm, rulat în anul 2005, de către specialiștii de la Agenția Federală Germană pentru Securitatea Tehnologiei Informației, are 200 de cifre zecimale, iar reprezentarea binară a factorilor primi obținuți ocupă 663 de biți. Cheile de criptare RSA cele mai sigure au lungimi de peste 1024 de biți.\\
 Atacul RSA forței brute, adică încercarea fiecărei chei secrete posibile, consumă chiar mai mult timp decât factorizarea.
+
+
+
+
+
+\chapter{Variante și Optimizări RSA}
+
+
+
+\section{Bazele matematice} 
+    \subsection{Comportamentul asimptotic}
+     \subsubsection{Analiza unui algoritm}
+      Cel mai bun parametru de securitate o reprezintă lungimea unei chei. O cheie mai mare ne va
+      asigura un nivel de securitate ridicat, dar operațille vor necesita un timp mai mare și vor consuma
+      mai multă memorie. În momentul actual, lungimea unei chei RSA este de $1024$,chiar și 2048 de biți.
+      
+     \subsection{Aritmetica numerelor întregi}
+      \subsubsection{Operațiile de bază}
+       Avem o serie de operații de bază la îndemâna noastră, cum ar fi operațiile logice, evaluarea condițiilor sau saltul în program. Aceste lucruri ne ajută pentru a calcula operații mai complexe cum ar fi înmulțirea a doua numere pe $n$ biți. Înmulțirea sau împărțirea acestor numere se numesc operații cu multiplă precizie. 
+      \subsubsection{Reprezentarea într-o anumită bază}
+      Numerele întregi pozitive pot fi reprezentate în multiple moduri. Cea mai folosită reprezentare a acestora este baza $10$, un astfel de număr este reprezentat prin serii de $0$ și $9$. Spre exemplu $ a = 123 $ înseamnă $ a = 1 \cdot   10^2 + 2 \cdot 10^1 + 3*10^0$. Prin extensie, este posibil să reprezentăm un întreg utilizând o baza b: $ a = a_k \cdot   b^k + a_{k-1}*b^{k-1} +  \dots  + a_0*b^0 $. Pentru în număr $a$ și o bază $b$ există mereu această reprezentare și este unică. Deoarece calculaoarele lucrează cu $0$ și $1$, baza $2$ este mereu folosită. Așadar, vom folosi următoarea notație \\
+      $$ a=(111011)_2 = 2^5 + 2^4 + 2^3 + 0*2^2 + 2^1 + 2^0 $$
+      \subsection{Aritmetica modulară}
+       \subsubsection{Reducerea modulară}
+        Majoritatea criptosistemelor sunt bazate pe grupuri finite; spre excemplu $ \mathbb{Z}_N $. Fiecare element $x$ din acest grup poate fi notat ca și: \\
+        $$ x = r  \ mod \ N \ \Leftrightarrow \exists q \in \mathbb{Z} , x = r+q*N$$
+       \subsubsection{Inversul modular}
+         Inversul modular poate fi calculat folosind algoritmului Euclid Extins, care nu calculează doar cel mai mare divizor comun a două numere întregi $x$ și $y$, dar găsește și două numere întregi $ \alpha $ și $  \beta $ astfel încât $ cmmdc(x,y) = \alpha \cdot   x + \beta \cdot   y$ \\
+        Dacă dorim să aflăm inversul lui  $x \ mod \ N$ (presupunând faptul că numerele sunt coprime, adică $cmmdc(x,N)=1)$ apoi calculăm $Xcmmdc(x,N)$ (varianta extinsă a algoritmului lui Euclid) și obținem $ \alpha \cdot   x + \beta \cdot   N = 1$. Modulo $N$, această expresie devine $\alpha \cdot   x  = 1 \ mod \ N$; în alte cuinte $\alpha= x^{-1} \ mod \ N$ \\
+        Pentru ușurința înțelegerii, vom prezenta algoritmul extins al lui Euclid într-un pseudocod, precum și algoritmul pentru calculul inversului modular.  
+        \begin{algorithm}[H]
+		   \caption{Euclid extins}
+		   \textbf{Input:} $a,b \in \mathbb{Z}$ \\
+		   \textbf{Output:} $(a,b)$ și $V(\alpha, \beta)$ astfel încât $(a,b) = \alpha a + \beta b$
+		   \begin{algorithmic}
+		   \State $V_0 \gets (1,0)$
+		   \State $V_1 \gets (0,1)$
+		   \While {$ b \neq 0 $}
+		    \State $q \gets a  \ div \ b$
+		    \State $r \gets a \ mod  \ b$
+		    \State $a \gets b$
+		    \State $b \gets r$
+		    \State $V \gets V_0$
+		    \State $V_0 \gets V_1$
+		    \State $V_1 \gets V - qV_1$
+		   \EndWhile
+		   \State $(a,b) \ \gets \left| a \right|$
+		   \State $V \gets V_0$
+		   \State \textbf{return} $V$
+		   \end{algorithmic}
+		   \end{algorithm}
+		   
+		   
+		   \begin{algorithm}[H]
+		   \caption{Inversul modular}
+		   \textbf{Input:} $ m \geq 1$ și $ a \in \mathbb{Z}_m$ \\
+		   \textbf{Output:} $ a^{-1} \in \mathbb{Z}_m$, dacă $(a,m)=1$
+		   \begin{algorithmic}
+		   \State calculăm $cmmdc(a,m)= \alpha a + \beta b$
+		   \If{ $ cmmdc(a,m)=1 $ }
+		   \State $ a^{-1} = \alpha \ mod \ m$
+		   \Else
+    		\State Ecuația nu are soluții întregi 
+		   \EndIf
+		   \end{algorithmic}
+		   \end{algorithm}
+        
+    Pentru un exemplu concret, vom încerca să calculăm $7^{-1} \in \mathbb{Z}_{26}$.
+    Deoarece $ 7 < 26$, vom calcula $Xcmmdc(26,7)= \beta b + \alpha a$, deci la final vom inversa coordonatele obținute.
+    \begin{align*}
+    V_{26} &=(1,0) \\
+    V_{7} &=(0,1) \\
+    26 : 5 &= 3 \ rest \ 5 \Rightarrow \\
+    5 &= 26 -7 \cdot 3 \Rightarrow \\
+    V_5 &= (1,0) - 3 \cdot (0,1) = (1,-3) \Rightarrow \\
+    7 :5 &= 1 \ rest \ 2  \Rightarrow \\
+    2 &= 7-5 \Rightarrow \\
+    V_2 &= (0,1) - (1,-3) = (-1,4) \Rightarrow \\
+    5:2 &= 2 \ rest \ 1 \Rightarrow \\
+    V_1 &= V_5 - 2 \cdot V_2 = (1,-3) - 2 \cdot (-1,4)= (3,-11)
+    \end{align*}
+    
+    Știm că 1 este ultimul rest $\neq 0$ deci $V_1$ este combinația liniară pe care o căutam. $V_1 = (3,-11)$ dar, deoarece am făcut aceea, vom efectua o interschimbare la primul pas, $V_1$ este de fapt $(-11,3) \Rightarrow \alpha = -11 , \beta=3$ \\
+    Putem face și verificarea $ -11 * 7 + 3 * 26 = -77 + 78  =1 $.
+     Cu $ \alpha $ cunoscut, putem afla $ 7^{-1} \in \mathbb{Z}_{26} $ \\
+     7 și 26 sunt coprime (cel mai mare divizor comun al lor este 1) deci, am reușit să respectăm condiția inițială a algoritmului. $-11$ în $\mathbb{Z}_{26}$ este 15 iar $15 \ mod \ 26 = 15 \Rightarrow 7^{-1} = 15$. Verificând această afirmație, ajungem la $7 \cdot 15 \equiv 1 \mod \ 26$, deoarece $7*15 : 26 = 105 : 24 = 4 \ rest \ 1$ \\
+     
+    
+    \section{RSA Clasic}
+     \subsection{Exponențiere Rapidă}
+      \subsubsection{Descrierea metodei binare (varianta de la stânga la dreapta)}
+       Această metodă de exponențiere este bazată pe reprezentarea binară a exponentului și ne permite să calculăm un exponent cu un număr mic de înmulțiri și ridicări la pătrat. Luăm baza $M$, exponentul e și modulul $N$ ca și input, și rezultatul exponențierii $C = M^e \ mod \ N$ ca și output. Pe lângă faptul că avem o reprezentare arbitrară a lui $ e = \sum_{i=0} ^ {k-1} e_i \cdot   2^i $, unde $ e_i $ este $0$ sau $1$. Putem transforma exponentul în următoarea expresie: \\
+       \begin{align*}
+        M^e &= M^{\sum_{i=0} ^ {k-1} e_i \cdot   2^i} \ mod N \\ 
+        &=  \prod_{i=0}^{k-1} M^{e_i*2^i} \ mod \ N \\
+        &= \prod_{\substack{i=0 \\ e_i =1}}^{k-1} M^{2^i} \ mod \ N 
+       \end{align*}
+        
+       Folosind relația, vom putea calcula recursiv rezultatul: prima dată îl vom inițializa cu $1$, apoi vom parcurge reprezentarea binară a exponentului. Dacă bitul de la poziția $i$ este $1$, atunci o vom multiplica cu rezultatul $ M^{2^i}$. Dar acest lucru se poate face mai rapid: dacă inițializăm rezultatul cu 1 și mergem prin reprezentarea binară a exponentului de la stânga către dreapta. La fiecare pas, ridicăm la pătrat rezultatul și în înmulțim cu M dacă bitul de pe acea poziție este $1$. La final, rezultatul va fi multiplicarea acestuia cu $ M^{2^i}$.
+      \subsubsection{Corectitudinea algoritmului left-to-right}
+      Vom dovedi prin inducție că acest aloritm funcționează. Să spunem că la un anumit pas $i$ avem $ C_i = \prod_{j=i}^{k-1} {M^{e_j*2^{j-i}}} \ mod \ N$. La următorul pas, vom calcula ridicarea la pătrat și o înmulțire dacă $ e_{i-1} = 1 $. Prin urmare: \\
+      \begin{align*}
+       C_{i-1} &= M^{e_{i-1}}*C_{i}^2 \ mod \ N\\
+       &= M^{e_{i-1}} \cdot   \left( \prod_{j=i}^{k-1} M^{e_j*2^{j-i}} \right)^2 \ mod \ N \\ 
+       &= M^{e_{i-1}} \cdot   \prod_{j=i}^{k-1} M^{e_j*2^{j-i+1}} \ mod \ N \\
+       &= \prod_{j=i-1}^{k-1} M^{e_j*2^{j+)i-1)}} \ mod \ N 
+      \end{align*}
+      
+      
+      La începutul buclei, la pasul $ k-1 $ afirmația este adevărată deoarece $ C = M^{e_{k-1}} mod N$. Prin inducție, afirmația este adevărată cât timp $ i=0$. Iar pentru $i=0$ avem: \\
+      $$ C= \prod_{j=0}^{k-1} M^{e_j \cdot   2^j}  \ mod \ N $$
+      
+     \subsection{Teorema Chineză a resturilor}
+      \subsubsection{Descrierea}
+      Teorema Chineză a resturilor ne permite să reducem timpul computațional pentru o decryptare clasică RSA. Mai general, teorema formează o bijecție între $ \mathbb{Z}_m $ și produsul cartezian \\
+      $$ \prod_{i=0}^{k} \mathbb{Z}_{m_i} = \mathbb{Z}_{m_0} \times \mathbb{Z}_{m_1} \times \dots \times  \mathbb{Z}_{m_k}$$
+      Asumând faptul că $ m = \prod_{i=0}^{k} m_i $ și că $ m_i $ au divizor comun doar pe 1. Spre exemplu, există un izomorfism între $ \mathbb{Z}_N$ și $\mathbb{Z}_P \times \mathbb{Z}_Q  $ în loc de $ \mathbb{Z}_N $, $ P $ și $Q$ reprezentând două numere prime astfel încât $ N=PQ$. Spunem că lungimea în biți a lui $P$ și $Q$ este jumătate din lungimea în biți ai lui $N$, costul înmulțirii este teoretic divizat prin 2. Este ușor a calcula imaginea unui anumit $a$, dar dacă $ a= a_i \ mod \ m_i $ este dat, atunci reciproca nu este trivială. Obiectul teoremei este să dea soluția unică modulo $m$ a unui sistem de forma: \\
+    \[
+\left\{ 
+\begin{array}{c}
+a \equiv a_1 \ mod \ m_1 \\ 
+ \vdots  \\ 
+a \equiv a_k \ mod \ m_k
+\end{array}
+\right. 
+\]
+
+		  \begin{algorithm}[H]
+		   \caption{Teorema Chineză a resturilor}
+		   \textbf{Input:} Un sistem de $k$ ecuații de foma $x \equiv b \ mod \ m$ \\
+		   \textbf{Output:} Soluția unică a sistemului
+		   \begin{algorithmic}
+		   \For {$i$ from $1$ to $k$}
+		   	\State $c_i = \prod_{\substack{j=1 \\ j \neq i }}^{k} m_j$
+		   	\EndFor
+		   	\For {$i$ from $1$ to $k$}
+		   	\State calculăm solția ecuației $ c_ix \equiv b_i \ mod \ m_i $ folosind Euclid Extins 
+		   	\EndFor
+		   	\State \textbf{return} $(c_1x_1 + \dots c_kx_k) \ mod \ (m_1 \dots m_k) $ 
+		   \end{algorithmic}
+		   \end{algorithm}
+		   
+		   
+		   \begin{algorithm}[H]
+		   \caption{Rezolvarea unei ecuații liniare congruente}
+		   \textbf{Input:} $ m \geq 1$ și $ a,b \in \mathbb{Z}$  \\
+		   \textbf{Output:} toate soluțiile modulo $m$ ale ecuației $ax \equiv b \ mod \ m $
+		   \begin{algorithmic}
+		   \State calculăm $Xcmmdc(a,m)= \alpha a +  \beta m$
+		   \If {$cmmdc(a,m)|b$}
+		   \State listă_soluții $ \gets [ \ ] $
+		   \State $b \textprime \gets \frac{b}{cmmdc(a,m)} $
+		   \State $x_0 \gets \alpha b \textprime $
+		   \For {$i$ from 0 to $cmmdc(a,m)-1$}
+		   \State listă_soluții.push$\left(     \left( x_0 + \frac{im}{cmmdc(a,m)}    \right) \ mod \ m \right)$
+		   \EndFor
+		   \Else
+		   \State Nu există soluții întregi
+		   \EndIf
+		   	 
+		   \end{algorithmic}
+		   \end{algorithm}
+
+
+		Pentru o înțelegere mai clară, vă vom prezenta următorul sistem de ecuații, și dorim să determinăm soluția sa unică folosind teorema Chineză a resturilor:
+\[
+\begin{cases}
+x &\equiv 2 \ mod \ 3  \\
+x &\equiv 3 \ mod \ 4  \\
+x &\equiv 6 \ mod \ 7
+\end{cases}
+\]	  
+$$ c_1 = 28 , c_2 = 21, c_3=12 $$
+Soluțiile primelor 2 ecuații
+$$ 28x \equiv 2 \ mod \ 3 $$
+$$ 21x \equiv 2 \ mod \ 4 $$
+se pot deduce foarte ușor, deoarece valorile lui $m_i$ sunt destul de mici, deci $x_1=2$ și $x_2=3$. Pentru ecuația
+$$ 21x \equiv 3 \ mod \ 4$$
+vom aplica algoritmul extins al lui Euclid.
+\begin{align*}
+V_{12}&=(1,0) \\
+V_{7}&=(0,1) \\
+12 : 7 &= 1 \ rest \ 5 \Rightarrow \\
+5 &= 12 -7 \Rightarrow \\
+V_5&= V_{12}-V_7 = (1,0)-(0,1)=(1,-1) \\
+7:5 &= 1 \ rest \ 2 \Rightarrow \\
+2 &= 7 -5 \Rightarrow \\
+V_2&=V_7-V_5 = (0,1)-(1,-1)=(-1,2) \Rightarrow \\
+5:2&= 2 \ rest \ 1 \Rightarrow \\
+1&=5 - 2 \cdot 2  \Rightarrow \\
+V_1&=V_5 - V_2 = (1,-1) - (-2,4) = (3,-5)
+\end{align*}
+Avem $\alpha =3$ și $\beta=-5,$ iar $ 3 \cdot 12 - 5 \cdot 7 =1$ deci $V_1$ este corect. \\
+Acum vom aplica algoritmul de rezolvare a unei ecuații liniare congruente. Deoarece $cmmdc(a,m)=1$ înseamnă că ecuația va avea o singură soluție. 
+\begin{align*}
+b \textprime &= \frac{b}{cmmdc(a,m)}=6
+x_0 = \alpha b = 3 \cdot 6 =18
+x_3= x_0 \ mod \ 7 = 4 
+\end{align*}
+
+\begin{align*}
+x &= (c_1x_1 + c_2x_2 + c_3x_3) \ mod \ (3 \cdot 4 \cdot 7) \\
+&= (56+63+48) \ mod \ 84 \\
+&= 167 \ mod \ 84 \\
+&= 83
+\end{align*}
+Așadar, soluția finală este $x=3$. Putem face și verificările: \\
+$ 83 : 3 = 20 \ rest \ 3$, prima ecuație este adevărată \\
+$ 73 : 4 = 27 \ rest \ 2$, a doua ecuație este și ea adevărată \\
+$ 83 : 7 = 11 \ rest \ 6$, ultima ecuație este și ea adevărată, deci rezultatul final $x=83$ este correct.
+
+
+
+
+	 \subsubsection{Demonstrația teoremei}
+	 Căutăm să găsim acel $a$, astfel încât $ a \equiv a_i \ mod \ m_i $ pentru $i$ de la $1$ până la $k$. Să dovedim că $ a = \sum_{i=0}^{k} a_i \cdot   M_i \cdot   y_i $ este o soluție a sistemului. \\
+	 $M_i= \prod_{j=0,j \neq i}^{k} m_j $ și $M_j=0 \ mod \ m_i $ dacă $j \neq i$, de aceea: 
+	 $$ a = a_i \cdot   M_i \cdot   y_i \ mod \ m_i $$
+	 Dar am ales $y_i$ astfel încât $y_i = M_{i}^{-1} \ mod \ m_i$ ; cu alte cuvinte $y_i \cdot   M_i = 1 \ mod \ m_i$. În final, obținem pentru $i$ de la 1 până la $k$ :
+	 $$ a = a_i \  mod \ m_i$$
+	 
+	 \subsection{Algoritmul lui Garner}
+	  \subsubsection{Descrierea algoritmului}
+	  Utilizarea clasică a teoremei Chineze a resturilor necesită o reducere modulară modulo $N$,unde $N$ este un produs de două numere prime $P$ și $Q$. Este posibil să estimăm calculul a celor doi inverși datorită algoritmului Garner. Totuși, costul din punct de vedere al memoriei este mai mare. Ca și în algoritmul precedent, trebuie să găsim $M$ astfel încât $ M = M_P \ mod \ P$ și $M = M_Q \ mod \ Q$. Mai avem un parametru $ P_{inv_Q} = P^{-1} \ mod \ Q$.
+	  
+\begin{algorithm}[H]
+		   \caption{Algoritmul lui Garner}
+		   \textbf{Input:} $M_P,M_Q,P,Q,P_{inv_Q},N $  \\
+		   \textbf{Output:} $M$
+		   \begin{algorithmic}
+		   \State $V \gets M_Q - M_P \ mod \ Q$
+		   \State $V \gets V * (P_{inv_Q}) \ mod \ Q$
+		   \State $M \gets V * P \ mod \ N$
+		   \State $M+M_P \ mod \ N$
+		   \State \textbf{return$(M)$}	 
+		   \end{algorithmic}
+		   \end{algorithm}
+	  Pentru acest algoritm, vom încerca să rezolvăm din noul sistemul de ecuații
+	  \[
+\begin{cases}
+x &\equiv 2 \ mod \ 3  \\
+x &\equiv 3 \ mod \ 4  \\
+x &\equiv 6 \ mod \ 7
+\end{cases}
+\]	
+O problemă o reprezintă faptul că acest algoritm este conceput pentru un sistem cu 2 ecuații. Totuși, putem rezolva 2 dintre aceste ecuații, iar cu rezultatul obținut, o putem rezolva și pe ultima. Pentru această metodă, am ales pentru început rezolvarea ultimelor 2 ecuații. 
+	  \[
+\begin{cases}
+x &\equiv 3 \ mod \ 4  \\
+x &\equiv 6 \ mod \ 7
+\end{cases}
+\]
+
+Vom începe prin a face notațiile $M_P=3,M_Q=6,P,4,Q=7,P_{inv_Q}=2$ (ultimul termen fiind aflat folosind algoritmul extins al lui Euclid) după care putem trece la executarea algoritmului:
+\begin{align*}
+V&=6-3 \ mod \ 7 =3 \\
+V&= 3 \cdot 2 \ mod \ 7 = 6 \\
+M&= 6 \cdot 4 \ mod \ 28 =24 \\
+M&=27
+\end{align*}
+Acum trebuie să aplicăm din nou acest algoritm pe sistemul
+	  \[
+\begin{cases}
+x &\equiv 2 \ mod \ 3  \\
+x &\equiv 27 \ mod \ 28  
+\end{cases}
+\]
+Efectuăm din nou notațiile $M_P=2,M_Q=27,P=3,Q=28,P_{inv_Q}=19$ și executăm algoritmul:
+\begin{align*}
+V&=27-2 \ mod \ 28 = 25 \\
+V&=25 \cdot 19 \ mod \ 28 = 27 \\
+M&=27 \cdot 3 \ mod 84 = 81 \\
+M&=81+2 \ mod 84 = 83
+\end{align*}
+După cum observăm, am obținut același rezultat ca atunci când am aplicat teorema Chineză a resturilor.
+	  
+	  \subsubsection{Corectitudinea algoritmului}
+	  Vrem să calculăm M astfel încât $M =M_P \ mod \ P$ și $M=M_Q \ mod \ Q$ și $P_{inv_Q}=P^{-1} \ mod \ Q$. Să arătăm că: \\
+	  $$ M=M_P + V*P \ mod \ N$$
+	  unde $ V=P_{inv_Q} \cdot   (M_Q-M_P) \ mod \ Q$ \\
+	  $M = M_P \ mod \ P$ și : \\
+	  \begin{align*}
+	  P*V&= P* P_{inv_Q} \cdot   (M_Q - M_P) \ mod \ Q \\
+	   &= M_Q - M_P \ mod \ Q
+	  \end{align*}
+	  
+	  În final: \\
+	  \begin{align*}
+	   M&= M_P + M_Q \ mod \ Q \\
+	   &= M_Q \ mod \ Q 
+	  \end{align*}
+	  
+	  
+	  \subsection{Implementări rapide RSA}
+	  Am prezentat o optimizare a algoritmului RSA folosind teorema Chineză a resturilor și o exponențiere mai rapidă. Cei doi inverși sunt de obicei necesari pentru teorema chineză iar numărul de inverși va fi redus la unul singur. Prin acest mod, viteza de decriptare descrește de aproximativ $4$ ori.
+	  \subsubsection{Generarea cheilor, criptare și decriptare}
+	  \begin{enumerate}
+	    \item \textbf{Generarea cheilor}: \\
+	    Generarea cheilor este aceeași ca și în RSA standard: avem ca input parametrul de securitate $n$, alegem două numere prime cu lungimea în biți fiind jumătatea lui $n$ după care le înmulțim. Apoi alegem în număr întreg $e$ astfel încât $ \phi(N) $ și $e$ sunt relativ prime. În final calculăm d asfel încât $ ed=1 \ mod \ \phi(N)$ și după să-l reducem modulo $(P-1)$ și $(Q-1)$. Apoi calculăm $P_{inv_Q} = P^{-1} \ mod \ Q$: toate aceste valori sunt fixate și sunt necesare pentru decriptare. Cele două numere $<N,e>$ reprezintă cheile publice și $<P,Q,d_P,d_Q,P_{inv_Q}>$ sunt cheile secrete.
+	    
+	    \item \textbf{ Criptarea}: \\
+	    Mesajul criptat, va trebui întâi convertit la un număr întreg. Sunt anumite tipuri de algoritm care fac această conversie (o modalitate ar fi să folosim codificarea ascii). Având plaintextul M, este ușor să calculăm $C = M^e \ mod \ N$
+	    
+	    \item \textbf{Decriptarea}: \\
+	    Pentru decriptare nu vom face direct calculul $M=C^d \ mod \ N$, ci vom folosi una din schemele eficiente prezentate mai sus. $M_P= C_{P}^{d_P} \ mod \ P$ și $M_Q = C_{Q}^{d_Q} \ mod \ Q $ unde $C_P = C \ mod \ P$, $cmmdc= d \ mod \ (P-1) $ și $C_Q = C \ mod \ Q. d_Q = d \ mod \ (Q-1) $. Apoi este posibil să reveni la plaintextul M datorită teoremei Chineze a resturilor. Această metodă este mai rapidă pentru că vom avea 2 exponențiere cu numere pe $n/2$ biți în loc de o exponențiere pe $n$ biți.
+	  \end{enumerate}
+	  
+	  \section{RSA Rebalansat}
+	   \subsection{Generarea cheilor, criptare și decriptare}
+	    \subsubsection{Generarea cheilor}
+	    Algoritmul primește $2$ parametri de securitate ca și input: $n$ (de obicei $1024$ biți) și $k$(de obicei $160$ biți) unde $k<n/2$. Apoi se aleg două numere prime $P$ și $Q$ verificând că $cmmdc(P-1,Q-1)=2$ și care au lungimea $n/2$. Modulul N este $N=PQ$. Apoi generăm aleator două valori pe $k$ biți $d_P$ și $d_Q$ astfel încât $cmmdc(d_P,P-1)=1, cmmdc(d_Q,Q-1)=1$ și $(d_P=d_Q \ mod \ 2$. Exponentul secret $d$ trebuie să verifice: $d=d_P \ mod \ (P-1)$ și $d=d_Q \ mod \ (Q-1)$. Nu putem calcula direct $d$ folosind teorema chineză a resturilor pentru că $P-1$ și $Q-1$ nu sunt relativ prime, dar noi le alegem astfel încât $cmmdc(P-1,Q-1)=2$ prin urmare:
+	    $$cmmdc \left( \frac{P-1}{Q-1},\frac{Q-1}{2}  \right)=1  $$
+	     De asemenea știm că $ d_P=d_Q \ mod \ 2$. Fie $ a=d_P \ mod \ 2 $. Datorită teoremei chineze a resturilor, putem calcula un $d\textprime$ care verifică:
+	    $$d\textprime = \frac{d_P-a}{2} \ mod \ \left( \frac{P-1}{2} \right) $$
+	    $$d\textprime = \frac{d_Q-a}{2} \ mod \ \left( \frac{Q-1}{2} \right) $$
+	    În alte cuvinte, există două numere întregi $k_1 și k_2$ astfel încât: 
+	    $$d\textprime = \frac{d_P-a}{2} + k_1 \cdot   \left( \frac{P-1}{2} \right) $$
+	    $$d\textprime = \frac{d_Q-a}{2} + k_2 \cdot   \left( \frac{Q-1}{2} \right) $$
+	    Fie $ d=2d\textprime +a$ care verifică:
+	    $$ d=(d_P-a) + k_1 \cdot   (P-1) +a$$
+	    $$ d=(d_Q-a) + k_2 \cdot   (Q-1) +a$$
+	    Modulo $P-1$ și $Q-1$ obținem:
+	    $$d=d_P \ mod \ \left( P-1 \right)$$
+	    $$d=d_Q \ mod \ \left( Q-1 \right)$$
+	    Pentru a calcula exponentul public e, trebuie doar să calculăm inversul lui $d$ modulo $\phi(N)=(P-1)(Q-1)$. Acest lucru este permis deoarece $cmmdc(d_P,P-1)=cmmdc(d_Q,Q-1)=1$. Prin urmare, $cmmdc(d,P-1)=cmmdc(d,Q-1)=1$. În final $cmmdc(d,\phi(N))=1$. Nu avem control asupra lui $e$ care este de ordinul lui $N$. Criptarea nu va fi la fel de rapida ca și criptarea clasică RSA dar vom putea mări viteza decriptării.
+	   \subsubsection{Criptarea}
+	    Aceasta este exact ca și în RSA standard, doar că $e$ este mult mai mare iar $d$ mult mai mic. Cheia publică este $<N,e>$.
+	    \subsubsection{Decriptarea}
+	    Putem decripta criptotextul C prin calculul $M_P = C^{d_P} \ mod \ P$ și $M_Q=C^d_Q  \ mod \ Q$. Folosind teorema Chineză a resturilor putem recupera plaintextul inițial $M$ prin rezolvareasistemuui:
+	    \[
+\begin{cases}
+x \equiv M_P \ mod \ P  \\
+x \equiv M_Q \ mod \ Q
+\end{cases}
+\]
+	    
+	    
+	    \section{Multi-Prime RSA}
+	     \subsection{Algoritmul Garner cand $N=PQR$}
+	     \subsubsection{Descrierea algoritmului}
+	     Algoritmul Garner este un algoritm pentru rezolvarea de sisteme de ecuații modulo $m$, ce ne permite să îmbunătățim viteza de decriptare, dar cu un consum mai mare al memoriei. Mai sus am prezentat varianta pentru două numere prime, dar în acest caz vom avea $3$ numere prime. Algoritmul are ca input $M_P,M_Q,M_R,P,Q,R$ și $N$, unde $N=PQR$. De asemenea, trebuie să calcuulăm și $PQ_{inv_R}$ și $P_{inv_Q}$, verificând că $PQ_{inv_R}=(PQ)^{-1} \ mod \ R$ și $P_{inv_Q}=P^{-1} \ mod \ Q$. Calculăm $M$ astfel încât: \\
+	         \[
+\left\{ 
+\begin{array}{c}
+M \equiv M_P \ mod \ P \\ 
+M \equiv M_Q \ mod \ Q \\ 
+M \equiv M_R \ mod \ R
+\end{array}
+\right. 
+\]
+
+		\subsubsection{Corectitudinea algoritmului}
+		Dorim să calculăm $M=M_P \ mod \ P$, $M=M_Q \ mod \ Q $ și $M=M_R \ mod \ R $. La fel dorim să avem calculat și $P_{inv_Q}=P^{-1} \ mod  \ Q$ și $PQ_{inv_R}=(PQ)^{-1} \ mod \ R$.$ M$ verifică: 
+		$$M=M_{PQ} + P*Q(M_R-M_{PQ})*(PQ_{inv_R}) \ mod \ N$$
+		Știind faptul că  $P*Q*(PQ_{inv_R})=1 \ mod \ R$ obținem:
+		\begin{align*}
+	M&=M_{PQ}+(P*Q*(PQ_{inv_R}))*(M_R-M_{PQ}) \ mod \ R \Rightarrow \\
+	M&=M_{PQ} + M_R - M_{PQ} \ mod \ R
+		\end{align*}
+
+		în final obținem $ M=M_R \ mod \ R $
+		La fel vom proceda pentru această ecuație $mod \ Q$ și $mod \ P$ și vom obține:
+		$$M \equiv M_Q \ mod \ Q$$
+		$$M \equiv M_P \ mod \ P$$
+		
+		\subsection{Multi-Prime RSA (modulo $N=PQR$)}
+		 \subsubsection{Descrierea criptosistemului}
+		 \begin{enumerate}
+		  \item \textbf{Generarea cheilor}: \\
+		  Generarea cheilor este aceeași ca și la RSA clasic, diferă doar faptul că sunt trei numere prime în loc de două. Avem ca input, parametrul de securitate $n$, alegem 3 numere prime $P$, $Q$ și $R$ care au lungimea în biți $n/3$ și le înmulțim pentru a obține modulul $N=PQR$. Apoi alegem un număr întreg $e$ astfel încât $\phi(N)=(P-1)(Q-1)(R-1)$ și e să fie relativ prime. În final, calculăm $d$ astfel încât $ed \equiv 1 \ mod \ \phi(N)$ și $d_P=d \ mod \ (P-1), d_Q= \ mod \ (Q-1)$ și $d_R=d \ mod \ (R-1)$. De asemenea calculăm și $PQ_{inv_R}=(PQ)^{-1} \ mod \ R$ și $P_{inv_Q}=P^{-1} \ mod \ Q$. Cele două numere întregi $<N,e>$ sunt cheile publice și $<P,Q,R,d_P,d_Q,d_R,PQ_{inv_R},P_{inv_Q}>$ sunt cheile private.
+		  
+		  \item \textbf{Criptarea}: \\
+		  Partea de criptare este la fel ca și la RSA clasic.
+		  
+		  \item \textbf{Decriptarea}: \\
+		  Principiul este cam același: Se folosește teorema chineză a resturilor doar că în loc de $2$ numere prime vom avea $3$. Această decriptare este mai rapidă, deoarece lungimea în biți ale numerelor întregi este mai scurtă. În loc de o singură exponențiere vom avea 3 exponențieri de lungime de 3 ori mai mică. Teoretic, viteza acestui algoritm este de 9 ori mai rapidă (când $N$ este pe 2048 de biți) decât RSA multi-prime care nu folosește teorema chineză a resturilor.
+		  
+		 \end{enumerate}
+		 
+		 \subsection{Generalizarea algoritmului Garner}
+		 Deși, utilizarea a mai mult de $3$ numere prime reprezintă un incident de securitate, lungimea unei chei RSA ar putea deveni mai mare în viitor, și ne va permite să folosim și o formă mai generală având $b$ numere prime, în acest caz $N$ va fi : $N=\prod_{i=1}^{b} P_i$.
+		 \subsubsection{Descrierea algoritmului în forma generală}
+		 \begin{enumerate}
+		 \item \textbf{Generarea cheilor}: \\
+		 Generarea cheilor este aceeași ca și până acum doar că vom avea un număr b de numere prime în loc de $2$ sau $3$: avem ca input un parametru de securitate $n$, alegem $b$ numere prime care au lungimea $n/b$ biți și le înmulțim pentru a obține N. Alegem e astfel încât $\phi(N)=\prod_{i=1}^{b}(P_i -1)$ și e sunt relativ prime. În final calculăm d astfel încât $ed=1 \ mod \phi(N)$ și $d_i = d \ mod \ (P_i -1)$. La fel vom calcula și acei inverși ( de data aceasta îi vom nota cu $A_2, \dots ,A_b$). Vom avea parametri publici $<N,e>$ și cei secreți $<P_1, \dots ,P_b,d_1, \dots d_b,A_2, \dots ,A_b>$.
+		 
+		 \item \textbf{Criptarea}: \\
+		 Criptarea este la fel ca și cea clasică
+		 \item \textbf{Decriptarea}: \\
+		 Principiul este același, se va folosi teorema Chineză a resturilor, unde $N=\prod_{i=1}^{b} P_i$.Va trebui să facem b exponențieri de lungine $n/b$. Este posibil să avem o viteză de $b^2$ ori mai rapidă decât RSA fără teorema Chineză a resturilor.
+		 \end{enumerate}
+		
+		\section{Multi-Power RSA}
+		 \subsection{Hensel lifting}
+		  \subsubsection{Ideea de baza la Hensel lifting}
+		  Folosind un modul $N=P^2Q$ folosind în mod clasic teorema Chineză a resturilor, făcând o decriptare RSA ar fi mai înceată decât dacă am folosi un modul $ N=PQ$. Când calculăm $ \mathbb{Z}/P^2\mathbb{Z}$, ajungem să avem lungimi de $2n/3$ biți, pe când în $\mathbb{Z}_{P^2}$ avem lungimi de $n/3$. Așadar, va trebui să-l scriem pe $P^2$ sub o altă formă.
+		  \subsubsection{Justificarea matematică}
+		  Vom încerca să scriem reprezentarea plaintext $M_P \ modulo \ P^2$
+		  $$ M_P=(K_0 + P*K_1) \ mod \ P^2$$
+		  Dacă vom calcula $C_P = M_{P}^{e} \ mod \ P^2$ obținem:
+		  \begin{align*}
+		   C_P &= (K_0 + P*K_1)^e \ mod \ P^2 \\
+		   &= \sum_{i=0}^{e} \binom ie \cdot   K_{0}^{i} \cdot   P^{e-i} \cdot   K_{i}^{e-i} mod P^2 
+		  \end{align*}
+		  
+		  Expresia de mai sus se va reduce la :
+		  $$ C_P = K_{0}^{e}  + e*P*K_{0}^{e-1} \cdot   K_1 \ mod \ P^2 $$
+		  Putem calcula foarte ușor pe $K_0$:
+		  $$K_0=C_{P}^{d_P} \ mod \ P$$
+		  Fie $E = (C_P - K_{0}^{e}) \ mod \ P^2$ de unde rezultă:
+		  $$ K_1=\frac{E}{P} (e*K_{0}^{e-1} \ mod \ P)^{-1} \ mod \ P $$
+		  Acum putem recupera mesajul $M_P = (K_0 + P \cdot   K_1) \ mod \ P^2$
+		  
+		  \subsection{Multi-Power RSA modulo $N=P^2Q$}
+		  \subsubsection{Algoritmul}
+		  \begin{enumerate}
+		   \item \textbf{Generarea cheilor}: \\
+		   Avem ca input parametru de securitate $n$, alegem două numere prime $P$ și $Q$, care au lungimea $n/3$ și calculăm modulul $N=P^2Q$. Apoi alegem $e$ ca și în partea standard RSA și calculăm $d$ astfel încât $ed=1 \ mod \ (P^2-P)(Q-1)$. În final, calculăm $d_P= d \ mod \ (P-1)$ și $ d_Q=d \ mod \ (Q-1)$. De asemenea calculăm și $P_{inv_Q}^{2}$ și $e_{inv_P}$. Cele două numere întregi $<N,e>$ vor reprezenta cheia publică, iar $<d_P,d_Q,P,Q,P_{inv_Q}^{2},e_{inv_P}>$ reprezintă cheia secretă. 
+		   
+		   \item \textbf{Criptarea}: \\
+		   Criptare clasică RSA
+		   
+		   \item \textbf{Decriptarea}: \\
+		   La decriptare vom calcula $M_P = C_{P}^{d} \ mod \ P^2$, unde $C_P = C '\ mod \ P^2$ și $M_P = M \ mod \ P^2$ folosind algoritmul Hensel. Ne permitem să calculăm exponentul unui număr de lungime $2n/3$ biți la costul unui număr de lungime $n/3$ biți. În final putem recupera plaintextul inițial folosind teorema chineză a resturilor. Această metodă are o viteză de circa 13.5 ori mare.
+		  \end{enumerate}
+		  
+		  \subsection{Generalizarea ideii}
+		  În acest moment suntem limitați să avem $b=2$ unde $N=P^bQ$, deoarece lungimea maximă în acest moment este de 2048 de biți.
+		  \subsubsection{Ideea de bază}
+		  Având $M \ mod \ P$, putem recupera plaintextul inițial $ M \ mod \ P^2$ datorită algoritmului Hensel. Totuși, dacă executăm acest algoritm într-o buclă vom putea recupera mesajul chiar și cu o putere mai mare decât 2. După fiecare buclă, vom obține $ M  \ mod \ P^i$, început cu $i$ de la 1 până la $b$. La final, obținem $M \ mod \ P^b$. Vom avea $M_{P,i}$, plaintextul modulo $P^i$. Vom arăta ca se poate recupera plaintextul folosind modulo $P^{i+1}.$
+		  $$M_{P,i+1} = (K_0 +K_1 \cdot   P^i) \ mod \ P^{i+1}$$
+		  Putem scrie criptotextul $C_{P,i+1}$ modulo $P^{i+1}$ în următorul fel:
+		  \begin{align*}
+		  C_{P,i+1} &= M_{P,i+1}^{e} \ mod \ P^{i+1}\\
+		   &= (K_0+K_1*P^i)^e \ mod \ P^{i+1} 
+		  \end{align*}
+		  
+		  După ce vom desface acea paranteză aplicând Binomul lui Newton, ecuația se va reduce la:
+		  $$ C_{P,i+1} = K_{0}^{e} + e*K_{0}^{e-1} *P^i*K_1 \ mod \ P^{i+1}$$
+		  Mai departe, vom înlocui pe $K_0$ cu $M_{P,i}$, și vom aduce primul termen $M_{P,i}^{e}$ în partea stângă. Vom obține:
+		  $$C_{P}^{i+1} - M_{P,i}^{e} = e*M_{P,i}^{e-1} \cdot   P^i \cdot   K_1 + k *P^{i+1}$$
+		  Ca și în varianta precedentă unde aveam $b=2$, vom înlocui pe $C_{P}^{i+1} - M_{P,i}^{e}$ cu $E$. Prin urmare, $K_1$ va fi egal cu:
+		  $$K_1 = \frac{E}{P^i} \cdot   (e*M_{P,i}^{e-1})^{-1} \ mod \ P$$
+		  În final se obține:
+		  $$M_{P,i+1}= (M_{P,i} + K_1 \cdot   P^i) \ mod \ P^{i+1}$$
+		  \subsection{Multi-Power RSA modulo $N=P^bQ$}
+		  \subsubsection{Algoritmul}
+		  \begin{enumerate}
+		  \item \textbf{Generarea cheilor}:\\
+		  Vom avea ca parametru de securitate $n$, vom alege cele două numere prime $P$ și $Q$, care au lungimea de $n/(b+1)$ biți și calculăm $N=P^bQ$. Apoi îl alegem pe $e$ în modul standard RSA, după care îl calculăm pe $d$ astfel încât $ed=1 \ mod \ (P^2-P)(Q-1)$. În final, vom calcula $d_P= d \ mod \ (P-1)$ și $d=q \ mod \ (Q-1)$. De asemenea vom calcula $P_{inv_Q}^{2}$ și $e_{inv_P}$. Cele două numere întregi $<N,e>$ sunt cheile publice, iar $d_P,d_Q,P,Q,(P_{inv_Q}^{2},e_{inv_P}>$ sunt cheile secrete.
+		  \item \textbf{Criptarea}:
+		  Criptarea se face în modul clasic RSA
+		  
+		  \item \textbf{Decriptarea}: \\
+		  Vom calcula $M_P = C_{P}^{d} \ mod \ P^b $ unde $C_P = C \ mod \ P^b$ și  $M_P = M \ mod \ P^b$ folosind algoritmul Hensel. În final, vom recupera plaintextul înițial folosind teorema chineză a resturilor. De asemnea calculăm $M_Q= C_{Q}^{d} \ mod \ Q$ și obținem plaintextul folosind algoritul Garner.
+		  \end{enumerate}
+		  
+		  \subsection{Schema lui Takagi}
+		  Schema lui Takagi este o variantă de multi-power RSA \cite{takagi}. Această variantă folosește on modul $N=P{b-1}Q$, pentru $b \geqslant 3$ și definește exponentul public și cel privat ca fiind invers modularul lui $\lambda \textprime (N) =cmmc(P-1,Q-1)$. Deoarece $\lambda \textprime (N)$ nu este un multiplu a lui $\lambda(N)$ unde ( $ed=1+k\lambda(N)$ ), înseamnă că decriptarea standard nu va funcționa, deci $m^{ed} \not\equiv m \ mod \ N$. Pentru a putea decripta un criptotext, trebuie să decriptăm parțial modulo $P^{b-1}$ și modulo $Q$ apoi el trebuie combinate folosind teorema Chineză a resturilor. Totuși, pentru a putea calcul calcula decriptarea parțială $m_{P^{b-1}}$ trebuie să folosin și lema lui Hensel.\\
+		  Pentru numere aleator balansate $P$ și $Q$, modulul schemei Takagi este dat de $N=P^{b-1}Q$, pentru $b \geqslant 3$. Un exponent public mic $e$ este ales astfel încât$cmmdc(e,P)=1$ și exponentul privat este definit ca și inversul modular modulo $\lambda \textprime (N)$. Așadar, exponentul privat $d$ este ales astfel încât $ed \equiv 1+k\lambda \textprime (N)$. Odată ce $d$ este determinat, exponenții  teoremei Chineze
+		  \begin{align*}
+		  d_P &= d \ mod \ (P-1) \\
+		  d_Q &= d \ mod \ (Q-1)
+		  \end{align*}
+sunt calculați. Cheia publică este $<N,e>$ și cheia privată este$<d_P,d_Q,P,Q,b>$. \\
+Criptarea în schema lui Takagi este aceeași ca și pentru RSA. Fiind dat un plaintext $ m \in \mathbb{Z}_N$,criptotextul $ c= m^d \ mod \ N$. Menționat ca și mai sus, decripția standar nu poate fi folosită deoarece $ \lambda \textprime (N)$ nu este un multiplu a lui $\lambda(N)$. Decriptarea în  schema lui Takagi constă în decriptarea parțială
+\begin{align*}
+m_P &= c^{d_P} \ mod \ P = m \ mod \ P \\
+m_Q &= c^{d_Q} \ mod \ Q = m \ mod \ Q 
+\end{align*} 
+Atunci când $N=PQ$ aceste decriptări parțiale pot fi combinate folosind doar teorema Chineză a resturilor pentru a recupera plaintextul modulo $N$. În schema lui Takagi, decriptarea parțială $m_P$ are nevoie de lema lui Hensel pentru a putea decripta modulo  $P^{b-1}$. Folosind $b-2$ iterații a lemei lui Hensel, decriptarea parțială modulo $P$ poate fi transformată într-o decriptare partițială modulo $P^{b-1}$. Decriptarea parțială modulo $Q$ și modulo $P^{b-1}$ sunt combinate folosind teorema Chineză a resturilor pentru a recupera un plaintext modulo $N=P^{b-1}Q$.
+\subsubsection{Eficiența schemei lui Takagi}
+Schema lui Takagi este mai eficientă decât RSA atât la generarea cheilor cât și la decriptare. Pentru o anumită dimensiune, în schema lui Takagi este necesară doar generarea a două numere prime de dimensiune $N^{1/b}$ în loc de $N^{1/2}$ ca la RSA clasic. Chiar dacă generarea numerelor prime are timp liniar, dimensiunea redusă a acestora va îmbunătăți cu siguranță viteza de generare. Condiția extra pentru exponentul public $cmmdc(e,P)=1$ nu a reprezenta o problemă dacă $e$ este suficient de mic. În particular, folosind un exponent public mult mai mic decât $N^{1/b}$ ne va asigura de fiecare dată faptul că $cmmdc(e,P)=1$. \\
+Am prezentat mai sus că decriptarea parțială modulo $P$ poate fi transformată într-o decriptare modulo $P^{b-1}$. O versiune completă și optimizată a algoritmului de decriptare a lui Takagi poate fi găsit în \cite{takagi}. Algoritmul de decriptare va calcula decriptările parțiale $m_P$ și $m_Q$, folosește algoritmul de decriptare a lui Takagi pentru a calcula $m_{P^{b-1}}$ și îl combină cu $m_Q$ și folosește algoritmul lui Garner pentru rezolvarea sistemului. \\
+Complexitatea algoritmului următor va depinde de exponentul public
+\begin{algorithm}[H]
+		   \caption{Lema Hensel în schema lui Takagi}
+		   \textbf{Input:} $<c,e,d_P.p.b>$ \\
+		   \textbf{Output:} Decriptarea parțială a lui $ m_{P^{b-1}} $
+		   \begin{algorithmic}
+		   	\State $m_P \textprime \gets c^{d_P -1} \ mod \ P$
+		   	\State $m_P \gets c^{d_P} \ mod \ P$
+		   	\For {$i$ from $1$ to $b-1$}
+		   	\State $x \gets (c-m_{e}^{P^i}) \ mod \ P^{i+1}$
+		   	\State $y \gets xm_P \textprime (e^{-1} \ mod \ P) \ mod \ P^{i+1}$
+		   	\State $m_{P^{i+1}} \gets m_{P^i} +y $
+		   	\EndFor
+		   \end{algorithmic}
+		   \end{algorithm} 	  
+		   
+		  
+		  \section{RSA pe grupuri}
+		  Ideea este destul de schimbată pentru această variantă. Această constă în gruparea unor criptotexte.
+		  \subsection{Ideea de bază}
+		  \subsubsection{Notație}
+		  De data aceasta, vom folosi echivalentul notației $M=C^d \ mod \ N$ care este $M=C^{e^{
+		  -1}} \ mod \ \phi(N)$ deoarece $e$ este inversul modularul lui $d$ modulo $\phi(N)$.
+		  
+		  \subsubsection{Formule de bază pentru decriptare}
+		  Spunem că avem $k$ numărul de plaintexte, respectiv numărul de exponenți $e_i$ care același modul N. Ne vom folosi de următoarele:
+		  $$ e= \prod_{i=1}^{k}e_i$$
+		  $$ A =\left( \left(\prod_{i=1}^{k} C_{i}^{e/e_i} \right) \ mod \ N \right)^{1/e} \ mod \ N$$
+		  Fiecare plaintext $M_i$ va fi aflat cu ajutorul următoarei formule:
+		  $$ M_i = \frac{A^{a_i}}{C_{i}^{(a_i-1)/e_i} \cdot   \prod_{j=1,j \neq i }^{p } C_{j}^{a_i/e_j }                                 } \ mod \ N$$ 	
+		  Unde $a_i$ are următoarea proprietate:
+		  $$a_i \equiv 1 \ mod \ e \ , \ a_i \equiv 0 \ mod \ e_j$$	  
+		  
+		  \subsubsection{Decriptarea a două texte}
+		  Vom avea două mesaje $M_1$ și $M_2$, care au cheile publice $<N,3>$ și $<N,5>$. Așadar, vom avea criptotextele $C_1 = M_{1}^{3} \ mod \ N$ și $C_2 = M_{2}^{5} \ mod \ N$.Pentru aflarea plaintextelor, folosind formula prezentată anterior, vom obține:
+		  $$ A=(C_{1}^{5} \cdot   C_{2}^{3})^{1/15} $$
+		  $$\frac{A^{10}}{C_{1}^{3} \cdot   C_{2}^{2}} = \frac{C_{1}^{10/3} \cdot   C_{2}^{2}}{C_{1}^{3} \cdot   C_{2}^{2} }=M_1$$
+		  $$\frac{A^6}{C_{1}^{2} *C_{2}}=\frac{C_{1}^{2} *C_{2}^{6/5}}{C_{1}^{2} \cdot   C_{2}}=M_2 $$
+		  
+		  \subsection{Optimizări}
+		  \subsubsection{Teorema Chineză a resturilor}
+		  Ca și în alte variante de RSA, putem folosi teorema Chineză a resturilor pentru a reduce timpul.
+		  \subsubsection{Calcului unui singur invers modular}
+		  Când îl calculăm pe $M_i$, de asemenea noi vom calcula și o serie de inverși. În loc să calculăm $p$ inverși independent, cea mai bună soluție ar fi să aducem acele frații la același numitor, și să calculăm un singur invers.
+		  \subsection{Îmbunătățirea batch RSA: Tehnica lui Montgomery}
+		
+		
+		
+		
+		
+		
+		  \subsubsection{Descrierea algoritmului}
+		  Acest algoritm va avea ca și input numerele întregi și modulul $N$, și calculează produsul întregilor inversați:  
+		  \begin{algorithm}[H]
+		   \caption{Tehnica lui Montgomery}
+		   \textbf{Input:} $A_1, \dots A_p,N$ \\
+		   \textbf{Output:} $Z_1=A_{1}^{-1}, \dots ,Z_p=A_{p}^{-1} \ mod \ N$
+		   \begin{algorithmic}
+		   	\State $X_1 \gets A_1$
+		   	\For {$i$ from $2$ to $p$}
+		   	\State $X_i \gets X_{i-1}*A_i \ mod \ N$
+		   	\EndFor
+		   	\State $Z_1 \gets X_{p}^{-1} \ mod \ N$
+		   	\For{$i$ from $p$ down to $2$}
+		   		\State $Z_i \gets X_{i-1} \cdot   Z_1 \ mod \ N$
+		   		\State $Z_1 \gets Z_1 \cdot   A_i \ mod \ N$
+		   		\State
+		   	\EndFor
+		   	\State \textbf{return} $(Z_1, \dots ,Z_p)$ 
+		   \end{algorithmic}
+		   \end{algorithm}
+		   
+		   \subsubsection{Corectitudinea algoritmului}
+		   Valorile $X_i$ calculate la primul for sunt produsul valorilor $A_j$ de la $1$ la $i$:
+		   $$ X_i=\prod_{j=1}^{i} A_j \ mod \ N$$
+		   După care $Z_1$ va reprezenta produsul inverșilor, adică:
+		   $$Z_1=\prod_{j=1}^{i} A_{j}^{-1} \ mod \ N$$
+		   Fiecare $Z_i$ va fi înmulțit cu $X_{i-1} \cdot   Z_1$ iar $Z_1$ va fi înmulțit cu $A_i$ la fiecare pas $i$. În final vom obține:
+		   $$Z_i=A_{i}^{-1} \ mod \ N$$ 
+		   \subsection{Îmbunătățirea RSA folosind tehnica lui Shamir}
+		   \subsubsection{Descrierea algoritmului}
+		   În acest algoritm vom primi ca și input $M_1,M_2, \dots M_p$, $p$ exponenți $e_1, \dots ,e_p$ și modulul $N$. Reprezentarea binară a fiecăruia este cunoscută: $e_i=(e_{i,k-1}, \dots e_{i,0})_2$. Calculăm $C=M_{1}^{e_1} \cdot \dots  \cdot M_{p}^{e_p}$. Acest calcul este mult mai rapid decât daca am face exponențieri consecutive.
+		   \subsubsection{Explicație}
+		   La primul pas, vom calcula toate produsele posibile pentru $M_i$. Vom forma o bijecție $b$, definită prin: \\
+		   $$ b((i_{p-1} \dots i_0)_2)= \prod_{j=0}^{p-1} M^{i_j}_{j} \ mod \ N$$
+		   unde $i_j \in \lbrace  0,1  \rbrace $
+		   La pasul de evaluare, vom proceda la fel ca și în algoritmul left-to-right (metoda de exponențiere), dar în lo să înmulțim cu o singură bază $M$, va trebui să alegem o bază corectă, această putând fi diferită de $M$. Va trebui să calculăm: 
+		   $$ C = \prod_{i=1}^{k} M_{i}^{e_i} \ mod \ N$$
+		   Putem folosi reprezentarea binară a lui $e_i$:
+		   \begin{align*}
+		    C &= \prod_{i=1}^{k} M_{i}^{\sum_{j=0}^{p-1} e_{i,j} \cdot   2^j} \ mod \ N \Rightarrow \\
+		    C &= \prod_{i=1}^{k} \prod_{j=0}^{p-1} M_{i}^{e_{i,j}2^j} \ mod \ N
+		   \end{align*}
+		   
+		   Putem să interschimbăm cele două produse și să introducem primul termen într-o paranteză (acest termen din paranteză va reprezenta baza):
+		   $$C = \prod_{j=0}^{p-1} \left(   \prod_{i=1}^{k} M_{i}^{e_{i,j}}     \right)^{2^j} \ mod \ N $$
+		   Putem face și notația $E=(e_{1,j}, \dots ,e_{k,j})$ și vom obține folosind bijecția $b$ :
+		   $$ C = \prod_{j=0}^{p-1} b(E)^{2^j}  \ mod \ N$$
+
+
+\section{RSA varianta distribuită (Schema lui Shoup)}
+\subsection{Introducere}
+Varianta partajată a RSA (schemă prin semnături) prezintă câteva aspecte foarte interesante. În primul rând, este securizată și robustă deoarece problema criptanalizei este foarte grea. Apoi, partajarea, generarea semnăturii și verificarea sunt non interactive și în final, dimensiunea unei semnături partajate este legată de o constantă înmulțită cu dimensiunea modulului RSA. \\
+Când un mesaj trebuie să fie semnat de măcar $ t+1 $ server unde $ 2t+1 \leq l $, un server special numit combinator, direcționează mesajul $m$ sau $x$, unde $x=H(x)$ către toate serverele, apoi fiecare server calculează semnătura cu o dovadă de corectitudine, apoi combinatorul selectează un subgrup de $t+1$ servere și le combină. \\
+Folosind distributivitatea aditivă, $d=\sum_{i=1}^{l} d_i \ mod \ \phi(N)$, combinatorul poate alcula ușor semnăturile $S$, $s_i=x^{d_i} \ mod \ N$, unde $x=H(m)$, este mesajul semnat folosind formula:
+$$ S= \prod_{i=1}^{l} S_i = \prod_{i=1}^{l} x^{d_i} = x^{\sum_{i}^{l} d_i} = x^d \ mod \ N $$
+Principalul dezavantaj al acestor tehnici îl reprezintă mărimea cheilor, din cauza necesității diferitelor partajări și a tehnicilor de reconstruire a semnăturilor. Ulterior, Shoup a propus prima schemă bazată pe partajarea polinomială (schema Desmedt și Frankel \cite{desmet}). Protocolul trebuie să revină de $t$ ori pentru a putea înlătura serverele rele, semnătura depinzând e un subgrup de $t+1$ servere. \\
+Fie $\delta =l!$. Partajarea lui $d$ este în așa fel încât $\delta | d_i$ și $d_i =f(i)$ unde $f$ este un polinom de grad $t$ și cu termenul constant $d$. \\
+Fie $S$ mulțimea a $t+1$ servere, atunci coeficientul Lagrange va fi: 
+$$ \lambda_{i,j}^{'S} = \prod_{j^{'} \in S \setminus j}^{} \frac{i-j^{'}}{j-j^{'}}   $$
+De unde rezultă:
+$$ d= \sum_{i \in S}^{} \lambda_{0,i}^{'S} d_i \ mod \ \phi(N)$$
+O problemă majoră o reprezint faptul că $\lambda_{i,j}^{'}$ nu poate fi calculat în $\mathbb{Z}_{\phi(N)}$ deoarece $\phi(N)$ poate fi par. Apoi combinatorul trebuie să calculeze:
+\begin{align*}
+s&=\prod_{i \in S}^{} S_{i}^{\lambda_{0,i}^{'S} d_i}\\
+ &= S^{\sum_{i \in S}^{}\lambda_{0,i}^{'S} d_i} \\
+ &= S^d \ mod \ N
+\end{align*}
+.
+Cum numerele din mulțimea $ \lambda_{i,j}^{'S}$ nu sunt numere întregi, combinatorul nu poate calcula rădăcina modulo a unui număr compus. Ideea esențială este să spunem că $\delta \times \lambda_{i,j}^{'S}$ sunt numere întregi. Atunci putem spune că 
+$$l_{0,i}^{S} = \delta \times \lambda_{i,j}^{'S} \ , \ i \in \mathbb{Z} $$
+Și:
+$$ S^{'} = x^{l_{0,i}^{S} \times \cdot   d_i } \ mod \ N   $$
+Combinatorul va calcula:
+\begin{align*}
+S &= \prod_{i \in S}^{} S_{i}^{'}\\ 
+&= \prod_{i \in S}^{} x^{l_{0,i}^{S} \times d_i    } \\
+ &= \prod_{i \in S}^{}  x^{\delta \times \lambda_{i,j}^{'S} \times d_i} \\ 
+ &= \prod_{i \in S}^{} 
+x^{\lambda_{0,j}^{'S} d_i}\\ &= x^d \ mod \ N  
+\end{align*}
+
+
+Dacă semnătura nu este bună, atunci combinatorul înlătură serverele rele. După $t$ iterații, toate serverele rele sunt înlăturate din setul $S$ iar semnăturile rămase vor fi corecte. Totuși, nici această redefinire a subgrupului nu părea să fie foarte bună, și Shoup a propus o nouă tehnică. \\
+Problema a fost rezolvată folosind o lemă cunoscută pentru a extrage $e$-rădăcina lui $w$ modulo un număr compus dintr-o $e$-rădăcină a unei puteri $w$ cunoscute fără a folosi secrete. Soluția a fost să multiplicăm coeficienții Lagrange cu $\delta$ ca aceștia să devină întregi. 
+$$ \lambda_{i,j}^{'S} = \delta \times \lambda_{i,j \in \mathbb{Z}}^{'S} $$
+Și:
+$$ \delta d = \sum_{i \in S}^{} \lambda_{0,i}^{S} d_i $$
+Fie $ s_i = x^{d_i} $, combinatorul care calculează semnătura și schimbarea grupului (folosind noua formulă Lagrange pentru cele $t+1$ servere). Se calculează ecuația folosind $\lambda_{i,j}^{S} $ și se obține:
+$$S^{\delta} = \prod_{i \in S}^{} S_{i}^{\lambda_{0,i}^{S} = x^{\delta d} \ mod \ N}$$
+În final, combinatorul calculează rădăcina lui $x^d$.
+
+\subsection{Dovada robusteții și folosirea numerelor prime sigure}
+Robustețea înseamnă faptul că serverele corupte nu le pot împiedica pe cele necorupte să-și realizeze semnătura. \\
+În dovada corectitudinii serverele trebuie să dovedească că ridică $x$ la puterea $d_i$. Serverul $i$ deține cheia de verificare
+$$ v_i = \log_{x} S_i = d_i \ mod \ \phi(N)$$
+Problemele sunt: $\mathbb{Z}_{N}^{*}$ nu este un grup ciclic,  generatorul $V$ nu există și elementele de ordin maximal sunt greu de găsit. Dacă vom folosi numere prime sigure, atunci $\mathbb{Z}_{N}^{*}$ este un grup ciclic, iar generatoarele sunt ușor de găsit. \\
+Pentru a nu crea neclarități, este bine să descriem totuși ce este acela un grup, mai precis un grup ciclic: 
+\subsubsection{Grupuri}
+Un grup este o structură algebrică ce constă dintr-o mulțime pe care este definită o lege de compoziție internă (acesta combină două elemente ale unei mulțimi și formează un al treilea element tot din aceeași mulțime). Pentru a fi un grup, mulțimea și operația trebuie să satisfacă o serie de axiome:
+\begin{enumerate}
+\item Axioma închiderii: \\
+$\forall x,  y \in G$  , și rezultatul operației $x \circ y \in G$
+
+\item Axioma asociativității: \\
+$\forall x,y,z \in G, (x \circ y) \circ z = x \circ (y \circ z)$
+
+\item Axioma elementului neutru: \\
+$\exists e \in G$, astfel încât $e \circ x = x \circ e = x, \ \forall x \in G$
+
+\item Axioma elementelor simetrice: \\
+$\forall x \in G, \exists y \in G$ cu proprietatea că $x \circ y = y \circ x = e$
+
+\item Axioma comutativității:
+$\forall x,y \in G, x \circ y = y \circ x$ \\
+atunci grupul $(G,\circ )$ se numește grup comutativ sau abelian
+
+
+
+\end{enumerate}
+\textbf{Un grup ciclic} este un grup ale cărui elemente sunt puteri (când operația de grup este considerată a fi de natură aditivă, se preferă termenul de multipli) ai unui element $a$. 
+
+\subsection{Problema}
+Numerele prime sigure sunt folosite în general de chei pentru a dovedi faptul că schema de partajare a secretelor (Shamir) este sigură în inelul $\mathbb{Z}_M$, și nu într-un corp finit. Robustețea ne garantează faptul că dacă un jucător malițios trimite semnături false, scema tot va genera corect S. \\
+Spre exemplu: combinatorul primește de la servere și trebuie să genereze semnăturile corecte. O cale de a face acest lucru este să alegem aleator $t+1$ semnături, să generăm posibilele semnături $S^{'}$ și să testăm dacă $S^{'}$ este valid. Dacă $S^{'}$ trece de protocolul de verificare, atunci semnătura corectă a fost găsită, dacă nu, combinatorul trebuie să testeze alte $t+1$ semnături. Combinatorul nu știe care sunt semnăturile false iar din această cauză, acesta poate ajunge la un număr exponențial de încercări. Așadar, este necesar să divizăm într-un mod eficient.
+
+
+\subsection{Modele de securitate}
+\subsubsection{Rețeaua}
+Grupul de $l$ servere conectate la un mediu prin broadcast, iar mesajele trimise către canalul de comunicare ajung la fiecare entitate.
+\subsubsection{Adversarul}
+Adversarii pot corupe servere în orice moment prin verificarea memoriei serverelor corupte(adversar pasiv) și/sau pot modifica comportamentul acestora(adversari activi). Adversarii decid pe cine să corupă la startul protocolului (adversari statici). Putem asuma și ca adversarii nu vor corupe mai mult de $t$ servere din $l$, unde $l \geqslant 2t+1$.
+\subsubsection{Definiții formale}
+O schemă RSA de semnături folosește următoarele componente:
+\begin{enumerate}
+\item Un algoritm de generare de chei care primește ca input parametrii de securitate $N$, numărul $k$ de elemente care trebuie să genereze $Q_N$, numărul de $l$ servere care trebuie să semneze, parametrul $t$ și un string random $w$. Are ca și output o cheie publică $<N,e>$, cu cheile private $d_1, \dots ,d_t$ cunoscute doar de servere corecte pentru fiecare $u \in [1,k]$ o listă $v_u,v_{u,1}, \dots v{u,t}=v_{u}^{d_i} \ mod \ N$ verificări de chei. 
+\item Un algoritm de partajare de semnături primește ca input o cheie publică $<N,e>$, un index $ 1\leq i \leq l$, cheia privată $d_i$, și un mesaj $m$; are ca output o semnătură $s_i = x^{d_i} \ mod \ N$ unde $x=H(m)$ și $H()$ este o funcție de hash și padare, și dovada validității este:
+$$ validity \ proof_i \ (for \ all \ u \in [1,k], \log_{v_u} v_{u,i}=\log_x S_i)$$
+\item Un algoritm combinat de verificare primește ca input o cheie publică $<N,e>$, un mesaj $m$, o listă $s_1, \dots ,s_l$ de semnături partajate, pentru fiecare $u \in [1,k]$ lista $v_u,v_{u,1}, \dots ,v_{u,l}$ de chei de verificare și o listă $proof_1, \dots ,proof_l$ de validări, și ca output o semnătură sau fail.
+\item Un algoritm de verificare primește ca input o cheie publică $<N,e>$, un mesaj $m$, o semnătură $S$ și are ca output un bit $b$ indicând dacă semnătura este corectă sau nu.
+\end{enumerate}
+\subsubsection{Jucătorul și adversarul}
+Jocul nostru include următorii jucători: un combinator, un set $l$ de severe $P_i$, un adversar, userii care cer semnături.\\
+Considerăm următorul scenariu: \\
+\begin{enumerate}
+\item La faza de inițializare, serverele folosesc algoritmul distribuit de generare de chei pentru crearea cheilor private, publice și a cheilor de verificare. Cheia publică $<N,e>$ și cheile de verificare $v_{u}^{'}S$ și $v_{u,i}^{'}S$ sunt publicate și fiecare server obține partajarea $d_i$ a cheii secrete $d$.
+\item Pentru a semna un mesaj $m$, combinatorul trimite mai departe $m$ către servere. Folosind cheia privată $d_i$ și cheile de verificare $v_u,v_{u,1}$ pentru $u \in [1,k]$ pentru fiecare server rulează algoritmul de partajare de semnături și are ca output o semnătură partajată $S_i$ împreună cu o dovadă de validitate și o dovadă de validitate $proof_i$. În final, combinatorul utilizează algoritmul de combinare de generare de semnături, și scoate câte semnături partajate sunt valabile și valide.
+\end{enumerate}
+\subsubsection{Proprietăți}
+După cum am mai menționat, robustețea garantează faptul că dacă avem un număr $t$ de jucători malițioși care trimit semnături false, schema tot va returna o semnătură corectă. Această proprietate este folosită doar în prezența adversarilor activi.\\
+Proprietatea care asigură fapul că nu poate fi falsificat , spune că pentru orice subset de $t+1$ jucători pot genera o semnătură $S$, dar nu permite generarea a mai puin de $t$ jucători. Această proprietate exprimă securitatea unei scheme de securitate și este folositoare în prezența atacurilor adversarilor pasivi.
+\subsubsection{Generarea cheii și protocolul de semnare}
+În această secțiune, vom descrie noțiunile de securitate pentru generarea de chei și protocolul pentru semnături. Am arătat că informațiile arătate în timpul generărilor de chei și semnării nu eliberează informații secrete adversarilor.
+\begin{itemize}
+\item Jocul pentru generarea de chei: \\
+Corectitudinea pentru generarea cheilor necesită ca probabilitatea cheilor secrete $d, P, Q$ și cheilor publice $<N,e>$ să fie uniform distribuite către adversari \\ 
+Dacă $\exists$ un adversar $A$ care corupe cel mult $t$ servere la începutul jocului, atunci el nu poate obține informația ținută de jucătorii necorupți
+
+\item Jocul pentru protocolul de semnare: \\
+Secretul semnării înseamnă că dacă $\exists$ un adversar $A$ care corupe cel mult $t$ servere la începutul jocului chiar dacă el poate obține informații, el nu poate forța o semnătură pe un nou mesaj.
+\end{itemize}
+
+
+\subsection{Un nou mod de a genera modulul RSA (schema Boneh-Franklin \cite{boneh})}
+Obiectul este să generăm moduli RSA astfel încât grupul este ciclic, iar ordinul acestui grup nu are factori primi mici.
+\subsubsection{Un nou modul distribuit}
+\begin{enumerate}
+
+\item La primul pas,fiecare server generază aleator două valori $p_i$ și $q_i$ în intervalul $ \left[ [2^{(n-1)/2}], [\frac{2^{n/2}-1}{l}] \right]$ unde $n$ este dimensiunea în biți. Apoi vom folosi un algoritm pentru a renunța la $p_1, \dots p_l$ și $q_1, \dots ,q_l$ care au factori primi mici, și dacă $p_1+ \dots +p_{l-1}$ sau $q_1+ \dots ,+q_{l-1}$ au factori primi mici. Serverul verifică dacă $cmmdc(P-1,4P)=2$ și $cmmdc(4P,Q-1)=2$ unde $P = \prod_{2 <p_i < B} p_i$
+
+\item Protocolul este rulat pentru a calcula produsul $N$ al lui $p_1+ \dots +p_l$ și $q_1+ \dots +q_l$. Se calculează și produsul lui $\phi(N)=(P-1)(Q-1)$ și $cmmdc(\phi(N),N-1)=1$
+
+\item Trebuie să folosim și un test de primalitate
+\end{enumerate}
+\subsubsection{Calculul cmmdc a unei valori publice și a unei valori secrete partajate}
+Tehnica de bază constă prin observarea faptului că $cmmdc(e,\phi)=cmmdc(e,\phi + Re)$ unde $R$ este un număr întreg mare folosit pentru a masca valoarea secretului partajat:
+$$\phi=\phi_1+ \dots +\phi _l$$.
+Serverul $i$ generează aleator un întreg $r_i \in [0  \dots  2^{n+k^{'}}]$, unde $k^{'}$ este un parametru de securitate, calculează:
+$$ c = \sum_{i}^{} c_i = \phi + eR$$
+Dacă setăm $R=\sum_i r_i$. Această valuare poate fi cunoscută public apoi, toate serverele vor calcula $cmmdc(e,\phi)=1$. Apoi, este ușor să arătăm că dacă vom înlocui $c$ cu $\phi + eR$, vom obține $e(u + R_v) + \phi v = 1$. Prin urmare, $u + R_v \ mod \ \phi$ este inversul modular al lui $e \ mod \ \phi$. În acest caz, dacă notăm cu $d$ inversul $e \ mod \ \phi$, fiecare server asignează inversul lui $d$ către $d_i = vr_i$ și primul server lui $d_1= vr_1$.
+\subsubsection{Îmbunătățirea generării numerelor fără factori mici}
+\begin{enumerate}
+\item Fiecare server generează aleator un număr întreg $a_i$ în intervalul $[1,P]$ în așa fel încât $a_i$ este relativ prim lui $P$. Deoarece $a_i$ este un număr întreg aleator relativ prim cu P, atunci $a=a_1, \dots ,a_l \ mod \ P$ este de asemenea relativ prim cu P.
+
+\item Serverul rulează un protocl pentrua converti $a$ la $a=b_1+ \dots +b_l$.
+
+\item Fiecare serve generează aleator un număr random:
+$$r_i \in \left[  [ \frac{\sqrt{2}* 2^{\frac{n}{2} -1} }{P}   ], [\frac{2^{\frac{n}{2}-1}}{p^l}]      \right] $$
+Și:
+$$ p_i=r_i P + b_i$$
+$p = \sum p_i \equiv a \ mod \ P$ și prin urmare $p$nu este divizibil de nici un număr prim mai mic decât $B$. Putem nota $p=BR +a$ unde $R=\sum_{i} r_i$. Acest lucru funcționează doar dacă $P<p$. Pentru a arăta asta și că $p^{'} = \frac{p-1}{2}$ nu are factori primi în afară de B, atunci trebuie să verificăm că $cmmdc(p-1,P)=cmmdc(2p^{'},P)=1$ și $cmmdc(p-1,4P)=2$ ca să testăm puterea lui 2. Dacă notăm $P^{'}=4P$, putem face un singur test $cmmdc(p-1,P^{'})=2$\\
+În final, protocolul care transformă partajarea multiplicativă a lui $a$ într-o partajare aditivă, poate fi făcută robustă. Această transformare apelează de $l$ ori protocolul. La început $b_{i,0}=0$ pentru toți $i \in {0, \dots ,l}$. Apoi, pentru fiecare $i=1$ până la $l$, $u_i=a_i$ și $i_j=0$ pentru $\forall j \neq u$ iar protocolul execută: 
+$$(b_{1,i-1}+ \dots +b_{l,i-1}) \times a_i = (b_{1,i-1}+ \dots +b_{l,i-1})(u_1+ \dots +u_l)=b_{1,i}+ \dots +b_{l,i}$$
+\end{enumerate}
+\subsubsection{Generarea lui $N$ întrucât $Q_N$ este ciclic}
+Aici vom arăta cum trebuie generat $N$ astfel încât $Q_N$ să fie ciclic. Pentru a garanta această proprietate trebuie să ne folosim de faptul că prodosul a două grupuri ciclice care sunt coprime este un grup ciclic. Trebuie să verificăm totuși că $P^{'}$ și $Q^{'}$ sunt coprime. Întâi trebuie demonstrată următoarea lemă: \\
+Lema 1: $N=PQ$, $cmmdc(P-1,Q-1)|c,,dc(N-1,\phi(N)$ și pătratul liber (un pătrat liber este un număr care nu este divizibil de nici un număr care este pătrat perfect) al lui $cmmdc(N-1,\phi(N))$ divide $(P-1),(Q-1)$. Dacă $cmmdc(N-1,\phi(N))=2$ atunci $cmmdc(P-1,Q-1)=2$ \\
+Demonstrație: Dacă $cmmdc(N-1,\phi(N))=2$ atunci $cmmdc(P-1,Q-1)|cmmdc(N-1,\phi(N)), cmmdc(P-1,Q-1)=2$. Deoarece $cmmdc(P-1,Q-1) \neq 1$.\\
+\textbf{Teorema}: Generarea cheilor folosind Boneh-Franklin și $cmmdc$ ne ajută să generă, chei RSA în așa fel încât grupul $Q_N$ este ciclic de ordin $M=P^{'}Q^{'}$, unde $N=PQ$, $P=2P^{'}+1$,$Q=2Q^{'}+1$ și nici $P^{'}$ șau $Q^{'}$ au factori primi mai mici decât B. Numărul de iterații ale acestui protocl are o medie de $ 4 \times e^{\lambda} \ln(B)$ \\
+Demonstrație: Ne asumăm faptul că avem un modul RSA în care $P-1$ și $Q-1$ au divizoriiprimi mai mari decât B, aceștia nu au divizori comuni, $cmmdc(P-1,Q-1) = 2$ și $\frac{P-1}{2}$ și $\frac{Q-1}{2}$ nu au factori primi mici. Prodosul a două grupuri ciclice ale căror ordine sunt coprime dau un grup ciclic, grupuri din $\mathbb{Z}_{P}^{*}$ și $\mathbb{Z}_{Q}^{*}$ sunt ciclice, la fel și grupul $Q_N$ este ciclic. Acest lucru ne garantează faptul că există un subgrup ciclic în $\mathbb{Z}_{N}^{*}$ de ordin $M=P^{'}Q^{'}$. Putem estima numărul de iterații ales acestui algoritm folosind faza $1$ din protocolul Boneh-Franklin. Întâi trebuie să cunoaștem faptul că:
+
+$$\lim_{n-> \infty} Pr_{P^{'},Q^{'}  \in [1,n] } [cmmdc(P^{'},Q^{'}]= 1 =  \frac{6}{\Pi^{2}} > 1/2 $$ 
+Adică, ne asumăm faptul că numerele prime din intervalul $ \left[  2^{\frac{n-1}{2}}, 2^{\frac{n}{2}}         \right] $ sunt uniform distribuite. Singurul factor lent la generarea cheii este verificarea dacă $cmmdc(P^{'},P-1)=2$ unde $P^{'} = 4P$. Putem nota că:
+$$Pr_{P^{'}}[ cmmdc(2P^{'},P^{'}) =2 ]$$
+$$ = Pr_{P^{'}} [2 \nmid P^{'} \wedge 3 \nmid P^{'}  \dots    \wedge B \nmid P^{'} ] =(1- \frac{1}{2})(1 - \frac{1}{3}) \dots (1- \frac{1}{B}) = \prod_{p_i \leq B}^{} (1- \frac{1}{P^i}) \approx \frac{1}{e^{\lambda} \ln(B)}  $$
+Conform teoremei a doua a lui Merts, unde $\lambda$ este onstanta lui Euler. Așadar, va trebui să rulăm algoritmul de $ 4 \times (e^{\lambda} \ln(B)$ ori în medie pentru a putea genera un astfel de modul RSA. 
+\subsubsection{Metoda distribuită de generare de chei în protocolul lui Shoup}
+De ăndată ce $N$ este generat, fie $e$ primul număr mai mare decât $4 \delta^{2}$  în așa fel încât serverul îl poate calcula. Apoi, protocolul Catalano \cite{catalano} este rulat pentru a genera cheia partajată într-o manieră distribuită. La finalul protocolului, fiecare server calculează cheia ei de verificare în felul următor:
+$$ v_{u,i} = v_{u}^{\delta d_i}$$
+Pentru $v_u$ aleator calculat ca și $y_{u}^{2} \ mod \ N$ unde $y_u$ e concatenarea lui $H(N|i)$ pentru suficient de mulți $i$ pentru a colecta corect parametri de securitate.
+
+\subsection{Schema lui Shoup împotriva adversarilor activi}
+\subsubsection{Generarea cheilor}
+La sfârșitul protocolului de genarare de chei, va trebui să se verifice, dacă informația îl poate ajuta pe adversar să afle cheia secretă. Fie $d_{i_1}, \dots ,d_{i_t}$, $t$ subsecrete ale cheii secrete, obținută de adversar la $t$ servere corupte. \\
+Informația dezvăluită prin partajarea lui $d_{i_j}$. Pentru fiecare $d_{i_j}$ putem spune că: 
+$$d_{i_j} = f(i_j) = a_0 + a_1i_j +  \dots  + a_t i_{j}^{t} \ mod \ M       $$
+Dacă adăugăm o a $t+1$ ecuație, $a_0=d$, vom obține următorul sistem liniar:
+
+
+
+\[
+\left\{ 
+\begin{array}{c}
+a_0 + a_1 i_1 +  \dots  a_t i_{1}^{t}  = d_{i_1} \ mod \ M \\ 
+a_0 + a_1 i_2 +  \dots  a_t i_{2}^{t}  = d_{i_2} \ mod \ M \\ 
+ \dots  \\
+a_0 + a_1 i_t +  \dots  a_t i_{t}^{t}  = d_{i_t} \ mod \ M \\
+\end{array}
+\right. 
+\]
+
+Sau o matrice $A = D \ mod \ M$
+
+\[
+\left (
+\begin{array}{cc}
+1 \ i_1 \ i_{1}^{2}  \dots  i_{1}^{t} \\
+1 \ i_2 \ i_{2}^{2}  \dots  i_{2}^{t} \\
+ \dots  \\
+1 \ i_t \ i_{t}^{2}  \dots  i_{t}^{t} \\
+1 \ \ 0 \ \ 0  \dots  0 
+
+
+\end{array}
+\right) 
+\times
+\left (
+\begin{array}{c}
+a_0 \\
+a_1 \\
+ \dots  \\
+a_t  
+\end{array}
+\right)
+=
+\left(
+\begin{array}{c}
+d_{i_1} \\
+d_{i_2} \\
+ \dots  \\
+d_{i_t}
+\end{array}
+\right)
+\]
+
+Această matrice este o matrice Vandermonde. Determinantul unei astfel de matrici este:
+$$ \det(A) = \prod_{1 \leq j < k <t+1}^{} (i_k - i_j) \ mod \ M$$
+Unde $i_{t+1} = 0$. Cum toți $i_j$ sunt distincți în $\mathbb{Z}_{M}$, $i_k - i_j \neq 0 \ mod \ M$ deoarece $l < B$. Prin urmare, toate valorile lui $d$ sunt posibile. Prin urmare, un grup de $t$ jucători nu pot obține informații despre $d$ din partajări ale lui $d$
+
+\subsubsection{Informația dezvăluită prin verificare cheilor}
+Ăentru toți $u \in [1,k]$, cheile de verificare $v_{u,i}$ ale serverelor non corupte nu dezvăluie vreo informație pentru că ele pot fi foarte ușor simulate din părți ale serverlor corupte. Simulatorul alege random $y_u \in \mathbb{Z}_{N}^{*}$, calculează 
+$$v_u = y_{u}^{2 \delta e} \ mod \ N$$ 
+Prin urmare $y_{u}^{d} = y_{u}^{2 \delta}$. Putem face notația: 
+$$\delta d_i = \sum_{k=1}^{t+1} \lambda_{i,k}^{S} d_j \ mod \ \phi(N)$$
+Notăm cu $S$ un grupt de $t+1$ valori dacă definim coeficienții Lagrange ca fiind:
+$$\lambda_{i,j}^{S} = \delta \times \prod_{j^{'} \in S \smallsetminus j}^{} \frac{i - j^{'}}{j - j^{'}} \in \mathbb{Z}  $$
+Simulatorul poate calcula pentru fiecare $u \ in [1,k]$:
+$$v_{u}^{\delta d_i} = y_{u}^{2 \delta \lambda_{i,0}^{S}}  \times \prod_{j=1}^{t} = v_{u}^{\lambda_{i.j}^{S} d_{i_j}    } \ mod \ N     $$
+unde $S = \lbrace 0,i_1, \dots ,i_t \rbrace$. Prin urmare, un grup de t jucători nu pot lua informația de la cheile de validare ale serverelor non corupte.
+\subsubsection{Protocol pentru semnătură}
+Pentru a genera o semnătură a unui mesaj $m$, fiecare server $i$ calculează $x=H(m)$,$S_i = x^{2 \delta d_i}  \ mod \ N$ și trimite $S_i$ către combinatori fără vreo dovadă deoarece sunt în modelul onest dar curios. Combinatorul selectează un grup $S$ de $t+1$ valori și calculează $ w = \prod_{j=1}^{t+1} S_{i_j}^{2 \lambda_{0,i_{j}}^{S} } \ mod \ N$. \\
+De aici rezultă că $w^{e} = x^{4 \delta^2}$ pentru că $s_{i_j}^{2} = x^{4 \delta d_j}$. De aici putem extrage $e$ rădăcina $x$ din $w$. Pentru că suntem în modelul onest dar curios, semnătura va fi tot timpul corectă.
+
+\subsection{Îmbunătățirea schemei lui Shoup împotriva adversarillor activi}
+\subsubsection{Dovada corectitudinii}
+Fie $N$ modulul astfel încât $N=PQ$ și $P = 2p^{'} +1 $ și $Q= 2q^{'} +1 $ unde $p^{'}$ și $q^{'}$ nu au factori primi mai mici și $cmmdc(P-1,Q-1)=2$. Prin urmare, logaritmul discret al oricărui element $S_i^{2}$ în baza $g$ există, unde $S_i = x^{2 \delta d_i}$ și $\delta = l!$. Putem nota cu $v_1, \dots ,v_k$ un $k$-tuplu de elemente aleatoare în $(Q_N)^k$ astfel încât acest tuplu poate genera cu o probabilitate mare tot grupul $Q_N$ de ordin $M=p'q'$ astfel încât pentru fiecare $x \in Q_N, \exists (a_1, \dots ,a_k) \ in [0,M] $ astfel încât $x = \prod_{i=1}^{k} v_i^{a_i} \ mod \ N$
+Fiecare server $i$ are un $k$-tuplu de chei de verificare $v_{1,i} = v_1^{d_i} \ mod \ N, \dots ,v_{k,i} = v_k^{d_i} \ mod \ N$. El calculează o semnătură, $S_i = x^{2 \delta d_i} \ mod \ N$, unde $d_i$ este semnătura $i$ a lui $d$, și dovedim că:
+$$ \log_{v_1} (v_1,i) =  \dots  = \log_{v_k} (v_k,i) = \log_{x^{4 \delta}} (s-{i}^{2}) = d_i \ mod \ M $$
+Acum, descriem "dovada corectitudinii" și lăsăm $d_i \in [0,M]$ să fie secretul partajat al serverelor și $A$ și $B^{'}$ două numere întregi astfel încât $\log(A) \geqslant \log(B^{'} Mh) +k_2$ unde $B^{'}$ și $k_2$ sunt parametri de securitate și $h$ este numărul de runde. În final, $k_1$ este un parametru, astfel încăt probabilitatea de falsificare este:
+$$1/B^{\prime ^{h}} \leq \frac{1}{2^{k_1}}$$
+Cel care face verificarea, generează aleator un $r \in [0,A]$. Apoi el calculează:
+$$t= (v_{1}^{'}, \dots ,v{k}^{'},x^{'})=(v_{1}^{r}, \dots ,v_{k}^{r},x^{4 \delta r})$$
+Fie $e$, reprezentând primii $b^{'} =\log(B^{'})-1$ biți din valuarea hashului.
+$$ e= [H(v_1, \dots ,v_k,x^{4 \delta},v_{1,i},..v_{k,i},S_{i}^{2},v_{1}^{'}, \dots ,v_{k}^{'},x^{'})]_{b^{'}} $$
+Și verificăm dacă $0 \leq z \leq A $
+
+
+\subsection{Concluzia}
+Am arătat cum trebuie să evităm numerele prime sigure în schema lui Shoup în așa fel încât dovada să rămână corectă. Am considerat că mediile în care am lucrat sunt cu grad de securitate ridicat(ex scheme de vot electronic).
+\\ Pe scurt, folosim diferit tehnici pentru a dovedi că:
+\begin{enumerate}
+\item Grupul pătratelor este ciclic.
+
+\item Generăm $P$ și $Q$ astfel încât $P^{'}$ și $Q^{'}$ să nu conțină factori primi mici
+
+\item Generăm un set de generatori $Q_N$ generând aleator diferiți generatori $Q_N$
+\end{enumerate} 
+În final, arătăm cum trebuie adaptată schema lui Shoup pentru a lucra cu diferite elemente care generează $Q_N$, în loc de unul singur.
+
+
 \chapter{Criptanaliză RSA}
 \section{Criptanaliză pe RSA clasic}
 Deși securitatea algoritmului RSA constă în legătura dintre aceasta și factorizarea întregilor, el trebuie folosit u grijă în implementări, deoarece, în caz de folosire eronată, sistemele bazate pe RSA pot fi atacate în anumite maniere care ocolesc factorizarea efectiva a modului, atacatorul ajungând să obțină mesajul clar sau cheia secreă.
@@ -546,739 +1447,6 @@ Fie $N=P^{b-1}Q$ modulul RSA cu $b \geqslant 3$. Fie $e << N^{1/b}$ ($<<$ însem
 \end{enumerate}
 Atunci modulul poate fi factorizat în timpul liniar $e$
 \end{theorem}
-
-
-
-
-\chapter{Variante și Optimizări RSA}
-\section{RSA varianta distribuită (Schema lui Shoup)}
-\subsection{Introducere}
-Varianta partajată a RSA (schemă prin semnături) prezintă câteva aspecte foarte interesante. În primul rând, este securizată și robustă deoarece problema criptanalizei este foarte grea. Apoi, partajarea, generarea semnăturii și verificarea sunt non interactive și în final, dimensiunea unei semnături partajate este legată de o constantă înmulțită cu dimensiunea modulului RSA. \\
-Când un mesaj trebuie să fie semnat de măcar $ t+1 $ server unde $ 2t+1 \leq l $, un server special numit combinator, direcționează mesajul $m$ sau $x$, unde $x=H(x)$ către toate serverele, apoi fiecare server calculează semnătura cu o dovadă de corectitudine, apoi combinatorul selectează un subgrup de $t+1$ servere și le combină. \\
-Folosind distributivitatea aditivă, $d=\sum_{i=1}^{l} d_i \ mod \ \phi(N)$, combinatorul poate alcula ușor semnăturile $S$, $s_i=x^{d_i} \ mod \ N$, unde $x=H(m)$, este mesajul semnat folosind formula:
-$$ S= \prod_{i=1}^{l} S_i = \prod_{i=1}^{l} x^{d_i} = x^{\sum_{i}^{l} d_i} = x^d \ mod \ N $$
-Principalul dezavantaj al acestor tehnici îl reprezintă mărimea cheilor, din cauza necesității diferitelor partajări și a tehnicilor de reconstruire a semnăturilor. Ulterior, Shoup a propus prima schemă bazată pe partajarea polinomială (schema Desmedt și Frankel \cite{desmet}). Protocolul trebuie să revină de $t$ ori pentru a putea înlătura serverele rele, semnătura depinzând e un subgrup de $t+1$ servere. \\
-Fie $\delta =l!$. Partajarea lui $d$ este în așa fel încât $\delta | d_i$ și $d_i =f(i)$ unde $f$ este un polinom de grad $t$ și cu termenul constant $d$. \\
-Fie $S$ mulțimea a $t+1$ servere, atunci coeficientul Lagrange va fi: 
-$$ \lambda_{i,j}^{'S} = \prod_{j^{'} \in S \setminus j}^{} \frac{i-j^{'}}{j-j^{'}}   $$
-De unde rezultă:
-$$ d= \sum_{i \in S}^{} \lambda_{0,i}^{'S} d_i \ mod \ \phi(N)$$
-O problemă majoră o reprezint faptul că $\lambda_{i,j}^{'}$ nu poate fi calculat în $\mathbb{Z}_{\phi(N)}$ deoarece $\phi(N)$ poate fi par. Apoi combinatorul trebuie să calculeze:
-\begin{align*}
-s&=\prod_{i \in S}^{} S_{i}^{\lambda_{0,i}^{'S} d_i}\\
- &= S^{\sum_{i \in S}^{}\lambda_{0,i}^{'S} d_i} \\
- &= S^d \ mod \ N
-\end{align*}
-.
-Cum numerele din mulțimea $ \lambda_{i,j}^{'S}$ nu sunt numere întregi, combinatorul nu poate calcula rădăcina modulo a unui număr compus. Ideea esențială este să spunem că $\delta \times \lambda_{i,j}^{'S}$ sunt numere întregi. Atunci putem spune că 
-$$l_{0,i}^{S} = \delta \times \lambda_{i,j}^{'S} \ , \ i \in \mathbb{Z} $$
-Și:
-$$ S^{'} = x^{l_{0,i}^{S} \times \cdot   d_i } \ mod \ N   $$
-Combinatorul va calcula:
-\begin{align*}
-S &= \prod_{i \in S}^{} S_{i}^{'}\\ 
-&= \prod_{i \in S}^{} x^{l_{0,i}^{S} \times d_i    } \\
- &= \prod_{i \in S}^{}  x^{\delta \times \lambda_{i,j}^{'S} \times d_i} \\ 
- &= \prod_{i \in S}^{} 
-x^{\lambda_{0,j}^{'S} d_i}\\ &= x^d \ mod \ N  
-\end{align*}
-
-
-Dacă semnătura nu este bună, atunci combinatorul înlătură serverele rele. După $t$ iterații, toate serverele rele sunt înlăturate din setul $S$ iar semnăturile rămase vor fi corecte. Totuși, nici această redefinire a subgrupului nu părea să fie foarte bună, și Shoup a propus o nouă tehnică. \\
-Problema a fost rezolvată folosind o lemă cunoscută pentru a extrage $e$-rădăcina lui $w$ modulo un număr compus dintr-o $e$-rădăcină a unei puteri $w$ cunoscute fără a folosi secrete. Soluția a fost să multiplicăm coeficienții Lagrange cu $\delta$ ca aceștia să devină întregi. 
-$$ \lambda_{i,j}^{'S} = \delta \times \lambda_{i,j \in \mathbb{Z}}^{'S} $$
-Și:
-$$ \delta d = \sum_{i \in S}^{} \lambda_{0,i}^{S} d_i $$
-Fie $ s_i = x^{d_i} $, combinatorul care calculează semnătura și schimbarea grupului (folosind noua formulă Lagrange pentru cele $t+1$ servere). Se calculează ecuația folosind $\lambda_{i,j}^{S} $ și se obține:
-$$S^{\delta} = \prod_{i \in S}^{} S_{i}^{\lambda_{0,i}^{S} = x^{\delta d} \ mod \ N}$$
-În final, combinatorul calculează rădăcina lui $x^d$.
-
-\subsection{Dovada robusteții și folosirea numerelor prime sigure}
-Robustețea înseamnă faptul că serverele corupte nu le pot împiedica pe cele necorupte să-și realizeze semnătura. \\
-În dovada corectitudinii serverele trebuie să dovedească că ridică $x$ la puterea $d_i$. Serverul $i$ deține cheia de verificare
-$$ v_i = \log_{x} S_i = d_i \ mod \ \phi(N)$$
-Problemele sunt: $\mathbb{Z}_{N}^{*}$ nu este un grup ciclic,  generatorul $V$ nu există și elementele de ordin maximal sunt greu de găsit. Dacă vom folosi numere prime sigure, atunci $\mathbb{Z}_{N}^{*}$ este un grup ciclic, iar generatoarele sunt ușor de găsit. \\
-Pentru a nu crea neclarități, este bine să descriem totuși ce este acela un grup, mai precis un grup ciclic: 
-\subsubsection{Grupuri}
-Un grup este o structură algebrică ce constă dintr-o mulțime pe care este definită o lege de compoziție internă (acesta combină două elemente ale unei mulțimi și formează un al treilea element tot din aceeași mulțime). Pentru a fi un grup, mulțimea și operația trebuie să satisfacă o serie de axiome:
-\begin{enumerate}
-\item Axioma închiderii: \\
-$\forall x,  y \in G$  , și rezultatul operației $x \circ y \in G$
-
-\item Axioma asociativității: \\
-$\forall x,y,z \in G, (x \circ y) \circ z = x \circ (y \circ z)$
-
-\item Axioma elementului neutru: \\
-$\exists e \in G$, astfel încât $e \circ x = x \circ e = x, \ \forall x \in G$
-
-\item Axioma elementelor simetrice: \\
-$\forall x \in G, \exists y \in G$ cu proprietatea că $x \circ y = y \circ x = e$
-
-\item Axioma comutativității:
-$\forall x,y \in G, x \circ y = y \circ x$ \\
-atunci grupul $(G,\circ )$ se numește grup comutativ sau abelian
-
-
-
-\end{enumerate}
-\textbf{Un grup ciclic} este un grup ale cărui elemente sunt puteri (când operația de grup este considerată a fi de natură aditivă, se preferă termenul de multipli) ai unui element $a$. 
-
-\subsection{Problema}
-Numerele prime sigure sunt folosite în general de chei pentru a dovedi faptul că schema de partajare a secretelor (Shamir) este sigură în inelul $\mathbb{Z}_M$, și nu într-un corp finit. Robustețea ne garantează faptul că dacă un jucător malițios trimite semnături false, scema tot va genera corect S. \\
-Spre exemplu: combinatorul primește de la servere și trebuie să genereze semnăturile corecte. O cale de a face acest lucru este să alegem aleator $t+1$ semnături, să generăm posibilele semnături $S^{'}$ și să testăm dacă $S^{'}$ este valid. Dacă $S^{'}$ trece de protocolul de verificare, atunci semnătura corectă a fost găsită, dacă nu, combinatorul trebuie să testeze alte $t+1$ semnături. Combinatorul nu știe care sunt semnăturile false iar din această cauză, acesta poate ajunge la un număr exponențial de încercări. Așadar, este necesar să divizăm într-un mod eficient.
-
-
-\subsection{Modele de securitate}
-\subsubsection{Rețeaua}
-Grupul de $l$ servere conectate la un mediu prin broadcast, iar mesajele trimise către canalul de comunicare ajung la fiecare entitate.
-\subsubsection{Adversarul}
-Adversarii pot corupe servere în orice moment prin verificarea memoriei serverelor corupte(adversar pasiv) și/sau pot modifica comportamentul acestora(adversari activi). Adversarii decid pe cine să corupă la startul protocolului (adversari statici). Putem asuma și ca adversarii nu vor corupe mai mult de $t$ servere din $l$, unde $l \geqslant 2t+1$.
-\subsubsection{Definiții formale}
-O schemă RSA de semnături folosește următoarele componente:
-\begin{enumerate}
-\item Un algoritm de generare de chei care primește ca input parametrii de securitate $N$, numărul $k$ de elemente care trebuie să genereze $Q_N$, numărul de $l$ servere care trebuie să semneze, parametrul $t$ și un string random $w$. Are ca și output o cheie publică $<N,e>$, cu cheile private $d_1, \dots ,d_t$ cunoscute doar de servere corecte pentru fiecare $u \in [1,k]$ o listă $v_u,v_{u,1}, \dots v{u,t}=v_{u}^{d_i} \ mod \ N$ verificări de chei. 
-\item Un algoritm de partajare de semnături primește ca input o cheie publică $<N,e>$, un index $ 1\leq i \leq l$, cheia privată $d_i$, și un mesaj $m$; are ca output o semnătură $s_i = x^{d_i} \ mod \ N$ unde $x=H(m)$ și $H()$ este o funcție de hash și padare, și dovada validității este:
-$$ validity \ proof_i \ (for \ all \ u \in [1,k], \log_{v_u} v_{u,i}=\log_x S_i)$$
-\item Un algoritm combinat de verificare primește ca input o cheie publică $<N,e>$, un mesaj $m$, o listă $s_1, \dots ,s_l$ de semnături partajate, pentru fiecare $u \in [1,k]$ lista $v_u,v_{u,1}, \dots ,v_{u,l}$ de chei de verificare și o listă $proof_1, \dots ,proof_l$ de validări, și ca output o semnătură sau fail.
-\item Un algoritm de verificare primește ca input o cheie publică $<N,e>$, un mesaj $m$, o semnătură $S$ și are ca output un bit $b$ indicând dacă semnătura este corectă sau nu.
-\end{enumerate}
-\subsubsection{Jucătorul și adversarul}
-Jocul nostru include următorii jucători: un combinator, un set $l$ de severe $P_i$, un adversar, userii care cer semnături.\\
-Considerăm următorul scenariu: \\
-\begin{enumerate}
-\item La faza de inițializare, serverele folosesc algoritmul distribuit de generare de chei pentru crearea cheilor private, publice și a cheilor de verificare. Cheia publică $<N,e>$ și cheile de verificare $v_{u}^{'}S$ și $v_{u,i}^{'}S$ sunt publicate și fiecare server obține partajarea $d_i$ a cheii secrete $d$.
-\item Pentru a semna un mesaj $m$, combinatorul trimite mai departe $m$ către servere. Folosind cheia privată $d_i$ și cheile de verificare $v_u,v_{u,1}$ pentru $u \in [1,k]$ pentru fiecare server rulează algoritmul de partajare de semnături și are ca output o semnătură partajată $S_i$ împreună cu o dovadă de validitate și o dovadă de validitate $proof_i$. În final, combinatorul utilizează algoritmul de combinare de generare de semnături, și scoate câte semnături partajate sunt valabile și valide.
-\end{enumerate}
-\subsubsection{Proprietăți}
-După cum am mai menționat, robustețea garantează faptul că dacă avem un număr $t$ de jucători malițioși care trimit semnături false, schema tot va returna o semnătură corectă. Această proprietate este folosită doar în prezența adversarilor activi.\\
-Proprietatea care asigură fapul că nu poate fi falsificat , spune că pentru orice subset de $t+1$ jucători pot genera o semnătură $S$, dar nu permite generarea a mai puin de $t$ jucători. Această proprietate exprimă securitatea unei scheme de securitate și este folositoare în prezența atacurilor adversarilor pasivi.
-\subsubsection{Generarea cheii și protocolul de semnare}
-În această secțiune, vom descrie noțiunile de securitate pentru generarea de chei și protocolul pentru semnături. Am arătat că informațiile arătate în timpul generărilor de chei și semnării nu eliberează informații secrete adversarilor.
-\begin{itemize}
-\item Jocul pentru generarea de chei: \\
-Corectitudinea pentru generarea cheilor necesită ca probabilitatea cheilor secrete $d, P, Q$ și cheilor publice $<N,e>$ să fie uniform distribuite către adversari \\ 
-Dacă $\exists$ un adversar $A$ care corupe cel mult $t$ servere la începutul jocului, atunci el nu poate obține informația ținută de jucătorii necorupți
-
-\item Jocul pentru protocolul de semnare: \\
-Secretul semnării înseamnă că dacă $\exists$ un adversar $A$ care corupe cel mult $t$ servere la începutul jocului chiar dacă el poate obține informații, el nu poate forța o semnătură pe un nou mesaj.
-\end{itemize}
-
-
-\subsection{Un nou mod de a genera modulul RSA (schema Boneh-Franklin \cite{boneh})}
-Obiectul este să generăm moduli RSA astfel încât grupul este ciclic, iar ordinul acestui grup nu are factori primi mici.
-\subsubsection{Un nou modul distribuit}
-\begin{enumerate}
-
-\item La primul pas,fiecare server generază aleator două valori $p_i$ și $q_i$ în intervalul $ \left[ [2^{(n-1)/2}], [\frac{2^{n/2}-1}{l}] \right]$ unde $n$ este dimensiunea în biți. Apoi vom folosi un algoritm pentru a renunța la $p_1, \dots p_l$ și $q_1, \dots ,q_l$ care au factori primi mici, și dacă $p_1+ \dots +p_{l-1}$ sau $q_1+ \dots ,+q_{l-1}$ au factori primi mici. Serverul verifică dacă $cmmdc(P-1,4P)=2$ și $cmmdc(4P,Q-1)=2$ unde $P = \prod_{2 <p_i < B} p_i$
-
-\item Protocolul este rulat pentru a calcula produsul $N$ al lui $p_1+ \dots +p_l$ și $q_1+ \dots +q_l$. Se calculează și produsul lui $\phi(N)=(P-1)(Q-1)$ și $cmmdc(\phi(N),N-1)=1$
-
-\item Trebuie să folosim și un test de primalitate
-\end{enumerate}
-\subsubsection{Calculul cmmdc a unei valori publice și a unei valori secrete partajate}
-Tehnica de bază constă prin observarea faptului că $cmmdc(e,\phi)=cmmdc(e,\phi + Re)$ unde $R$ este un număr întreg mare folosit pentru a masca valoarea secretului partajat:
-$$\phi=\phi_1+ \dots +\phi _l$$.
-Serverul $i$ generează aleator un întreg $r_i \in [0  \dots  2^{n+k^{'}}]$, unde $k^{'}$ este un parametru de securitate, calculează:
-$$ c = \sum_{i}^{} c_i = \phi + eR$$
-Dacă setăm $R=\sum_i r_i$. Această valuare poate fi cunoscută public apoi, toate serverele vor calcula $cmmdc(e,\phi)=1$. Apoi, este ușor să arătăm că dacă vom înlocui $c$ cu $\phi + eR$, vom obține $e(u + R_v) + \phi v = 1$. Prin urmare, $u + R_v \ mod \ \phi$ este inversul modular al lui $e \ mod \ \phi$. În acest caz, dacă notăm cu $d$ inversul $e \ mod \ \phi$, fiecare server asignează inversul lui $d$ către $d_i = vr_i$ și primul server lui $d_1= vr_1$.
-\subsubsection{Îmbunătățirea generării numerelor fără factori mici}
-\begin{enumerate}
-\item Fiecare server generează aleator un număr întreg $a_i$ în intervalul $[1,P]$ în așa fel încât $a_i$ este relativ prim lui $P$. Deoarece $a_i$ este un număr întreg aleator relativ prim cu P, atunci $a=a_1, \dots ,a_l \ mod \ P$ este de asemenea relativ prim cu P.
-
-\item Serverul rulează un protocl pentrua converti $a$ la $a=b_1+ \dots +b_l$.
-
-\item Fiecare serve generează aleator un număr random:
-$$r_i \in \left[  [ \frac{\sqrt{2}* 2^{\frac{n}{2} -1} }{P}   ], [\frac{2^{\frac{n}{2}-1}}{p^l}]      \right] $$
-Și:
-$$ p_i=r_i P + b_i$$
-$p = \sum p_i \equiv a \ mod \ P$ și prin urmare $p$nu este divizibil de nici un număr prim mai mic decât $B$. Putem nota $p=BR +a$ unde $R=\sum_{i} r_i$. Acest lucru funcționează doar dacă $P<p$. Pentru a arăta asta și că $p^{'} = \frac{p-1}{2}$ nu are factori primi în afară de B, atunci trebuie să verificăm că $cmmdc(p-1,P)=cmmdc(2p^{'},P)=1$ și $cmmdc(p-1,4P)=2$ ca să testăm puterea lui 2. Dacă notăm $P^{'}=4P$, putem face un singur test $cmmdc(p-1,P^{'})=2$\\
-În final, protocolul care transformă partajarea multiplicativă a lui $a$ într-o partajare aditivă, poate fi făcută robustă. Această transformare apelează de $l$ ori protocolul. La început $b_{i,0}=0$ pentru toți $i \in {0, \dots ,l}$. Apoi, pentru fiecare $i=1$ până la $l$, $u_i=a_i$ și $i_j=0$ pentru $\forall j \neq u$ iar protocolul execută: 
-$$(b_{1,i-1}+ \dots +b_{l,i-1}) \times a_i = (b_{1,i-1}+ \dots +b_{l,i-1})(u_1+ \dots +u_l)=b_{1,i}+ \dots +b_{l,i}$$
-\end{enumerate}
-\subsubsection{Generarea lui $N$ întrucât $Q_N$ este ciclic}
-Aici vom arăta cum trebuie generat $N$ astfel încât $Q_N$ să fie ciclic. Pentru a garanta această proprietate trebuie să ne folosim de faptul că prodosul a două grupuri ciclice care sunt coprime este un grup ciclic. Trebuie să verificăm totuși că $P^{'}$ și $Q^{'}$ sunt coprime. Întâi trebuie demonstrată următoarea lemă: \\
-Lema 1: $N=PQ$, $cmmdc(P-1,Q-1)|c,,dc(N-1,\phi(N)$ și pătratul liber (un pătrat liber este un număr care nu este divizibil de nici un număr care este pătrat perfect) al lui $cmmdc(N-1,\phi(N))$ divide $(P-1),(Q-1)$. Dacă $cmmdc(N-1,\phi(N))=2$ atunci $cmmdc(P-1,Q-1)=2$ \\
-Demonstrație: Dacă $cmmdc(N-1,\phi(N))=2$ atunci $cmmdc(P-1,Q-1)|cmmdc(N-1,\phi(N)), cmmdc(P-1,Q-1)=2$. Deoarece $cmmdc(P-1,Q-1) \neq 1$.\\
-\textbf{Teorema}: Generarea cheilor folosind Boneh-Franklin și $cmmdc$ ne ajută să generă, chei RSA în așa fel încât grupul $Q_N$ este ciclic de ordin $M=P^{'}Q^{'}$, unde $N=PQ$, $P=2P^{'}+1$,$Q=2Q^{'}+1$ și nici $P^{'}$ șau $Q^{'}$ au factori primi mai mici decât B. Numărul de iterații ale acestui protocl are o medie de $ 4 \times e^{\lambda} \ln(B)$ \\
-Demonstrație: Ne asumăm faptul că avem un modul RSA în care $P-1$ și $Q-1$ au divizoriiprimi mai mari decât B, aceștia nu au divizori comuni, $cmmdc(P-1,Q-1) = 2$ și $\frac{P-1}{2}$ și $\frac{Q-1}{2}$ nu au factori primi mici. Prodosul a două grupuri ciclice ale căror ordine sunt coprime dau un grup ciclic, grupuri din $\mathbb{Z}_{P}^{*}$ și $\mathbb{Z}_{Q}^{*}$ sunt ciclice, la fel și grupul $Q_N$ este ciclic. Acest lucru ne garantează faptul că există un subgrup ciclic în $\mathbb{Z}_{N}^{*}$ de ordin $M=P^{'}Q^{'}$. Putem estima numărul de iterații ales acestui algoritm folosind faza $1$ din protocolul Boneh-Franklin. Întâi trebuie să cunoaștem faptul că:
-
-$$\lim_{n-> \infty} Pr_{P^{'},Q^{'}  \in [1,n] } [cmmdc(P^{'},Q^{'}]= 1 =  \frac{6}{\Pi^{2}} > 1/2 $$ 
-Adică, ne asumăm faptul că numerele prime din intervalul $ \left[  2^{\frac{n-1}{2}}, 2^{\frac{n}{2}}         \right] $ sunt uniform distribuite. Singurul factor lent la generarea cheii este verificarea dacă $cmmdc(P^{'},P-1)=2$ unde $P^{'} = 4P$. Putem nota că:
-$$Pr_{P^{'}}[ cmmdc(2P^{'},P^{'}) =2 ]$$
-$$ = Pr_{P^{'}} [2 \nmid P^{'} \wedge 3 \nmid P^{'}  \dots    \wedge B \nmid P^{'} ] =(1- \frac{1}{2})(1 - \frac{1}{3}) \dots (1- \frac{1}{B}) = \prod_{p_i \leq B}^{} (1- \frac{1}{P^i}) \approx \frac{1}{e^{\lambda} \ln(B)}  $$
-Conform teoremei a doua a lui Merts, unde $\lambda$ este onstanta lui Euler. Așadar, va trebui să rulăm algoritmul de $ 4 \times (e^{\lambda} \ln(B)$ ori în medie pentru a putea genera un astfel de modul RSA. 
-\subsubsection{Metoda distribuită de generare de chei în protocolul lui Shoup}
-De ăndată ce $N$ este generat, fie $e$ primul număr mai mare decât $4 \delta^{2}$  în așa fel încât serverul îl poate calcula. Apoi, protocolul Catalano \cite{catalano} este rulat pentru a genera cheia partajată într-o manieră distribuită. La finalul protocolului, fiecare server calculează cheia ei de verificare în felul următor:
-$$ v_{u,i} = v_{u}^{\delta d_i}$$
-Pentru $v_u$ aleator calculat ca și $y_{u}^{2} \ mod \ N$ unde $y_u$ e concatenarea lui $H(N|i)$ pentru suficient de mulți $i$ pentru a colecta corect parametri de securitate.
-
-\subsection{Schema lui Shoup împotriva adversarilor activi}
-\subsubsection{Generarea cheilor}
-La sfârșitul protocolului de genarare de chei, va trebui să se verifice, dacă informația îl poate ajuta pe adversar să afle cheia secretă. Fie $d_{i_1}, \dots ,d_{i_t}$, $t$ subsecrete ale cheii secrete, obținută de adversar la $t$ servere corupte. \\
-Informația dezvăluită prin partajarea lui $d_{i_j}$. Pentru fiecare $d_{i_j}$ putem spune că: 
-$$d_{i_j} = f(i_j) = a_0 + a_1i_j +  \dots  + a_t i_{j}^{t} \ mod \ M       $$
-Dacă adăugăm o a $t+1$ ecuație, $a_0=d$, vom obține următorul sistem liniar:
-
-
-
-\[
-\left\{ 
-\begin{array}{c}
-a_0 + a_1 i_1 +  \dots  a_t i_{1}^{t}  = d_{i_1} \ mod \ M \\ 
-a_0 + a_1 i_2 +  \dots  a_t i_{2}^{t}  = d_{i_2} \ mod \ M \\ 
- \dots  \\
-a_0 + a_1 i_t +  \dots  a_t i_{t}^{t}  = d_{i_t} \ mod \ M \\
-\end{array}
-\right. 
-\]
-
-Sau o matrice $A = D \ mod \ M$
-
-\[
-\left (
-\begin{array}{cc}
-1 \ i_1 \ i_{1}^{2}  \dots  i_{1}^{t} \\
-1 \ i_2 \ i_{2}^{2}  \dots  i_{2}^{t} \\
- \dots  \\
-1 \ i_t \ i_{t}^{2}  \dots  i_{t}^{t} \\
-1 \ \ 0 \ \ 0  \dots  0 
-
-
-\end{array}
-\right) 
-\times
-\left (
-\begin{array}{c}
-a_0 \\
-a_1 \\
- \dots  \\
-a_t  
-\end{array}
-\right)
-=
-\left(
-\begin{array}{c}
-d_{i_1} \\
-d_{i_2} \\
- \dots  \\
-d_{i_t}
-\end{array}
-\right)
-\]
-
-Această matrice este o matrice Vandermonde. Determinantul unei astfel de matrici este:
-$$ \det(A) = \prod_{1 \leq j < k <t+1}^{} (i_k - i_j) \ mod \ M$$
-Unde $i_{t+1} = 0$. Cum toți $i_j$ sunt distincți în $\mathbb{Z}_{M}$, $i_k - i_j \neq 0 \ mod \ M$ deoarece $l < B$. Prin urmare, toate valorile lui $d$ sunt posibile. Prin urmare, un grup de $t$ jucători nu pot obține informații despre $d$ din partajări ale lui $d$
-
-\subsubsection{Informația dezvăluită prin verificare cheilor}
-Ăentru toți $u \in [1,k]$, cheile de verificare $v_{u,i}$ ale serverelor non corupte nu dezvăluie vreo informație pentru că ele pot fi foarte ușor simulate din părți ale serverlor corupte. Simulatorul alege random $y_u \in \mathbb{Z}_{N}^{*}$, calculează 
-$$v_u = y_{u}^{2 \delta e} \ mod \ N$$ 
-Prin urmare $y_{u}^{d} = y_{u}^{2 \delta}$. Putem face notația: 
-$$\delta d_i = \sum_{k=1}^{t+1} \lambda_{i,k}^{S} d_j \ mod \ \phi(N)$$
-Notăm cu $S$ un grupt de $t+1$ valori dacă definim coeficienții Lagrange ca fiind:
-$$\lambda_{i,j}^{S} = \delta \times \prod_{j^{'} \in S \smallsetminus j}^{} \frac{i - j^{'}}{j - j^{'}} \in \mathbb{Z}  $$
-Simulatorul poate calcula pentru fiecare $u \ in [1,k]$:
-$$v_{u}^{\delta d_i} = y_{u}^{2 \delta \lambda_{i,0}^{S}}  \times \prod_{j=1}^{t} = v_{u}^{\lambda_{i.j}^{S} d_{i_j}    } \ mod \ N     $$
-unde $S = \lbrace 0,i_1, \dots ,i_t \rbrace$. Prin urmare, un grup de t jucători nu pot lua informația de la cheile de validare ale serverelor non corupte.
-\subsubsection{Protocol pentru semnătură}
-Pentru a genera o semnătură a unui mesaj $m$, fiecare server $i$ calculează $x=H(m)$,$S_i = x^{2 \delta d_i}  \ mod \ N$ și trimite $S_i$ către combinatori fără vreo dovadă deoarece sunt în modelul onest dar curios. Combinatorul selectează un grup $S$ de $t+1$ valori și calculează $ w = \prod_{j=1}^{t+1} S_{i_j}^{2 \lambda_{0,i_{j}}^{S} } \ mod \ N$. \\
-De aici rezultă că $w^{e} = x^{4 \delta^2}$ pentru că $s_{i_j}^{2} = x^{4 \delta d_j}$. De aici putem extrage $e$ rădăcina $x$ din $w$. Pentru că suntem în modelul onest dar curios, semnătura va fi tot timpul corectă.
-
-\subsection{Îmbunătățirea schemei lui Shoup împotriva adversarillor activi}
-\subsubsection{Dovada corectitudinii}
-Fie $N$ modulul astfel încât $N=PQ$ și $P = 2p^{'} +1 $ și $Q= 2q^{'} +1 $ unde $p^{'}$ și $q^{'}$ nu au factori primi mai mici și $cmmdc(P-1,Q-1)=2$. Prin urmare, logaritmul discret al oricărui element $S_i^{2}$ în baza $g$ există, unde $S_i = x^{2 \delta d_i}$ și $\delta = l!$. Putem nota cu $v_1, \dots ,v_k$ un $k$-tuplu de elemente aleatoare în $(Q_N)^k$ astfel încât acest tuplu poate genera cu o probabilitate mare tot grupul $Q_N$ de ordin $M=p'q'$ astfel încât pentru fiecare $x \in Q_N, \exists (a_1, \dots ,a_k) \ in [0,M] $ astfel încât $x = \prod_{i=1}^{k} v_i^{a_i} \ mod \ N$
-Fiecare server $i$ are un $k$-tuplu de chei de verificare $v_{1,i} = v_1^{d_i} \ mod \ N, \dots ,v_{k,i} = v_k^{d_i} \ mod \ N$. El calculează o semnătură, $S_i = x^{2 \delta d_i} \ mod \ N$, unde $d_i$ este semnătura $i$ a lui $d$, și dovedim că:
-$$ \log_{v_1} (v_1,i) =  \dots  = \log_{v_k} (v_k,i) = \log_{x^{4 \delta}} (s-{i}^{2}) = d_i \ mod \ M $$
-Acum, descriem "dovada corectitudinii" și lăsăm $d_i \in [0,M]$ să fie secretul partajat al serverelor și $A$ și $B^{'}$ două numere întregi astfel încât $\log(A) \geqslant \log(B^{'} Mh) +k_2$ unde $B^{'}$ și $k_2$ sunt parametri de securitate și $h$ este numărul de runde. În final, $k_1$ este un parametru, astfel încăt probabilitatea de falsificare este:
-$$1/B^{\prime ^{h}} \leq \frac{1}{2^{k_1}}$$
-Cel care face verificarea, generează aleator un $r \in [0,A]$. Apoi el calculează:
-$$t= (v_{1}^{'}, \dots ,v{k}^{'},x^{'})=(v_{1}^{r}, \dots ,v_{k}^{r},x^{4 \delta r})$$
-Fie $e$, reprezentând primii $b^{'} =\log(B^{'})-1$ biți din valuarea hashului.
-$$ e= [H(v_1, \dots ,v_k,x^{4 \delta},v_{1,i},..v_{k,i},S_{i}^{2},v_{1}^{'}, \dots ,v_{k}^{'},x^{'})]_{b^{'}} $$
-Și verificăm dacă $0 \leq z \leq A $
-
-
-\subsection{Concluzia}
-Am arătat cum trebuie să evităm numerele prime sigure în schema lui Shoup în așa fel încât dovada să rămână corectă. Am considerat că mediile în care am lucrat sunt cu grad de securitate ridicat(ex scheme de vot electronic).
-\\ Pe scurt, folosim diferit tehnici pentru a dovedi că:
-\begin{enumerate}
-\item Grupul pătratelor este ciclic.
-
-\item Generăm $P$ și $Q$ astfel încât $P^{'}$ și $Q^{'}$ să nu conțină factori primi mici
-
-\item Generăm un set de generatori $Q_N$ generând aleator diferiți generatori $Q_N$
-\end{enumerate} 
-În final, arătăm cum trebuie adaptată schema lui Shoup pentru a lucra cu diferite elemente care generează $Q_N$, în loc de unul singur.
-
-
-\section{Bazele matematice} 
-    \subsection{Comportamentul asimptotic}
-     \subsubsection{Analiza unui algoritm}
-      Cel mai bun parametru de securitate o reprezintă lungimea unei chei. O cheie mai mare ne va
-      asigura un nivel de securitate ridicat, dar operațille vor necesita un timp mai mare și vor consuma
-      mai multă memorie. În momentul actual, lungimea unei chei RSA este de $1024$,chiar și 2048 de biți.
-      
-     \subsection{Aritmetica numerelor întregi}
-      \subsubsection{Operațiile de bază}
-       Avem o serie de operații de bază la îndemâna noastră, cum ar fi operațiile logice, evaluarea condițiilor sau saltul în program. Aceste lucruri ne ajută pentru a calcula operații mai complexe cum ar fi înmulțirea a doua numere pe $n$ biți. Înmulțirea sau împărțirea acestor numere se numesc operații cu multiplă precizie. 
-      \subsubsection{Reprezentarea într-o anumită bază}
-      Numerele întregi pozitive pot fi reprezentate în multiple moduri. Cea mai folosită reprezentare a acestora este baza $10$, un astfel de număr este reprezentat prin serii de $0$ și $9$. Spre exemplu $ a = 123 $ înseamnă $ a = 1 \cdot   10^2 + 2 \cdot 10^1 + 3*10^0$. Prin extensie, este posibil să reprezentăm un întreg utilizând o baza b: $ a = a_k \cdot   b^k + a_{k-1}*b^{k-1} +  \dots  + a_0*b^0 $. Pentru în număr $a$ și o bază $b$ există mereu această reprezentare și este unică. Deoarece calculaoarele lucrează cu $0$ și $1$, baza $2$ este mereu folosită. Așadar, vom folosi următoarea notație \\
-      $$ a=(111011)_2 = 2^5 + 2^4 + 2^3 + 0*2^2 + 2^1 + 2^0 $$
-      \subsection{Aritmetica modulară}
-       \subsubsection{Reducerea modulară}
-        Majoritatea criptosistemelor sunt bazate pe grupuri finite; spre excemplu $ \mathbb{Z}_N $. Fiecare element $x$ din acest grup poate fi notat ca și: \\
-        $$ x = r  \ mod \ N \ \Leftrightarrow \exists q \in \mathbb{Z} , x = r+q*N$$
-       \subsubsection{Inversul modular}
-         Inversul modular poate fi calculat folosind algoritmului Euclid Extins, care nu calculează doar cel mai mare divizor comun a două numere întregi $x$ și $y$, dar găsește și două numere întregi $ \alpha $ și $  \beta $ astfel încât $ cmmdc(x,y) = \alpha \cdot   x + \beta \cdot   y$ \\
-        Dacă dorim să aflăm inversul lui  $x \ mod \ N$ (presupunând faptul că numerele sunt coprime, adică $cmmdc(x,N)=1)$ apoi calculăm $Xcmmdc(x,N)$ (varianta extinsă a algoritmului lui Euclid) și obținem $ \alpha \cdot   x + \beta \cdot   N = 1$. Modulo $N$, această expresie devine $\alpha \cdot   x  = 1 \ mod \ N$; în alte cuinte $\alpha= x^{-1} \ mod \ N$ \\
-        Pentru ușurința înțelegerii, vom prezenta algoritmul extins al lui Euclid într-un pseudocod, precum și algoritmul pentru calculul inversului modular.  
-        \begin{algorithm}[H]
-		   \caption{Euclid extins}
-		   \textbf{Input:} $a,b \in \mathbb{Z}$ \\
-		   \textbf{Output:} $(a,b)$ și $V(\alpha, \beta)$ astfel încât $(a,b) = \alpha a + \beta b$
-		   \begin{algorithmic}
-		   \State $V_0 \gets (1,0)$
-		   \State $V_1 \gets (0,1)$
-		   \While {$ b \neq 0 $}
-		    \State $q \gets a  \ div \ b$
-		    \State $r \gets a \ mod  \ b$
-		    \State $a \gets b$
-		    \State $b \gets r$
-		    \State $V \gets V_0$
-		    \State $V_0 \gets V_1$
-		    \State $V_1 \gets V - qV_1$
-		   \EndWhile
-		   \State $(a,b) \ \gets \left| a \right|$
-		   \State $V \gets V_0$
-		   \State \textbf{return} $V$
-		   \end{algorithmic}
-		   \end{algorithm}
-		   
-		   
-		   \begin{algorithm}[H]
-		   \caption{Inversul modular}
-		   \textbf{Input:} $ m \geq 1$ și $ a \in \mathbb{Z}_m$ \\
-		   \textbf{Output:} $ a^{-1} \in \mathbb{Z}_m$, dacă $(a,m)=1$
-		   \begin{algorithmic}
-		   \State calculăm $cmmdc(a,m)= \alpha a + \beta b$
-		   \If{ $ cmmdc(a,m)=1 $ }
-		   \State $ a^{-1} = \alpha \ mod \ m$
-		   \Else
-    		\State Ecuația nu are soluții întregi 
-		   \EndIf
-		   \end{algorithmic}
-		   \end{algorithm}
-        
-    Pentru un exemplu concret, vom încerca să calculăm $7^{-1} \in \mathbb{Z}_{26}$.
-    Deoarece $ 7 < 26$, vom calcula $Xcmmdc(26,7)= \beta b + \alpha a$, deci la final vom inversa coordonatele obținute.
-    \begin{align*}
-    V_{26} &=(1,0) \\
-    V_{7} &=(0,1) \\
-    26 : 5 &= 3 \ rest \ 5 \Rightarrow \\
-    5 &= 26 -7 \cdot 3 \Rightarrow \\
-    V_5 &= (1,0) - 3 \cdot (0,1) = (1,-3) \Rightarrow \\
-    7 :5 &= 1 \ rest \ 2  \Rightarrow \\
-    2 &= 7-5 \Rightarrow \\
-    V_2 &= (0,1) - (1,-3) = (-1,4) \Rightarrow \\
-    5:2 &= 2 \ rest \ 1 \Rightarrow \\
-    V_1 &= V_5 - 2 \cdot V_2 = (1,-3) - 2 \cdot (-1,4)= (3,-11)
-    \end{align*}
-    
-    Știm că 1 este ultimul rest $\neq 0$ deci $V_1$ este combinația liniară pe care o căutam. $V_1 = (3,-11)$ dar, deoarece am făcut aceea, vom efectua o interschimbare la primul pas, $V_1$ este de fapt $(-11,3) \Rightarrow \alpha = -11 , \beta=3$ \\
-    Putem face și verificarea $ -11 * 7 + 3 * 26 = -77 + 78  =1 $.
-     Cu $ \alpha $ cunoscut, putem afla $ 7^{-1} \in \mathbb{Z}_{26} $ \\
-     7 și 26 sunt coprime (cel mai mare divizor comun al lor este 1) deci, am reușit să respectăm condiția inițială a algoritmului. $-11$ în $\mathbb{Z}_{26}$ este 15 iar $15 \ mod \ 26 = 15 \Rightarrow 7^{-1} = 15$. Verificând această afirmație, ajungem la $7 \cdot 15 \equiv 1 \mod \ 26$, deoarece $7*15 : 26 = 105 : 24 = 4 \ rest \ 1$ \\
-     O altă modalitate prin care putem determina inversul modular al unui număr modulo alt număr este prin rezolvarea unei ecuații diofantice. Vom încerca să aplicăm această variantă tot pe $7^{-1} \in \mathbb{Z}_{26}$. O ecuație diofantică are forma $ax +bx + c = 0$ iar din algoritmul extins al lui Euclid unde $ cmmdc(a,b) = \alpha a + \beta b$ va trebui să rezolvăm ecuația $ \alpha a + \beta b - cmmdc(a,b)=0$
-     
-    
-    \section{RSA Clasic}
-     \subsection{Exponențiere Rapidă}
-      \subsubsection{Descrierea metodei binare (varianta de la stânga la dreapta)}
-       Această metodă de exponențiere este bazată pe reprezentarea binară a exponentului și ne permite să calculăm un exponent cu un număr mic de înmulțiri și ridicări la pătrat. Luăm baza $M$, exponentul e și modulul $N$ ca și input, și rezultatul exponențierii $C = M^e \ mod \ N$ ca și output. Pe lângă faptul că avem o reprezentare arbitrară a lui $ e = \sum_{i=0} ^ {k-1} e_i \cdot   2^i $, unde $ e_i $ este $0$ sau $1$. Putem transforma exponentul în următoarea expresie: \\
-       \begin{align*}
-        M^e &= M^{\sum_{i=0} ^ {k-1} e_i \cdot   2^i} \ mod N \\ 
-        &=  \prod_{i=0}^{k-1} M^{e_i*2^i} \ mod \ N \\
-        &= \prod_{\substack{i=0 \\ e_i =1}}^{k-1} M^{2^i} \ mod \ N 
-       \end{align*}
-        
-       Folosind relația, vom putea calcula recursiv rezultatul: prima dată îl vom inițializa cu $1$, apoi vom parcurge reprezentarea binară a exponentului. Dacă bitul de la poziția $i$ este $1$, atunci o vom multiplica cu rezultatul $ M^{2^i}$. Dar acest lucru se poate face mai rapid: dacă inițializăm rezultatul cu 1 și mergem prin reprezentarea binară a exponentului de la stânga către dreapta. La fiecare pas, ridicăm la pătrat rezultatul și în înmulțim cu M dacă bitul de pe acea poziție este $1$. La final, rezultatul va fi multiplicarea acestuia cu $ M^{2^i}$.
-      \subsubsection{Corectitudinea algoritmului left-to-right}
-      Vom dovedi prin inducție că acest aloritm funcționează. Să spunem că la un anumit pas $i$ avem $ C_i = \prod_{j=i}^{k-1} {M^{e_j*2^{j-i}}} \ mod \ N$. La următorul pas, vom calcula ridicarea la pătrat și o înmulțire dacă $ e_{i-1} = 1 $. Prin urmare: \\
-      \begin{align*}
-       C_{i-1} &= M^{e_{i-1}}*C_{i}^2 \ mod \ N\\
-       &= M^{e_{i-1}} \cdot   \left( \prod_{j=i}^{k-1} M^{e_j*2^{j-i}} \right)^2 \ mod \ N \\ 
-       &= M^{e_{i-1}} \cdot   \prod_{j=i}^{k-1} M^{e_j*2^{j-i+1}} \ mod \ N \\
-       &= \prod_{j=i-1}^{k-1} M^{e_j*2^{j+)i-1)}} \ mod \ N 
-      \end{align*}
-      
-      
-      La începutul buclei, la pasul $ k-1 $ afirmația este adevărată deoarece $ C = M^{e_{k-1}} mod N$. Prin inducție, afirmația este adevărată cât timp $ i=0$. Iar pentru $i=0$ avem: \\
-      $$ C= \prod_{j=0}^{k-1} M^{e_j \cdot   2^j}  \ mod \ N $$
-      
-     \subsection{Teorema Chineză a resturilor}
-      \subsubsection{Descrierea}
-      Teorema Chineză a resturilor ne permite să reducem timpul computațional pentru o decryptare clasică RSA. Mai general, teorema formează o bijecție între $ \mathbb{Z}_m $ și produsul cartezian \\
-      $$ \prod_{i=0}^{k} \mathbb{Z}_{m_i} = \mathbb{Z}_{m_0} \times \mathbb{Z}_{m_1} \times \dots \times  \mathbb{Z}_{m_k}$$
-      Asumând faptul că $ m = \prod_{i=0}^{k} m_i $ și că $ m_i $ au divizor comun doar pe 1. Spre exemplu, există un izomorfism între $ \mathbb{Z}_N$ și $\mathbb{Z}_P \times \mathbb{Z}_Q  $ în loc de $ \mathbb{Z}_N $, $ P $ și $Q$ reprezentând două numere prime astfel încât $ N=PQ$. Spunem că lungimea în biți a lui $P$ și $Q$ este jumătate din lungimea în biți ai lui $N$, costul înmulțirii este teoretic divizat prin 2. Este ușor a calcula imaginea unui anumit $a$, dar dacă $ a= a_i \ mod \ m_i $ este dat, atunci reciproca nu este trivială. Obiectul teoremei este să dea soluția unică modulo $m$ a unui sistem de forma: \\
-    \[
-\left\{ 
-\begin{array}{c}
-a \equiv a_1 \ mod \ m_1 \\ 
- \vdots  \\ 
-a \equiv a_k \ mod \ m_k
-\end{array}
-\right. 
-\]
-
-		  \begin{algorithm}[H]
-		   \caption{Teorema Chineză a resturilor}
-		   \textbf{Input:} Un sistem de $k$ ecuații de foma $x \equiv b \ mod \ m$ \\
-		   \textbf{Output:} Soluția unică a sistemului
-		   \begin{algorithmic}
-		   \For {$i$ from $1$ to $k$}
-		   	\State $c_i = \prod_{\substack{j=1 \\ j \neq i }}^{k} m_j$
-		   	\EndFor
-		   	\State calculăm solția ecuației $ c_ix \equiv b_i \ mod \ m_i $ folosind Euclid Extins 
-		   	\State \textbf{return} $(c_1x_1 + \dots c_kx_k) \ mod \ (m_1 \dots m_k) $ 
-		   \end{algorithmic}
-		   \end{algorithm}
-		   
-		   
-		   \begin{algorithm}[H]
-		   \caption{Rezolvarea unei ecuații liniare congruente}
-		   \textbf{Input:} $ m \geq 1$ și $ a,b \in \mathbb{Z}$  \\
-		   \textbf{Output:} toate soluțiile modulo $m$ ale ecuației $ax \equiv b \ mod \ m $
-		   \begin{algorithmic}
-		   \State calculăm $Xcmmdc(a,m)= \alpha a +  \beta m$
-		   \If {$cmmdc(a,m)|b$}
-		   \State listă_soluții $ \gets [ \ ] $
-		   \State $b \textprime \gets \frac{b}{cmmdc(a,m)} $
-		   \State $x_0 \gets \alpha b \textprime $
-		   \For {$i$ from 0 to $cmmdc(a,m)-1$}
-		   \State listă_soluții.push$\left(     \left( x_0 + \frac{im}{cmmdc(a,m)}    \right) \ mod \ m \right)$
-		   \EndFor
-		   \Else
-		   \State Nu există soluții întregi
-		   \EndIf
-		   	 
-		   \end{algorithmic}
-		   \end{algorithm}
-
-
-		  
-
-
-
-
-	 \subsubsection{Demonstrația teoremei}
-	 Căutăm să găsim acel $a$, astfel încât $ a \equiv a_i \ mod \ m_i $ pentru $i$ de la $1$ până la $k$. Să dovedim că $ a = \sum_{i=0}^{k} a_i \cdot   M_i \cdot   y_i $ este o soluție a sistemului. \\
-	 $M_i= \prod_{j=0,j \neq i}^{k} m_j $ și $M_j=0 \ mod \ m_i $ dacă $j \neq i$, de aceea: 
-	 $$ a = a_i \cdot   M_i \cdot   y_i \ mod \ m_i $$
-	 Dar am ales $y_i$ astfel încât $y_i = M_{i}^{-1} \ mod \ m_i$ ; cu alte cuvinte $y_i \cdot   M_i = 1 \ mod \ m_i$. În final, obținem pentru $i$ de la 1 până la $k$ :
-	 $$ a = a_i \  mod \ m_i$$
-	 
-	 \subsection{Algoritmul lui Garner}
-	  \subsubsection{Descrierea algoritmului}
-	  Utilizarea clasică a teoremei Chineze a resturilor necesită o reducere modulară modulo $N$,unde $N$ este un produs de două numere prime $P$ și $Q$. Este posibil să estimăm calculul a celor doi inverși datorită algoritmului Garner. Totuși, costul din punct de vedere al memoriei este mai mare. Ca și în algoritmul precedent, trebuie să găsim $M$ astfel încât $ M = M_P \ mod \ P$ și $M = M_Q \ mod \ Q$. Mai avem un parametru $ P_{inv_Q} = P^{-1} \ mod \ Q$.
-	  \subsubsection{Corectitudinea algoritmului}
-	  Vrem să calculăm M astfel încât $M =M_P \ mod \ P$ și $M=M_Q \ mod \ Q$ și $P_{inv_Q}=P^{-1} \ mod \ Q$. Să arătăm că: \\
-	  $$ M=M_P + V*P \ mod \ N$$
-	  unde $ V=P_{inv_Q} \cdot   (M_Q-M_P) \ mod \ Q$ \\
-	  $M = M_P \ mod \ P$ și : \\
-	  \begin{align*}
-	  P*V&= P* P_{inv_Q} \cdot   (M_Q - M_P) \ mod \ Q \\
-	   &= M_Q - M_P \ mod \ Q
-	  \end{align*}
-	  
-	  În final: \\
-	  \begin{align*}
-	   M&= M_P + M_Q \ mod \ Q \\
-	   &= M_Q \ mod \ Q 
-	  \end{align*}
-	  
-	  
-	  \subsection{Implementări rapide RSA}
-	  Am prezentat o optimizare a algoritmului RSA folosind teorema Chineză a resturilor și o exponențiere mai rapidă. Cei doi inverși sunt de obicei necesari pentru teorema chineză iar numărul de inverși va fi redus la unul singur. Prin acest mod, viteza de decriptare descrește de aproximativ $4$ ori.
-	  \subsubsection{Generarea cheilor, criptare și decriptare}
-	  \begin{enumerate}
-	    \item \textbf{Generarea cheilor}: \\
-	    Generarea cheilor este aceeași ca și în RSA standard: avem ca input parametrul de securitate $n$, alegem două numere prime cu lungimea în biți fiind jumătatea lui $n$ după care le înmulțim. Apoi alegem în număr întreg $e$ astfel încât $ \phi(N) $ și $e$ sunt relativ prime. În final calculăm d asfel încât $ ed=1 \ mod \ \phi(N)$ și după să-l reducem modulo $(P-1)$ și $(Q-1)$. Apoi calculăm $P_{inv_Q} = P^{-1} \ mod \ Q$: toate aceste valori sunt fixate și sunt necesare pentru decriptare. Cele două numere $<N,e>$ reprezintă cheile publice și $<P,Q,d_P,d_Q,P_{inv_Q}>$ sunt cheile secrete.
-	    
-	    \item \textbf{ Criptarea}: \\
-	    Mesajul criptat, va trebui întâi convertit la un număr întreg. Sunt anumite tipuri de algoritm care fac această conversie (o modalitate ar fi să folosim codificarea ascii). Având plaintextul M, este ușor să calculăm $C = M^e \ mod \ N$
-	    
-	    \item \textbf{Decriptarea}: \\
-	    Pentru decriptare nu vom face direct calculul $M=C^d \ mod \ N$, ci vom folosi una din schemele eficiente prezentate mai sus. $M_P= C_{P}^{d_P} \ mod \ P$ și $M_Q = C_{Q}^{d_Q} \ mod \ Q $ unde $C_P = C \ mod \ P$, $cmmdc= d \ mod \ (P-1) $ și $C_Q = C \ mod \ Q. d_Q = d \ mod \ (Q-1) $. Apoi este posibil să reveni la plaintextul M datorită teoremei Chineze a resturilor. Această metodă este mai rapidă pentru că vom avea 2 exponențiere cu numere pe $n/2$ biți în loc de o exponențiere pe $n$ biți.
-	  \end{enumerate}
-	  
-	  \section{RSA Rebalansat}
-	   \subsection{Generarea cheilor, criptare și decriptare}
-	    \subsubsection{Generarea cheilor}
-	    Algoritmul primește $2$ parametri de securitate ca și input: $n$ (de obicei $1024$ biți) și $k$(de obicei $160$ biți) unde $k<n/2$. Apoi se aleg două numere prime $P$ și $Q$ verificând că $cmmdc(P-1,Q-1)=2$ și care au lungimea $n/2$. Modulul N este $N=PQ$. Apoi generăm aleator două valori pe $k$ biți $d_P$ și $d_Q$ astfel încât $cmmdc(d_P,P-1)=1, cmmdc(d_Q,Q-1)=1$ și $(d_P=d_Q \ mod \ 2$. Exponentul secret $d$ trebuie să verifice: $d=d_P \ mod \ (P-1)$ și $d=d_Q \ mod \ (Q-1)$. Nu putem calcula direct $d$ folosind teorema chineză a resturilor pentru că $P-1$ și $Q-1$ nu sunt relativ prime, dar noi le alegem astfel încât $cmmdc(P-1,Q-1)=2$ prin urmare:
-	    $$cmmdc \left( \frac{P-1}{Q-1},\frac{Q-1}{2}  \right)=1  $$
-	     De asemenea știm că $ d_P=d_Q \ mod \ 2$. Fie $ a=d_P \ mod \ 2 $. Datorită teoremei chineze a resturilor, putem calcula un $d\textprime$ care verifică:
-	    $$d\textprime = \frac{d_P-a}{2} \ mod \ \left( \frac{P-1}{2} \right) $$
-	    $$d\textprime = \frac{d_Q-a}{2} \ mod \ \left( \frac{Q-1}{2} \right) $$
-	    În alte cuvinte, există două numere întregi $k_1 și k_2$ astfel încât: 
-	    $$d\textprime = \frac{d_P-a}{2} + k_1 \cdot   \left( \frac{P-1}{2} \right) $$
-	    $$d\textprime = \frac{d_Q-a}{2} + k_2 \cdot   \left( \frac{Q-1}{2} \right) $$
-	    Fie $ d=2d\textprime +a$ care verifică:
-	    $$ d=(d_P-a) + k_1 \cdot   (P-1) +a$$
-	    $$ d=(d_Q-a) + k_2 \cdot   (Q-1) +a$$
-	    Modulo $P-1$ și $Q-1$ obținem:
-	    $$d=d_P \ mod \ \left( P-1 \right)$$
-	    $$d=d_Q \ mod \ \left( Q-1 \right)$$
-	    Pentru a calcula exponentul public e, trebuie doar să calculăm inversul lui $d$ modulo $\phi(N)=(P-1)(Q-1)$. Acest lucru este permis deoarece $cmmdc(d_P,P-1)=cmmdc(d_Q,Q-1)=1$. Prin urmare, $cmmdc(d,P-1)=cmmdc(d,Q-1)=1$. În final $cmmdc(d,\phi(N))=1$. Nu avem control asupra lui $e$ care este de ordinul lui $N$. Criptarea nu va fi la fel de rapida ca și criptarea clasică RSA dar vom putea mări viteza decriptării.
-	   \subsubsection{Criptarea}
-	    Aceasta este exact ca și în RSA standard, doar că $e$ este mult mai mare iar $d$ mult mai mic. Cheia publică este $<N,e>$.
-	    \subsubsection{Decriptarea}
-	    Putem decripta criptotextul C prin calculul $M_P = C^{d_P} \ mod \ P$ și $M_Q=C^d_Q  \ mod \ Q$. Folosind teorema Chineză a resturilor putem recupera plaintextul inițial $M$ prin rezolvareasistemuui:
-	    \[
-\begin{cases}
-x \equiv M_P \ mod \ P  \\
-x \equiv M_Q \ mod \ Q
-\end{cases}
-\]
-	    
-	    
-	    \section{Multi-Prime RSA}
-	     \subsection{Algoritmul Garner cand $N=PQR$}
-	     \subsubsection{Descrierea algoritmului}
-	     Algoritmul Garner este un algoritm pentru rezolvarea de sisteme de ecuații modulo $m$, ce ne permite să îmbunătățim viteza de decriptare, dar cu un consum mai mare al memoriei. Mai sus am prezentat varianta pentru două numere prime, dar în acest caz vom avea $3$ numere prime. Algoritmul are ca input $M_P,M_Q,M_R,P,Q,R$ și $N$, unde $N=PQR$. De asemenea, trebuie să calcuulăm și $PQ_{inv_R}$ și $P_{inv_Q}$, verificând că $PQ_{inv_R}=(PQ)^{-1} \ mod \ R$ și $P_{inv_Q}=P^{-1} \ mod \ Q$. Calculăm $M$ astfel încât: \\
-	         \[
-\left\{ 
-\begin{array}{c}
-M \equiv M_P \ mod \ P \\ 
-M \equiv M_Q \ mod \ Q \\ 
-M \equiv M_R \ mod \ R
-\end{array}
-\right. 
-\]
-
-		\subsubsection{Corectitudinea algoritmului}
-		Dorim să calculăm $M=M_P \ mod \ P$, $M=M_Q \ mod \ Q $ și $M=M_R \ mod \ R $. La fel dorim să avem calculat și $P_{inv_Q}=P^{-1} \ mod  \ Q$ și $PQ_{inv_R}=(PQ)^{-1} \ mod \ R$.$ M$ verifică: 
-		$$M=M_{PQ} + P*Q(M_R-M_{PQ})*(PQ_{inv_R}) \ mod \ N$$
-		Știind faptul că  $P*Q*(PQ_{inv_R})=1 \ mod \ R$ obținem:
-		\begin{align*}
-	M&=M_{PQ}+(P*Q*(PQ_{inv_R}))*(M_R-M_{PQ}) \ mod \ R \Rightarrow \\
-	M&=M_{PQ} + M_R - M_{PQ} \ mod \ R
-		\end{align*}
-
-		în final obținem $ M=M_R \ mod \ R $
-		La fel vom proceda pentru această ecuație $mod \ Q$ și $mod \ P$ și vom obține:
-		$$M \equiv M_Q \ mod \ Q$$
-		$$M \equiv M_P \ mod \ P$$
-		
-		\subsection{Multi-Prime RSA (modulo $N=PQR$)}
-		 \subsubsection{Descrierea criptosistemului}
-		 \begin{enumerate}
-		  \item \textbf{Generarea cheilor}: \\
-		  Generarea cheilor este aceeași ca și la RSA clasic, diferă doar faptul că sunt trei numere prime în loc de două. Avem ca input, parametrul de securitate $n$, alegem 3 numere prime $P$, $Q$ și $R$ care au lungimea în biți $n/3$ și le înmulțim pentru a obține modulul $N=PQR$. Apoi alegem un număr întreg $e$ astfel încât $\phi(N)=(P-1)(Q-1)(R-1)$ și e să fie relativ prime. În final, calculăm $d$ astfel încât $ed \equiv 1 \ mod \ \phi(N)$ și $d_P=d \ mod \ (P-1), d_Q= \ mod \ (Q-1)$ și $d_R=d \ mod \ (R-1)$. De asemenea calculăm și $PQ_{inv_R}=(PQ)^{-1} \ mod \ R$ și $P_{inv_Q}=P^{-1} \ mod \ Q$. Cele două numere întregi $<N,e>$ sunt cheile publice și $<P,Q,R,d_P,d_Q,d_R,PQ_{inv_R},P_{inv_Q}>$ sunt cheile private.
-		  
-		  \item \textbf{Criptarea}: \\
-		  Partea de criptare este la fel ca și la RSA clasic.
-		  
-		  \item \textbf{Decriptarea}: \\
-		  Principiul este cam același: Se folosește teorema chineză a resturilor doar că în loc de $2$ numere prime vom avea $3$. Această decriptare este mai rapidă, deoarece lungimea în biți ale numerelor întregi este mai scurtă. În loc de o singură exponențiere vom avea 3 exponențieri de lungime de 3 ori mai mică. Teoretic, viteza acestui algoritm este de 9 ori mai rapidă (când $N$ este pe 2048 de biți) decât RSA multi-prime care nu folosește teorema chineză a resturilor.
-		  
-		 \end{enumerate}
-		 
-		 \subsection{Generalizarea algoritmului Garner}
-		 Deși, utilizarea a mai mult de $3$ numere prime reprezintă un incident de securitate, lungimea unei chei RSA ar putea deveni mai mare în viitor, și ne va permite să folosim și o formă mai generală având $b$ numere prime, în acest caz $N$ va fi : $N=\prod_{i=1}^{b} P_i$.
-		 \subsubsection{Descrierea algoritmului în forma generală}
-		 \begin{enumerate}
-		 \item \textbf{Generarea cheilor}: \\
-		 Generarea cheilor este aceeași ca și până acum doar că vom avea un număr b de numere prime în loc de $2$ sau $3$: avem ca input un parametru de securitate $n$, alegem $b$ numere prime care au lungimea $n/b$ biți și le înmulțim pentru a obține N. Alegem e astfel încât $\phi(N)=\prod_{i=1}^{b}(P_i -1)$ și e sunt relativ prime. În final calculăm d astfel încât $ed=1 \ mod \phi(N)$ și $d_i = d \ mod \ (P_i -1)$. La fel vom calcula și acei inverși ( de data aceasta îi vom nota cu $A_2, \dots ,A_b$). Vom avea parametri publici $<N,e>$ și cei secreți $<P_1, \dots ,P_b,d_1, \dots d_b,A_2, \dots ,A_b>$.
-		 
-		 \item \textbf{Criptarea}: \\
-		 Criptarea este la fel ca și cea clasică
-		 \item \textbf{Decriptarea}: \\
-		 Principiul este același, se va folosi teorema Chineză a resturilor, unde $N=\prod_{i=1}^{b} P_i$.Va trebui să facem b exponențieri de lungine $n/b$. Este posibil să avem o viteză de $b^2$ ori mai rapidă decât RSA fără teorema Chineză a resturilor.
-		 \end{enumerate}
-		
-		\section{Multi-Power RSA}
-		 \subsection{Hensel lifting}
-		  \subsubsection{Ideea de baza la Hensel lifting}
-		  Folosind un modul $N=P^2Q$ folosind în mod clasic teorema Chineză a resturilor, făcând o decriptare RSA ar fi mai înceată decât dacă am folosi un modul $ N=PQ$. Când calculăm $ \mathbb{Z}/P^2\mathbb{Z}$, ajungem să avem lungimi de $2n/3$ biți, pe când în $\mathbb{Z}_{P^2}$ avem lungimi de $n/3$. Așadar, va trebui să-l scriem pe $P^2$ sub o altă formă.
-		  \subsubsection{Justificarea matematică}
-		  Vom încerca să scriem reprezentarea plaintext $M_P \ modulo \ P^2$
-		  $$ M_P=(K_0 + P*K_1) \ mod \ P^2$$
-		  Dacă vom calcula $C_P = M_{P}^{e} \ mod \ P^2$ obținem:
-		  \begin{align*}
-		   C_P &= (K_0 + P*K_1)^e \ mod \ P^2 \\
-		   &= \sum_{i=0}^{e} \binom ie \cdot   K_{0}^{i} \cdot   P^{e-i} \cdot   K_{i}^{e-i} mod P^2 
-		  \end{align*}
-		  
-		  Expresia de mai sus se va reduce la :
-		  $$ C_P = K_{0}^{e}  + e*P*K_{0}^{e-1} \cdot   K_1 \ mod \ P^2 $$
-		  Putem calcula foarte ușor pe $K_0$:
-		  $$K_0=C_{P}^{d_P} \ mod \ P$$
-		  Fie $E = (C_P - K_{0}^{e}) \ mod \ P^2$ de unde rezultă:
-		  $$ K_1=\frac{E}{P} (e*K_{0}^{e-1} \ mod \ P)^{-1} \ mod \ P $$
-		  Acum putem recupera mesajul $M_P = (K_0 + P \cdot   K_1) \ mod \ P^2$
-		  
-		  \subsection{Multi-Power RSA modulo $N=P^2Q$}
-		  \subsubsection{Algoritmul}
-		  \begin{enumerate}
-		   \item \textbf{Generarea cheilor}: \\
-		   Avem ca input parametru de securitate $n$, alegem două numere prime $P$ și $Q$, care au lungimea $n/3$ și calculăm modulul $N=P^2Q$. Apoi alegem $e$ ca și în partea standard RSA și calculăm $d$ astfel încât $ed=1 \ mod \ (P^2-P)(Q-1)$. În final, calculăm $d_P= d \ mod \ (P-1)$ și $ d_Q=d \ mod \ (Q-1)$. De asemenea calculăm și $P_{inv_Q}^{2}$ și $e_{inv_P}$. Cele două numere întregi $<N,e>$ vor reprezenta cheia publică, iar $<d_P,d_Q,P,Q,P_{inv_Q}^{2},e_{inv_P}>$ reprezintă cheia secretă. 
-		   
-		   \item \textbf{Criptarea}: \\
-		   Criptare clasică RSA
-		   
-		   \item \textbf{Decriptarea}: \\
-		   La decriptare vom calcula $M_P = C_{P}^{d} \ mod \ P^2$, unde $C_P = C '\ mod \ P^2$ și $M_P = M \ mod \ P^2$ folosind algoritmul Hensel. Ne permitem să calculăm exponentul unui număr de lungime $2n/3$ biți la costul unui număr de lungime $n/3$ biți. În final putem recupera plaintextul inițial folosind teorema chineză a resturilor. Această metodă are o viteză de circa 13.5 ori mare.
-		  \end{enumerate}
-		  
-		  \subsection{Generalizarea ideii}
-		  În acest moment suntem limitați să avem $b=2$ unde $N=P^bQ$, deoarece lungimea maximă în acest moment este de 2048 de biți.
-		  \subsubsection{Ideea de bază}
-		  Având $M \ mod \ P$, putem recupera plaintextul inițial $ M \ mod \ P^2$ datorită algoritmului Hensel. Totuși, dacă executăm acest algoritm într-o buclă vom putea recupera mesajul chiar și cu o putere mai mare decât 2. După fiecare buclă, vom obține $ M  \ mod \ P^i$, început cu $i$ de la 1 până la $b$. La final, obținem $M \ mod \ P^b$. Vom avea $M_{P,i}$, plaintextul modulo $P^i$. Vom arăta ca se poate recupera plaintextul folosind modulo $P^{i+1}.$
-		  $$M_{P,i+1} = (K_0 +K_1 \cdot   P^i) \ mod \ P^{i+1}$$
-		  Putem scrie criptotextul $C_{P,i+1}$ modulo $P^{i+1}$ în următorul fel:
-		  \begin{align*}
-		  C_{P,i+1} &= M_{P,i+1}^{e} \ mod \ P^{i+1}\\
-		   &= (K_0+K_1*P^i)^e \ mod \ P^{i+1} 
-		  \end{align*}
-		  
-		  După ce vom desface acea paranteză aplicând Binomul lui Newton, ecuația se va reduce la:
-		  $$ C_{P,i+1} = K_{0}^{e} + e*K_{0}^{e-1} *P^i*K_1 \ mod \ P^{i+1}$$
-		  Mai departe, vom înlocui pe $K_0$ cu $M_{P,i}$, și vom aduce primul termen $M_{P,i}^{e}$ în partea stângă. Vom obține:
-		  $$C_{P}^{i+1} - M_{P,i}^{e} = e*M_{P,i}^{e-1} \cdot   P^i \cdot   K_1 + k *P^{i+1}$$
-		  Ca și în varianta precedentă unde aveam $b=2$, vom înlocui pe $C_{P}^{i+1} - M_{P,i}^{e}$ cu $E$. Prin urmare, $K_1$ va fi egal cu:
-		  $$K_1 = \frac{E}{P^i} \cdot   (e*M_{P,i}^{e-1})^{-1} \ mod \ P$$
-		  În final se obține:
-		  $$M_{P,i+1}= (M_{P,i} + K_1 \cdot   P^i) \ mod \ P^{i+1}$$
-		  \subsection{Multi-Power RSA modulo $N=P^bQ$}
-		  \subsubsection{Algoritmul}
-		  \begin{enumerate}
-		  \item \textbf{Generarea cheilor}:\\
-		  Vom avea ca parametru de securitate $n$, vom alege cele două numere prime $P$ și $Q$, care au lungimea de $n/(b+1)$ biți și calculăm $N=P^bQ$. Apoi îl alegem pe $e$ în modul standard RSA, după care îl calculăm pe $d$ astfel încât $ed=1 \ mod \ (P^2-P)(Q-1)$. În final, vom calcula $d_P= d \ mod \ (P-1)$ și $d=q \ mod \ (Q-1)$. De asemenea vom calcula $P_{inv_Q}^{2}$ și $e_{inv_P}$. Cele două numere întregi $<N,e>$ sunt cheile publice, iar $d_P,d_Q,P,Q,(P_{inv_Q}^{2},e_{inv_P}>$ sunt cheile secrete.
-		  \item \textbf{Criptarea}:
-		  Criptarea se face în modul clasic RSA
-		  
-		  \item \textbf{Decriptarea}: \\
-		  Vom calcula $M_P = C_{P}^{d} \ mod \ P^b $ unde $C_P = C \ mod \ P^b$ și  $M_P = M \ mod \ P^b$ folosind algoritmul Hensel. În final, vom recupera plaintextul înițial folosind teorema chineză a resturilor. De asemnea calculăm $M_Q= C_{Q}^{d} \ mod \ Q$ și obținem plaintextul folosind algoritul Garner.
-		  \end{enumerate}
-		  
-		  \subsection{Schema lui Takagi}
-		  Schema lui Takagi este o variantă de multi-power RSA \cite{takagi}. Această variantă folosește on modul $N=P{b-1}Q$, pentru $b \geqslant 3$ și definește exponentul public și cel privat ca fiind invers modularul lui $\lambda \textprime (N) =cmmc(P-1,Q-1)$. Deoarece $\lambda \textprime (N)$ nu este un multiplu a lui $\lambda(N)$ unde ( $ed=1+k\lambda(N)$ ), înseamnă că decriptarea standard nu va funcționa, deci $m^{ed} \not\equiv m \ mod \ N$. Pentru a putea decripta un criptotext, trebuie să decriptăm parțial modulo $P^{b-1}$ și modulo $Q$ apoi el trebuie combinate folosind teorema Chineză a resturilor. Totuși, pentru a putea calcul calcula decriptarea parțială $m_{P^{b-1}}$ trebuie să folosin și lema lui Hensel.\\
-		  Pentru numere aleator balansate $P$ și $Q$, modulul schemei Takagi este dat de $N=P^{b-1}Q$, pentru $b \geqslant 3$. Un exponent public mic $e$ este ales astfel încât$cmmdc(e,P)=1$ și exponentul privat este definit ca și inversul modular modulo $\lambda \textprime (N)$. Așadar, exponentul privat $d$ este ales astfel încât $ed \equiv 1+k\lambda \textprime (N)$. Odată ce $d$ este determinat, exponenții  teoremei Chineze
-		  \begin{align*}
-		  d_P &= d \ mod \ (P-1) \\
-		  d_Q &= d \ mod \ (Q-1)
-		  \end{align*}
-sunt calculați. Cheia publică este $<N,e>$ și cheia privată este$<d_P,d_Q,P,Q,b>$. \\
-Criptarea în schema lui Takagi este aceeași ca și pentru RSA. Fiind dat un plaintext $ m \in \mathbb{Z}_N$,criptotextul $ c= m^d \ mod \ N$. Menționat ca și mai sus, decripția standar nu poate fi folosită deoarece $ \lambda \textprime (N)$ nu este un multiplu a lui $\lambda(N)$. Decriptarea în  schema lui Takagi constă în decriptarea parțială
-\begin{align*}
-m_P &= c^{d_P} \ mod \ P = m \ mod \ P \\
-m_Q &= c^{d_Q} \ mod \ Q = m \ mod \ Q 
-\end{align*} 
-Atunci când $N=PQ$ aceste decriptări parțiale pot fi combinate folosind doar teorema Chineză a resturilor pentru a recupera plaintextul modulo $N$. În schema lui Takagi, decriptarea parțială $m_P$ are nevoie de lema lui Hensel pentru a putea decripta modulo  $P^{b-1}$. Folosind $b-2$ iterații a lemei lui Hensel, decriptarea parțială modulo $P$ poate fi transformată într-o decriptare partițială modulo $P^{b-1}$. Decriptarea parțială modulo $Q$ și modulo $P^{b-1}$ sunt combinate folosind teorema Chineză a resturilor pentru a recupera un plaintext modulo $N=P^{b-1}Q$.
-\subsubsection{Eficiența schemei lui Takagi}
-Schema lui Takagi este mai eficientă decât RSA atât la generarea cheilor cât și la decriptare. Pentru o anumită dimensiune, în schema lui Takagi este necesară doar generarea a două numere prime de dimensiune $N^{1/b}$ în loc de $N^{1/2}$ ca la RSA clasic. Chiar dacă generarea numerelor prime are timp liniar, dimensiunea redusă a acestora va îmbunătăți cu siguranță viteza de generare. Condiția extra pentru exponentul public $cmmdc(e,P)=1$ nu a reprezenta o problemă dacă $e$ este suficient de mic. În particular, folosind un exponent public mult mai mic decât $N^{1/b}$ ne va asigura de fiecare dată faptul că $cmmdc(e,P)=1$. \\
-Am prezentat mai sus că decriptarea parțială modulo $P$ poate fi transformată într-o decriptare modulo $P^{b-1}$. O versiune completă și optimizată a algoritmului de decriptare a lui Takagi poate fi găsit în \cite{takagi}. Algoritmul de decriptare va calcula decriptările parțiale $m_P$ și $m_Q$, folosește algoritmul de decriptare a lui Takagi pentru a calcula $m_{P^{b-1}}$ și îl combină cu $m_Q$ și folosește algoritmul lui Garner pentru rezolvarea sistemului. \\
-Complexitatea algoritmului următor va depinde de exponentul public
-\begin{algorithm}[H]
-		   \caption{Lema Hensel în schema lui Takagi}
-		   \textbf{Input:} $<c,e,d_P.p.b>$ \\
-		   \textbf{Output:} Decriptarea parțială a lui $ m_{P^{b-1}} $
-		   \begin{algorithmic}
-		   	\State $m_P \textprime \gets c^{d_P -1} \ mod \ P$
-		   	\State $m_P \gets c^{d_P} \ mod \ P$
-		   	\For {$i$ from $1$ to $b-1$}
-		   	\State $x \gets (c-m_{e}^{P^i}) \ mod \ P^{i+1}$
-		   	\State $y \gets xm_P \textprime (e^{-1} \ mod \ P) \ mod \ P^{i+1}$
-		   	\State $m_{P^{i+1}} \gets m_{P^i} +y $
-		   	\EndFor
-		   \end{algorithmic}
-		   \end{algorithm} 	  
-		   
-		  
-		  \section{RSA pe grupuri}
-		  Ideea este destul de schimbată pentru această variantă. Această constă în gruparea unor criptotexte.
-		  \subsection{Ideea de bază}
-		  \subsubsection{Notație}
-		  De data aceasta, vom folosi echivalentul notației $M=C^d \ mod \ N$ care este $M=C^{e^{
-		  -1}} \ mod \ \phi(N)$ deoarece $e$ este inversul modularul lui $d$ modulo $\phi(N)$.
-		  
-		  \subsubsection{Formule de bază pentru decriptare}
-		  Spunem că avem $k$ numărul de plaintexte, respectiv numărul de exponenți $e_i$ care același modul N. Ne vom folosi de următoarele:
-		  $$ e= \prod_{i=1}^{k}e_i$$
-		  $$ A =\left( \left(\prod_{i=1}^{k} C_{i}^{e/e_i} \right) \ mod \ N \right)^{1/e} \ mod \ N$$
-		  Fiecare plaintext $M_i$ va fi aflat cu ajutorul următoarei formule:
-		  $$ M_i = \frac{A^{a_i}}{C_{i}^{(a_i-1)/e_i} \cdot   \prod_{j=1,j \neq i }^{p } C_{j}^{a_i/e_j }                                 } \ mod \ N$$ 	
-		  Unde $a_i$ are următoarea proprietate:
-		  $$a_i \equiv 1 \ mod \ e \ , \ a_i \equiv 0 \ mod \ e_j$$	  
-		  
-		  \subsubsection{Decriptarea a două texte}
-		  Vom avea două mesaje $M_1$ și $M_2$, care au cheile publice $<N,3>$ și $<N,5>$. Așadar, vom avea criptotextele $C_1 = M_{1}^{3} \ mod \ N$ și $C_2 = M_{2}^{5} \ mod \ N$.Pentru aflarea plaintextelor, folosind formula prezentată anterior, vom obține:
-		  $$ A=(C_{1}^{5} \cdot   C_{2}^{3})^{1/15} $$
-		  $$\frac{A^{10}}{C_{1}^{3} \cdot   C_{2}^{2}} = \frac{C_{1}^{10/3} \cdot   C_{2}^{2}}{C_{1}^{3} \cdot   C_{2}^{2} }=M_1$$
-		  $$\frac{A^6}{C_{1}^{2} *C_{2}}=\frac{C_{1}^{2} *C_{2}^{6/5}}{C_{1}^{2} \cdot   C_{2}}=M_2 $$
-		  
-		  \subsection{Optimizări}
-		  \subsubsection{Teorema Chineză a resturilor}
-		  Ca și în alte variante de RSA, putem folosi teorema Chineză a resturilor pentru a reduce timpul.
-		  \subsubsection{Calcului unui singur invers modular}
-		  Când îl calculăm pe $M_i$, de asemenea noi vom calcula și o serie de inverși. În loc să calculăm $p$ inverși independent, cea mai bună soluție ar fi să aducem acele frații la același numitor, și să calculăm un singur invers.
-		  \subsection{Îmbunătățirea batch RSA: Tehnica lui Montgomery}
-		
-		
-		
-		
-		
-		
-		  \subsubsection{Descrierea algoritmului}
-		  Acest algoritm va avea ca și input numerele întregi și modulul $N$, și calculează produsul întregilor inversați:  
-		  \begin{algorithm}[H]
-		   \caption{Tehnica lui Montgomery}
-		   \textbf{Input:} $A_1, \dots A_p,N$ \\
-		   \textbf{Output:} $Z_1=A_{1}^{-1}, \dots ,Z_p=A_{p}^{-1} \ mod \ N$
-		   \begin{algorithmic}
-		   	\State $X_1 \gets A_1$
-		   	\For {$i$ from $2$ to $p$}
-		   	\State $X_i \gets X_{i-1}*A_i \ mod \ N$
-		   	\EndFor
-		   	\State $Z_1 \gets X_{p}^{-1} \ mod \ N$
-		   	\For{$i$ from $p$ down to $2$}
-		   		\State $Z_i \gets X_{i-1} \cdot   Z_1 \ mod \ N$
-		   		\State $Z_1 \gets Z_1 \cdot   A_i \ mod \ N$
-		   		\State
-		   	\EndFor
-		   	\State \textbf{return} $(Z_1, \dots ,Z_p)$ 
-		   \end{algorithmic}
-		   \end{algorithm}
-		   
-		   \subsubsection{Corectitudinea algoritmului}
-		   Valorile $X_i$ calculate la primul for sunt produsul valorilor $A_j$ de la $1$ la $i$:
-		   $$ X_i=\prod_{j=1}^{i} A_j \ mod \ N$$
-		   După care $Z_1$ va reprezenta produsul inverșilor, adică:
-		   $$Z_1=\prod_{j=1}^{i} A_{j}^{-1} \ mod \ N$$
-		   Fiecare $Z_i$ va fi înmulțit cu $X_{i-1} \cdot   Z_1$ iar $Z_1$ va fi înmulțit cu $A_i$ la fiecare pas $i$. În final vom obține:
-		   $$Z_i=A_{i}^{-1} \ mod \ N$$ 
-		   \subsection{Îmbunătățirea RSA folosind tehnica lui Shamir}
-		   \subsubsection{Descrierea algoritmului}
-		   În acest algoritm vom primi ca și input $M_1,M_2, \dots M_p$, $p$ exponenți $e_1, \dots ,e_p$ și modulul $N$. Reprezentarea binară a fiecăruia este cunoscută: $e_i=(e_{i,k-1}, \dots e_{i,0})_2$. Calculăm $C=M_{1}^{e_1} \cdot \dots  \cdot M_{p}^{e_p}$. Acest calcul este mult mai rapid decât daca am face exponențieri consecutive.
-		   \subsubsection{Explicație}
-		   La primul pas, vom calcula toate produsele posibile pentru $M_i$. Vom forma o bijecție $b$, definită prin: \\
-		   $$ b((i_{p-1} \dots i_0)_2)= \prod_{j=0}^{p-1} M^{i_j}_{j} \ mod \ N$$
-		   unde $i_j \in \lbrace  0,1  \rbrace $
-		   La pasul de evaluare, vom proceda la fel ca și în algoritmul left-to-right (metoda de exponențiere), dar în lo să înmulțim cu o singură bază $M$, va trebui să alegem o bază corectă, această putând fi diferită de $M$. Va trebui să calculăm: 
-		   $$ C = \prod_{i=1}^{k} M_{i}^{e_i} \ mod \ N$$
-		   Putem folosi reprezentarea binară a lui $e_i$:
-		   \begin{align*}
-		    C &= \prod_{i=1}^{k} M_{i}^{\sum_{j=0}^{p-1} e_{i,j} \cdot   2^j} \ mod \ N \Rightarrow \\
-		    C &= \prod_{i=1}^{k} \prod_{j=0}^{p-1} M_{i}^{e_{i,j}2^j} \ mod \ N
-		   \end{align*}
-		   
-		   Putem să interschimbăm cele două produse și să introducem primul termen într-o paranteză (acest termen din paranteză va reprezenta baza):
-		   $$C = \prod_{j=0}^{p-1} \left(   \prod_{i=1}^{k} M_{i}^{e_{i,j}}     \right)^{2^j} \ mod \ N $$
-		   Putem face și notația $E=(e_{1,j}, \dots ,e_{k,j})$ și vom obține folosind bijecția $b$ :
-		   $$ C = \prod_{j=0}^{p-1} b(E)^{2^j}  \ mod \ N$$
-
-
-
 
 
 \medskip
