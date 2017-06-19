@@ -1,7 +1,7 @@
 \documentclass[12pt, oneside]{book}
 \usepackage[left=3.0cm,bottom=2.0cm, right=2.0cm,top=2.0cm]{geometry}
 \usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc}
+\usepackage[utf8x]{inputenc}
 \usepackage[romanian]{babel}
 \usepackage{amsfonts}
 \usepackage{combelow}% provides \cb to place comma below character
@@ -32,6 +32,8 @@
   \strut Date: \dotfill\strut
   \end{tabular}%
 }
+
+
 \urlstyle{same}
 \setcounter{secnumdepth}{3}
 \setcounter{tocdepth}{1} 
@@ -60,6 +62,22 @@ Lucrare de Licență \\
 \end{center}
 \end{titlepage}
 
+\begin{titlepage}
+\center
+\vspace*{1cm}
+{\Huge Universitatea Alexandru Ioan Cuza Iași} \\
+\vspace{0.5cm}
+{\huge \textbf{Facultatea de Informatică}} \\
+\vspace{3.5cm}
+{\Large \textbf{RSA - Variante și Criptanaliză}} \\
+\vspace{1cm}
+{\Large \textbf{Sesiunea} iulie,2017} \\
+{\large Cernescu Ștefan-Bogdan} \\
+\vspace{3cm}
+{\small Coordonator științific} \\
+{\large Lect.dr. Iftene Sorin}
+\end{titlepage}
+
 \vspace{1cm}
 { \Huge \center Declarație privind originalitatea originalitatea și respectarea drepturilor de autor} \\
 
@@ -69,26 +87,36 @@ Prin prezenta declar că Lucrarea de licență cu titlul "RSA - Variante și cri
 \item reformularea în cuvinte proprii a textelor scrise de către alți autori deține referința precisă;
 \item codul sursă,imaginile etc. preluate din proiecte open-source sau alte surse sunt utilizate cu respectarea drepturilor de autor și dețin referințe precise;
 \item rezumarea ideilor altor autori precizează referința precisă la textul original.
-\end{itemize}
-\newcommand{\doubleSignature}[3]{
-\begin{minipage}[c]{\textwidth}
-\vspace{2cm}
-
-\makebox[12cm][c]{
- #1, \today 
-}
-\vspace{3cm}
-
-\makebox[12cm][c]{
-\hfill \makebox[5cm][c] {\hrulefill} \hfill \makebox[5cm][c] {\hrulefill} \hfill
-}
-\makebox[12cm][c]{
-\hfill #2 \hfill #3 \hfill
-}
+\end{itemize} 
 \vspace{1cm}
-\end{minipage}
-}
-\doubleSignature{Trondheim}{Ivar Nesje}{Team mate's name}
+\begin{flushleft}
+Iași, iulie 2017
+\end{flushleft}
+\begin{flushright}
+Absolvent \\
+Cernescu Ștefan-Bogdan \\
+\vspace{0.5cm}
+\noindent\rule{4cm}{0.4pt}
+\end{flushright}
+\clearpage
+
+\vspace*{1cm}
+{\Huge \ Declarație de consimțământ} \\
+\vspace{1cm}
+
+
+Prin prezenta declar că sunt de acord ca Lucrarea de licență cu titltul "RSA - Variante și criptanaliză", codul sursă al programelor și celelalte conținuturi(grafice, multimedia, date de test etc.) care însoțesc această lucrare să fie utilizate în cadrul Facultății de Informatică. \\
+De asemenea, sunt de acord ca Facultatea de Informatică de la Universitatea "Alexandru Ioan Cuza" Iași să utilizeze, modifice, reproducă și să distribuie în scopuri necomerciale programele-calculator, format executabil și sursă, realizate de mine în cadrul prezentei lucrări de liceță.
+\vspace{1cm}
+\begin{flushleft}
+Iași, iulie 2017
+\end{flushleft}
+\begin{flushright}
+Absolvent \\
+Cernescu Ștefan-Bogdan \\
+\vspace{0.5cm}
+\noindent\rule{4cm}{0.4pt}
+\end{flushright}
 \tableofcontents
 \clearpage
 \chapter{Introducere în RSA}
@@ -107,6 +135,15 @@ Perechea de chei se generează după următorii pași:
 \item Se generează un număr întreg aleator $e$ , $1<e<\phi(N)$, astfel încât $gcd(e,\phi(N))=1$, perechea $<N,e>$ este cheia publică.
 \item Folosind algoritmul lui Euclid extins, se calculează întregul $d$ , element din $\mathbb{Z}_{\phi(N)}^{*}$, cu proprietatea că $de \equiv 1 \ mod \ \phi(N)$
 \end{enumerate}
+\subsubsection{Funcția lui Euler}
+Mai sus, s-a putut observa acea notație $\phi$ care este de fapt funcția lui Euler. Această funcție la primirea unui parametru $N$ va returna numărul de elemente care sunt mai mici decât $N$ și care sunt coprime cu acesta. Funcția lui Euler are următoarele proprietăți:
+\begin{itemize}
+\item $\phi(1)=1$
+\item $\phi(P)=P-1, \forall P$ prim
+\item $\phi(ab)=\phi(a)\phi(b) \forall a,b \geq 1$ și coprime între ele
+\item $\phi(P^e)=P^e - P^{e-1}, \forall P$ nr prim și $e > 0$
+\item $\phi(N) = (P^{e_1}_{1} - P^{e_1-1}_1)(P^{e_2}_{2} - P^{e_2-1}_2) \dots (P^{e_k}_{k} - P^{e_k-1}_k)$ unde $N= P^{e_1}_{1} \cdot P^{e_2}_{2} \cdot \dots \cdot P^{e_k}_{k}$ este factorizarea lui $N$
+\end{itemize}
 \subsection{Criptare și Decriptare}
 Presupunând că mesajul clar este sub forma unui număr $m$, mai mic decât $N$, atunci mesajul criptat, notat cu $c$ este:
 $$c = m^e \ mod \ N$$
