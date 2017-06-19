@@ -119,7 +119,46 @@ Cernescu Ștefan-Bogdan \\
 \end{flushright}
 \tableofcontents
 \clearpage
-\chapter{Introducere în RSA}
+
+
+\section{Obiectivele lucrării}
+Lucrarea de față reprezintă un studiu amănunțit asupra criptosisteului cu asimetrice private RSA (Rives, Shamir, Adleman) \\
+În această lucrare, voi prezenta un background teoretic referitor la tehnicile folosite de acest algoritm, voi descrie o serie de tehnici folosite în implementare, o serie de derivări ale acestui algoritm precum și o serie de atacuri care se pot efectua în anumite situații
+\section{Motivație}
+Lucrarea își propune să exploreze și să aducă în atenție posibilitățile oferite în domeniul criptografiei, de unul dintre cei mai puternici algoritmi de criptare care există în momentul actual. Chiar dacă acesta este un algoritm destul de vechi, gradul lui de securitate este încă foarte ridicat datorită teoremei matematică care stă la baza acestuia (problema factorizării unui număr).
+\section{Contribuții}
+Lucrarea reprezintă culegerea unor informații destul de importante dintr-o serie de articole științifice, și îndetalierea unor aspecte, pentru ca acest algoritm să poată fi înțeles mai ușor de persoanele care nu sunt familiarizate cu acest domeniu.\\
+Mai exact, contribuțiile mele la această lucrare sunt:
+\begin{itemize}
+\item Structurarea unor informații culese din articole științifice
+\item Demonstrații făcute asupre unor teoreme
+\item Calculul îndetaliat pentru a se putea înțelege de unde provin anumite informații
+\item Scrierea unor algoritmi în format pseudocod pentru ușurință în implementare
+\item Rezolvarea unor modele folosind algoritmii în pseudocod pentru clarificare
+\item Prezentarea unor riscuri ce pot apărea în implementări eronate
+\end{itemize} 
+\section{Structura lucrrării}
+În capitolul I, am efectuat o scurtă introducere în ceea ce înseamnă criptografie, diferența dintre criptografia cu chei simetrice și asimetrice, precum și introducerea în criptosistemul RSA și formulele matematice care stau la baza acestuia (factorizare, exponențiere, ecuații modulare și funcția Euler).
+
+
+\chapter{Introducere în criptografie}
+
+\section{Criptografia ca și domeniu \cite{cripto}}
+Criptografia este o ramură a matematicii care se ocupă cu securizarea informației prin modificarea conținutului acesteia. Termenul de criptografie este compus din cuvintele de origine greacă kryptos(ascuns) și grafein(a scrie). \\
+Criptologia este considerată ca fiind cu adevărat o știință de foarte puțin timfp. Această curpinde atât criptografie (scriere secretizată) cât și criptanaliza. De asemenea, criptologia reprezintă nu numai o artă veche, ci și o știință nouă: veche pentru că Iulius Cezar a utilizat-o, dar nouă pentru că a devenit o temă de cercetare academico-științifică abia începând cu anii 1970. Această disciplină este legată de multe altele, de exemplu teoria numerelor, algebră, teoria complexității, informatică.
+\section{Criptografia cu chei simetrice}
+Criptografia cu chei simetrice se referă la metode de criptare în care atât trimițătorul cât și receptorul folosesc aceeași cheie.\\
+$$S=(G,\varepsilon,D)$$
+{\center $G$ algoritm probabilist de generare de chei, $k = G(\lambda)$ \\
+$\varepsilon$ algoritm probabilist de criptare, $c=\varepsilon(k,m)$\\
+$D$ algoritm determinist de decriptare, $m=D(k,c)$
+
+}
+\section{Criptografia cu chei asimetrice}
+Criptografia asimetrică este un tip de criptografie care utilizează o pereche de chei: o cheie publică și una privată. Așadar, există o entitate, să-i spunem Bob care dorește să primească mesaje de la o serie de persoane: Alice, Tim, Michael. Astfel, Bob își va publica cheia publică, persoanele din lista sa își vor cripta mesajul folosind cheia publicată de Bob, iar singura entitate care va putea decripta acele mesaje va fi chiar Bob. \\
+Matematic, cele două chei sunt legate, însă cheia privată nu poate fi obținută din cheia publică. În caz contrar, oricine ar putea decripta mesajele destinate unui alt utilizator, fiindcă oricine are acces la cheia publică a acestuia. \\
+O astfel de legătură fiind folosită și în criptosistemul RSA. În continuarea acestei lucrări, vom prezenta tot feluri de cazuri unde expunem mereu un număr $N$ care va fi cheia noastră publică, iar legătura dintre acesta și cheia privată este factorizarea acestuia, o componentă a cheii noastre private fiind factorii primi ai lui $N$. \\
+Criptografia asimetrică mai poartă și denumirea de criptografie cu chei publice. 
 
 \section{RSA Clasic}
 \subsection{Descriere}
@@ -1490,6 +1529,9 @@ Atunci modulul poate fi factorizat în timpul liniar $e$
 
 
 \begin{thebibliography}{9}
+
+\bibitem{cripto}
+https://ro.wikipedia.org/wiki/Criptografie
 \bibitem{desmet}
 Y.Desmedt and Y.Frankel. Share Generation of Authenticators and Signature. In Crypto 91, LNCS 576, paginile 457-469.
 \bibitem{boneh}
