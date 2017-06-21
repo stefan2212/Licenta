@@ -611,6 +611,27 @@ M \equiv M_R \ mod \ R
 		  $$ K_1=\frac{E}{P} (e*K_{0}^{e-1} \ mod \ P)^{-1} \ mod \ P $$
 		  Acum putem recupera mesajul $M_P = (K_0 + P \cdot   K_1) \ mod \ P^2$
 		  
+		  
+\begin{algorithm}[H]
+		   \caption{Lema Hensel }
+		   \textbf{Input:} $C_P,d_P,P$ \\
+		   \textbf{Output:} $ M_P $
+		   \begin{algorithmic}
+		   	\State $ P^2 \gets P \cdot P$
+		   	\State $ K_0 \gets C^{d_P}_{P} \ mod \ P$
+		   	\State $A \gets K_{0}^{e} \ mod \ P^2 $
+		   	\State $A \gets A + C \ mod \ P^2$
+		   	\State $A \gets \frac{A}{P} $
+		   	\State $K_1 \gets K_{0}^{e-1} \ mod \ P$
+		   	\State $K_1 \gets (K_1)^{-1} \ mod \ P$
+		   	\State $ K_1 \gets (K_1 \cdot A) \ mod \ P$
+		   	\State $M_P \gets P \cdot K_1 \ mod \ P^2$
+		   	\State $M_P \gets M_P + K_0 \ mod \ P^2$
+		   	\State \textbf{return} $M_P$
+		   \end{algorithmic}
+		   \end{algorithm} 		  
+		  
+		  
 		  \subsection{Multi-Power RSA modulo $N=P^2Q$}
 		  \subsubsection{Algoritmul}
 		  \begin{enumerate}
@@ -1523,6 +1544,14 @@ Fie $N=P^{b-1}Q$ modulul RSA cu $b \geqslant 3$. Fie $e << N^{1/b}$ ($<<$ însem
 \end{enumerate}
 Atunci modulul poate fi factorizat în timpul liniar $e$
 \end{theorem}
+\clearpage
+
+\chapter*{}
+\section*{Concluzia}
+Pe parcursul acestor capitole, am detaliat o serie de derivări ale algoritmului RSA, moduri de implementare ale acestuia, cum depindem foarte mult de modul în care generăm cheile (numere prime cât mai mari, exponentul de criptare să nu fie nici foarte mare, nici foarte mic), îmbunătățiri, precum și vulnerabilități și modalități prin care putem să le exploatăm. \\
+De asemenea, am reușit să înțelegem și o parte din algoritmii fundamentali care aparțin de teoria numerelor (TCR, Euclid-extins, invers modularul, ecuație diofantică etc), precum și alte aspecte matematice(polinoame, grupuri). \\
+Am reușit să detaliem și o problemă  matematică care este ușoară într-un sens, dar intractabilă în celălalt (factorizarea unui număr), deci am reușit să vedem cât de greu este, chiar și cu puterea computațională actuală, să reușim să factorizăm un număr foarte mare\\. 
+Scopul acestei lucrări a fost de a-l introduce pe cititor în domeniul criptografiei, și de a-i forma o bază solidă în ceea ce privește criptografia cu chei publice, mai precis RSA.
 
 
 \medskip
