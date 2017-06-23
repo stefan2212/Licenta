@@ -13,6 +13,9 @@
 \usepackage{algpseudocode}
 \usepackage{hyperref}
 \newtheorem{theorem}{Teorema}
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lema}
+\newtheorem{proof}[theorem]{Demonstrația}
 \usepackage{graphicx}
 \usepackage{mathptmx}
 \graphicspath{ {images/} }
@@ -220,6 +223,22 @@ Atacul RSA forței brute, adică încercarea fiecărei chei secrete posibile, co
       \subsubsection{Reprezentarea într-o anumită bază}
       Numerele întregi pozitive pot fi reprezentate în multiple moduri \cite{Menezes}. Cea mai folosită reprezentare a acestora este baza $10$, un astfel de număr este reprezentat prin serii de $0$ și $9$. Spre exemplu $ a = 123 $ înseamnă $ a = 1 \cdot   10^2 + 2 \cdot 10^1 + 3*10^0$. Prin extensie, este posibil să reprezentăm un întreg utilizând o baza b: $ a = a_k \cdot   b^k + a_{k-1}*b^{k-1} +  \dots  + a_0*b^0 $. Pentru în număr $a$ și o bază $b$ există mereu această reprezentare și este unică. Deoarece calculaoarele lucrează cu $0$ și $1$, baza $2$ este mereu folosită. Așadar, vom folosi următoarea notație \\
       $$ a=(111011)_2 = 2^5 + 2^4 + 2^3 + 0*2^2 + 2^1 + 2^0 $$
+       \begin{algorithm}[H]
+		   \caption{Transformarea unui număr din baza 10 în baza $b$}
+		   \textbf{Input:} $a,b \in \mathbb{Z}$ \\
+		   \textbf{Output:} $a_b$
+		   \begin{algorithmic}
+		   \State $a_b = [ \ ] $
+		   \While {$ a \neq 0 $}
+		   \State $a_{b}.push(a \ mod \ b)$
+		   \State $a = a \ div \ b$
+		   \EndWhile
+		   \State \textbf{return} $a_b$
+		   \end{algorithmic}
+		   \end{algorithm}
+      
+  
+      
       \subsection{Aritmetica modulară}
        \subsubsection{Reducerea modulară}
         Majoritatea criptosistemelor sunt bazate pe grupuri finite; spre excemplu $ \mathbb{Z}_N $. Fiecare element $x$ din acest grup poate fi notat ca și: \\
@@ -869,7 +888,7 @@ Robustețea înseamnă faptul că serverele corupte nu le pot împiedica pe cele
 $$ v_i = \log_{x} S_i = d_i \ mod \ \phi(N)$$
 Problemele sunt: $\mathbb{Z}_{N}^{*}$ nu este un grup ciclic,  generatorul $V$ nu există și elementele de ordin maximal sunt greu de găsit. Dacă vom folosi numere prime sigure, atunci $\mathbb{Z}_{N}^{*}$ este un grup ciclic, iar generatoarele sunt ușor de găsit. \\
 Pentru a nu crea neclarități, este bine să descriem totuși ce este acela un grup, mai precis un grup ciclic: 
-\subsubsection{Grupuri}
+\subsubsection{Grupuri \cite{wikig}}
 Un grup este o structură algebrică ce constă dintr-o mulțime pe care este definită o lege de compoziție internă (acesta combină două elemente ale unei mulțimi și formează un al treilea element tot din aceeași mulțime). Pentru a fi un grup, mulțimea și operația trebuie să satisfacă o serie de axiome:
 \begin{enumerate}
 \item Axioma închiderii: \\
@@ -894,7 +913,7 @@ atunci grupul $(G,\circ )$ se numește grup comutativ sau abelian
 \textbf{Un grup ciclic} este un grup ale cărui elemente sunt puteri (când operația de grup este considerată a fi de natură aditivă, se preferă termenul de multipli) ai unui element $a$. 
 
 \subsection{Problema}
-Numerele prime sigure sunt folosite în general de chei pentru a dovedi faptul că schema de partajare a secretelor (Shamir) este sigură în inelul $\mathbb{Z}_M$, și nu într-un corp finit. Robustețea ne garantează faptul că dacă un jucător malițios trimite semnături false, scema tot va genera corect S. \\
+Numerele prime sigure sunt folosite în general de chei pentru a dovedi faptul că schema de partajare a secretelor (Shamir \cite{shamir})  este sigură în inelul $\mathbb{Z}_M$, și nu într-un corp finit. Robustețea ne garantează faptul că dacă un jucător malițios trimite semnături false, scema tot va genera corect S. \\
 Spre exemplu: combinatorul primește de la servere și trebuie să genereze semnăturile corecte. O cale de a face acest lucru este să alegem aleator $t+1$ semnături, să generăm posibilele semnături $S^{'}$ și să testăm dacă $S^{'}$ este valid. Dacă $S^{'}$ trece de protocolul de verificare, atunci semnătura corectă a fost găsită, dacă nu, combinatorul trebuie să testeze alte $t+1$ semnături. Combinatorul nu știe care sunt semnăturile false iar din această cauză, acesta poate ajunge la un număr exponențial de încercări. Așadar, este necesar să divizăm într-un mod eficient.
 
 
@@ -906,7 +925,7 @@ Adversarii pot corupe servere în orice moment prin verificarea memoriei servere
 \subsubsection{Definiții formale}
 O schemă RSA de semnături folosește următoarele componente:
 \begin{enumerate}
-\item Un algoritm de generare de chei care primește ca input parametrii de securitate $N$, numărul $k$ de elemente care trebuie să genereze $Q_N$, numărul de $l$ servere care trebuie să semneze, parametrul $t$ și un string random $w$. Are ca și output o cheie publică $<N,e>$, cu cheile private $d_1, \dots ,d_t$ cunoscute doar de servere corecte pentru fiecare $u \in [1,k]$ o listă $v_u,v_{u,1}, \dots v{u,t}=v_{u}^{d_i} \ mod \ N$ verificări de chei. 
+\item Un algoritm de generare de chei care primește ca input parametrii de securitate $N$, numărul $k$ de elemente care trebuie să genereze $Q_N$, numărul de $l$ servere care trebuie să semneze, parametrul $t$ și un string random $w$. Are ca și output o cheie publică $<N,e>$, cu cheile private $d_1, \dots ,d_t$ cunoscute doar de servere corecte pentru fiecare $u \in [1,k]$ o listă $v_{u}^{d_1}, \dots  v_{u,l}=v_{u}^{d_l} \ mod \ N$ verificări de chei. 
 \item Un algoritm de partajare de semnături primește ca input o cheie publică $<N,e>$, un index $ 1\leq i \leq l$, cheia privată $d_i$, și un mesaj $m$; are ca output o semnătură $s_i = x^{d_i} \ mod \ N$ unde $x=H(m)$ și $H()$ este o funcție de hash și padare, și dovada validității este:
 $$ validity \ proof_i \ (for \ all \ u \in [1,k], \log_{v_u} v_{u,i}=\log_x S_i)$$
 \item Un algoritm combinat de verificare primește ca input o cheie publică $<N,e>$, un mesaj $m$, o listă $s_1, \dots ,s_l$ de semnături partajate, pentru fiecare $u \in [1,k]$ lista $v_u,v_{u,1}, \dots ,v_{u,l}$ de chei de verificare și o listă $proof_1, \dots ,proof_l$ de validări, și ca output o semnătură sau fail.
@@ -967,22 +986,30 @@ $$(b_{1,i-1}+ \dots +b_{l,i-1}) \times a_i = (b_{1,i-1}+ \dots +b_{l,i-1})(u_1+ 
 \end{enumerate}
 \subsubsection{Generarea lui $N$ întrucât $Q_N$ este ciclic}
 Aici vom arăta cum trebuie generat $N$ astfel încât $Q_N$ să fie ciclic. Pentru a garanta această proprietate trebuie să ne folosim de faptul că prodosul a două grupuri ciclice care sunt coprime este un grup ciclic. Trebuie să verificăm totuși că $P^{'}$ și $Q^{'}$ sunt coprime. Întâi trebuie demonstrată următoarea lemă: \\
-Lema 1: $N=PQ$, $cmmdc(P-1,Q-1)|c,,dc(N-1,\phi(N)$ și pătratul liber (un pătrat liber este un număr care nu este divizibil de nici un număr care este pătrat perfect) al lui $cmmdc(N-1,\phi(N))$ divide $(P-1),(Q-1)$. Dacă $cmmdc(N-1,\phi(N))=2$ atunci $cmmdc(P-1,Q-1)=2$ \\
+\begin{lemma}
+$N=PQ$, $cmmdc(P-1,Q-1)|c,,dc(N-1,\phi(N)$ și pătratul liber (un pătrat liber este un număr care nu este divizibil de nici un număr care este pătrat perfect) al lui $cmmdc(N-1,\phi(N))$ divide $(P-1),(Q-1)$. Dacă $cmmdc(N-1,\phi(N))=2$ atunci $cmmdc(P-1,Q-1)=2$ \\
+\end{lemma}
+\begin{proof}
 Demonstrație: Dacă $cmmdc(N-1,\phi(N))=2$ atunci $cmmdc(P-1,Q-1)|cmmdc(N-1,\phi(N)), cmmdc(P-1,Q-1)=2$. Deoarece $cmmdc(P-1,Q-1) \neq 1$.\\
-\textbf{Teorema}: Generarea cheilor folosind Boneh-Franklin și $cmmdc$ ne ajută să generă, chei RSA în așa fel încât grupul $Q_N$ este ciclic de ordin $M=P^{'}Q^{'}$, unde $N=PQ$, $P=2P^{'}+1$,$Q=2Q^{'}+1$ și nici $P^{'}$ șau $Q^{'}$ au factori primi mai mici decât B. Numărul de iterații ale acestui protocl are o medie de $ 4 \times e^{\lambda} \ln(B)$ \\
-Demonstrație: Ne asumăm faptul că avem un modul RSA în care $P-1$ și $Q-1$ au divizoriiprimi mai mari decât B, aceștia nu au divizori comuni, $cmmdc(P-1,Q-1) = 2$ și $\frac{P-1}{2}$ și $\frac{Q-1}{2}$ nu au factori primi mici. Prodosul a două grupuri ciclice ale căror ordine sunt coprime dau un grup ciclic, grupuri din $\mathbb{Z}_{P}^{*}$ și $\mathbb{Z}_{Q}^{*}$ sunt ciclice, la fel și grupul $Q_N$ este ciclic. Acest lucru ne garantează faptul că există un subgrup ciclic în $\mathbb{Z}_{N}^{*}$ de ordin $M=P^{'}Q^{'}$. Putem estima numărul de iterații ales acestui algoritm folosind faza $1$ din protocolul Boneh-Franklin. Întâi trebuie să cunoaștem faptul că:
+\end{proof}
+\begin{theorem}
+Generarea cheilor folosind Boneh-Franklin și $cmmdc$ ne ajută să generă, chei RSA în așa fel încât grupul $Q_N$ este ciclic de ordin $M=P^{'}Q^{'}$, unde $N=PQ$, $P=2P^{'}+1$,$Q=2Q^{'}+1$ și nici $P^{'}$ șau $Q^{'}$ au factori primi mai mici decât B. Numărul de iterații ale acestui protocl are o medie de $ 4 \times e^{\lambda} \ln(B)$ \\
+\end{theorem}
+\begin{proof}
+Ne asumăm faptul că avem un modul RSA în care $P-1$ și $Q-1$ au divizoriiprimi mai mari decât B, aceștia nu au divizori comuni, $cmmdc(P-1,Q-1) = 2$ și $\frac{P-1}{2}$ și $\frac{Q-1}{2}$ nu au factori primi mici. Prodosul a două grupuri ciclice ale căror ordine sunt coprime dau un grup ciclic, grupuri din $\mathbb{Z}_{P}^{*}$ și $\mathbb{Z}_{Q}^{*}$ sunt ciclice, la fel și grupul $Q_N$ este ciclic. Acest lucru ne garantează faptul că există un subgrup ciclic în $\mathbb{Z}_{N}^{*}$ de ordin $M=P^{'}Q^{'}$. Putem estima numărul de iterații ales acestui algoritm folosind faza $1$ din protocolul Boneh-Franklin. Întâi trebuie să cunoaștem faptul că:
 
 $$\lim_{n-> \infty} Pr_{P^{'},Q^{'}  \in [1,n] } [cmmdc(P^{'},Q^{'}]= 1 =  \frac{6}{\Pi^{2}} > 1/2 $$ 
 Adică, ne asumăm faptul că numerele prime din intervalul $ \left[  2^{\frac{n-1}{2}}, 2^{\frac{n}{2}}         \right] $ sunt uniform distribuite. Singurul factor lent la generarea cheii este verificarea dacă $cmmdc(P^{'},P-1)=2$ unde $P^{'} = 4P$. Putem nota că:
 $$Pr_{P^{'}}[ cmmdc(2P^{'},P^{'}) =2 ]$$
 $$ = Pr_{P^{'}} [2 \nmid P^{'} \wedge 3 \nmid P^{'}  \dots    \wedge B \nmid P^{'} ] =(1- \frac{1}{2})(1 - \frac{1}{3}) \dots (1- \frac{1}{B}) = \prod_{p_i \leq B}^{} (1- \frac{1}{P^i}) \approx \frac{1}{e^{\lambda} \ln(B)}  $$
 Conform teoremei a doua a lui Merts, unde $\lambda$ este onstanta lui Euler. Așadar, va trebui să rulăm algoritmul de $ 4 \times (e^{\lambda} \ln(B)$ ori în medie pentru a putea genera un astfel de modul RSA. 
+\end{proof}
 \subsubsection{Metoda distribuită de generare de chei în protocolul lui Shoup}
 De ăndată ce $N$ este generat, fie $e$ primul număr mai mare decât $4 \delta^{2}$  în așa fel încât serverul îl poate calcula. Apoi, protocolul Catalano \cite{catalano} este rulat pentru a genera cheia partajată într-o manieră distribuită. La finalul protocolului, fiecare server calculează cheia ei de verificare în felul următor:
 $$ v_{u,i} = v_{u}^{\delta d_i}$$
 Pentru $v_u$ aleator calculat ca și $y_{u}^{2} \ mod \ N$ unde $y_u$ e concatenarea lui $H(N|i)$ pentru suficient de mulți $i$ pentru a colecta corect parametri de securitate.
 
-\subsection{Schema lui Shoup împotriva adversarilor activi}
+\subsection{Schema lui Shoup împotriva adversarilor pasivi}
 \subsubsection{Generarea cheilor}
 La sfârșitul protocolului de genarare de chei, va trebui să se verifice, dacă informația îl poate ajuta pe adversar să afle cheia secretă. Fie $d_{i_1}, \dots ,d_{i_t}$, $t$ subsecrete ale cheii secrete, obținută de adversar la $t$ servere corupte. \\
 Informația dezvăluită prin partajarea lui $d_{i_j}$. Pentru fiecare $d_{i_j}$ putem spune că: 
@@ -1638,16 +1665,19 @@ D. Boneh and H. Shacham. Fast variants of RSA. Cryptobytes, 5(1):1–9, 2002.
 A. Fiat. Batch RSA. In Proceedings of Crypto ’89, volume 435, paginile 175–185. Springer-Verlag, 1989
 \bibitem{CHLS97}
 T. Collins, D. Hopkins, S. Langford, and M. Sabin. Public Key Cryptographic Apparatus and Method. US Patent, 1997
+\bibitem{shamir}
+A. Shamir. How to Share a Secret. Communications of the ACM, 22:612–613, November 1979
 \bibitem{lenstra}
 https://en.wikipedia.org/wiki/Lenstra_elliptic_curve_factorization
 \bibitem{Wie90}  
 M. Wiener. Cryptanalysis of short RSA secret exponents. IEEE Trans. on Info. Th.,
 36(3):553–558, 1990.
 \bibitem{BG00}
-D. Boneh and G.Durfee. Cryptoanalysis of RSA with private key d less than n 0.292 .
-IEEE Trans. on Info. Th., 46(4):1339–1349, Jul. 2000
+D. Boneh and G.Durfee. Cryptoanalysis of RSA with private key d less than n 0.292 .IEEE Trans. on Info. Th., 46(4):1339–1349, Jul. 2000
 \bibitem{siftene}
 https://profs.info.uaic.ro/~siftene/Wiener.pdf
+\bibitem{wikig}
+https://ro.wikipedia.org/wiki/Grup_(matematică)
 \bibitem{franklyn}
 M. K. Franklin and M. K. Reiter. A linear protocol failure for RSA with exponent three. CRYPTO ’95 rump session, 1995.
 \bibitem{Tak98]}
