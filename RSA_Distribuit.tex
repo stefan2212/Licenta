@@ -160,7 +160,7 @@ Matematic, cele două chei sunt legate, însă cheia privată nu poate fi obțin
 O astfel de legătură fiind folosită și în criptosistemul RSA. În continuarea acestei lucrări, vom prezenta tot feluri de cazuri unde expunem mereu un număr $N$ care va fi cheia noastră publică, iar legătura dintre acesta și cheia privată este factorizarea acestuia, o componentă a cheii noastre private fiind factorii primi ai lui $N$. \\
 Criptografia asimetrică mai poartă și denumirea de criptografie cu chei publice. 
 
-\section{RSA Clasic}
+\section{RSA Clasic \cite{wiki1}}
 \subsection{Descriere}
 RSA este un algoritm criptografic cu chei publice, primul algoritm utilizat atât pentru criptare, cât și pentru semnătura electronică. Algoritmul a fost dezvoltt în 1977 și publicat în 1978 de Ron Rivest, Adi Shamir și Leonard Adleman la MIT, iar numele algoritmului provine din inițialele lor. \\
 Securitatea sa se bazează pe dificultatea problemei factorizării numerelor întregi, problemă la care se reduce criptanaliza RSA și pentru care toți algoritmii de rezolvare cunoscuți au complexitate exponențială. Există câteva metode de criptanaliză care ocolesc factorizarea efectivă, exploatând maniere de implementare efectivă a schemei de criptare.
@@ -218,7 +218,7 @@ Atacul RSA forței brute, adică încercarea fiecărei chei secrete posibile, co
       \subsubsection{Operațiile de bază}
        Avem o serie de operații de bază la îndemâna noastră, cum ar fi operațiile logice, evaluarea condițiilor sau saltul în program. Aceste lucruri ne ajută pentru a calcula operații mai complexe cum ar fi înmulțirea a doua numere pe $n$ biți. Înmulțirea sau împărțirea acestor numere se numesc operații cu multiplă precizie. 
       \subsubsection{Reprezentarea într-o anumită bază}
-      Numerele întregi pozitive pot fi reprezentate în multiple moduri. Cea mai folosită reprezentare a acestora este baza $10$, un astfel de număr este reprezentat prin serii de $0$ și $9$. Spre exemplu $ a = 123 $ înseamnă $ a = 1 \cdot   10^2 + 2 \cdot 10^1 + 3*10^0$. Prin extensie, este posibil să reprezentăm un întreg utilizând o baza b: $ a = a_k \cdot   b^k + a_{k-1}*b^{k-1} +  \dots  + a_0*b^0 $. Pentru în număr $a$ și o bază $b$ există mereu această reprezentare și este unică. Deoarece calculaoarele lucrează cu $0$ și $1$, baza $2$ este mereu folosită. Așadar, vom folosi următoarea notație \\
+      Numerele întregi pozitive pot fi reprezentate în multiple moduri \cite{Menezes}. Cea mai folosită reprezentare a acestora este baza $10$, un astfel de număr este reprezentat prin serii de $0$ și $9$. Spre exemplu $ a = 123 $ înseamnă $ a = 1 \cdot   10^2 + 2 \cdot 10^1 + 3*10^0$. Prin extensie, este posibil să reprezentăm un întreg utilizând o baza b: $ a = a_k \cdot   b^k + a_{k-1}*b^{k-1} +  \dots  + a_0*b^0 $. Pentru în număr $a$ și o bază $b$ există mereu această reprezentare și este unică. Deoarece calculaoarele lucrează cu $0$ și $1$, baza $2$ este mereu folosită. Așadar, vom folosi următoarea notație \\
       $$ a=(111011)_2 = 2^5 + 2^4 + 2^3 + 0*2^2 + 2^1 + 2^0 $$
       \subsection{Aritmetica modulară}
        \subsubsection{Reducerea modulară}
@@ -289,7 +289,7 @@ Atacul RSA forței brute, adică încercarea fiecărei chei secrete posibile, co
     \section{RSA Clasic}
      \subsection{Exponențiere Rapidă}
       \subsubsection{Descrierea metodei binare (varianta de la stânga la dreapta)}
-       Această metodă de exponențiere este bazată pe reprezentarea binară a exponentului și ne permite să calculăm un exponent cu un număr mic de înmulțiri și ridicări la pătrat. Luăm baza $M$, exponentul e și modulul $N$ ca și input, și rezultatul exponențierii $C = M^e \ mod \ N$ ca și output. Pe lângă faptul că avem o reprezentare arbitrară a lui $ e = \sum_{i=0} ^ {k-1} e_i \cdot   2^i $, unde $ e_i $ este $0$ sau $1$. Putem transforma exponentul în următoarea expresie: \\
+       Această metodă de exponențiere este bazată pe reprezentarea binară a exponentului și ne permite să calculăm un exponent cu un număr mic de înmulțiri și ridicări la pătrat \cite{Menezes}. Luăm baza $M$, exponentul e și modulul $N$ ca și input, și rezultatul exponențierii $C = M^e \ mod \ N$ ca și output. Pe lângă faptul că avem o reprezentare arbitrară a lui $ e = \sum_{i=0} ^ {k-1} e_i \cdot   2^i $, unde $ e_i $ este $0$ sau $1$. Putem transforma exponentul în următoarea expresie: \\
        \begin{align*}
         M^e &= M^{\sum_{i=0} ^ {k-1} e_i \cdot   2^i} \ mod N \\ 
         &=  \prod_{i=0}^{k-1} M^{e_i*2^i} \ mod \ N \\
@@ -297,7 +297,27 @@ Atacul RSA forței brute, adică încercarea fiecărei chei secrete posibile, co
        \end{align*}
         
        Folosind relația, vom putea calcula recursiv rezultatul: prima dată îl vom inițializa cu $1$, apoi vom parcurge reprezentarea binară a exponentului. Dacă bitul de la poziția $i$ este $1$, atunci o vom multiplica cu rezultatul $ M^{2^i}$. Dar acest lucru se poate face mai rapid: dacă inițializăm rezultatul cu 1 și mergem prin reprezentarea binară a exponentului de la stânga către dreapta. La fiecare pas, ridicăm la pătrat rezultatul și în înmulțim cu M dacă bitul de pe acea poziție este $1$. La final, rezultatul va fi multiplicarea acestuia cu $ M^{2^i}$.
-      \subsubsection{Corectitudinea algoritmului left-to-right}
+       
+       
+		\begin{algorithm}[H]
+		   \caption{Algoritmul exponențierii de la stânga la dreapta}
+		   \textbf{Input:} $M, e=(e_{k-1} \dots e_0)_2, \ N$ \\
+		   \textbf{Output:} $C= M^e \ mod \ N$
+		   \begin{algorithmic}
+		   \State $C \gets 1$
+		   \For {$i$ from $(k-1)$ down to  0}
+		   \State $C \gets C \cdot C \ mod \ N$
+		   \If {$e_i=1$}
+		   \State $C \gets C \cdot M \ mod \ N$
+		   \EndIf
+		   \EndFor 
+		   \end{algorithmic}
+		   \end{algorithm}
+		          
+       
+       
+       
+      \subsubsection{Corectitudinea algoritmului de la stânga la dreapta}
       Vom dovedi prin inducție că acest aloritm funcționează. Să spunem că la un anumit pas $i$ avem $ C_i = \prod_{j=i}^{k-1} {M^{e_j*2^{j-i}}} \ mod \ N$. La următorul pas, vom calcula ridicarea la pătrat și o înmulțire dacă $ e_{i-1} = 1 $. Prin urmare: \\
       \begin{align*}
        C_{i-1} &= M^{e_{i-1}}*C_{i}^2 \ mod \ N\\
@@ -421,7 +441,7 @@ $ 83 : 7 = 11 \ rest \ 6$, ultima ecuație este și ea adevărată, deci rezulta
 	 
 	 \subsection{Algoritmul lui Garner}
 	  \subsubsection{Descrierea algoritmului}
-	  Utilizarea clasică a teoremei Chineze a resturilor necesită o reducere modulară modulo $N$,unde $N$ este un produs de două numere prime $P$ și $Q$. Este posibil să estimăm calculul a celor doi inverși datorită algoritmului Garner. Totuși, costul din punct de vedere al memoriei este mai mare. Ca și în algoritmul precedent, trebuie să găsim $M$ astfel încât $ M = M_P \ mod \ P$ și $M = M_Q \ mod \ Q$. Mai avem un parametru $ P_{inv_Q} = P^{-1} \ mod \ Q$.
+	  Utilizarea clasică a teoremei Chineze a resturilor necesită o reducere modulară modulo $N$,unde $N$ este un produs de două numere prime $P$ și $Q$. Este posibil să estimăm calculul a celor doi inverși datorită algoritmului Garner. Totuși, costul din punct de vedere al memoriei este mai mare. Ca și în algoritmul precedent, trebuie să găsim $M$ astfel încât $ M = M_P \ mod \ P$ și $M = M_Q \ mod \ Q$. Mai avem un parametru $ P_{inv_Q} = P^{-1} \ mod \ Q$. O descriere mai generală se poate găsi în \cite{Menezes}
 	  
 \begin{algorithm}[H]
 		   \caption{Algoritmul lui Garner}
@@ -506,6 +526,7 @@ După cum observăm, am obținut același rezultat ca atunci când am aplicat te
 	  \end{enumerate}
 	  
 	  \section{RSA Rebalansat}
+	  De obicei, o decriptare rapidă este dorită. De obicei server SSL (care efectuează decriptare RSA) sunt supraîncărcate. Așadar, vom avea nevoie de un algoritm foarte bun în ceea ce privește decriptarea, chiar dacă va trebui să creștem puțin timpul de criptare. Acest lucru este ideea pe care se bazează RSA rebalansat, unde munca mai costisitoare (criptarea) va fi efectuată de un client ( de obicei un browser web) în timp ce partea de decriptare (cea făcută de server) va dura mai puțin. Pentru o astfel de implementare, nu vom alege un exponent $d$ de decriptare foarte mic, deoarece acest lucru este foarte nesecurizat (vom vedea mai târziu și o serie de atacuri care au succes atunci când exponentul de decriptare este foarte mic), conform \cite{Wie90} și \cite{BG00} care spun că $d$ este nesecurizat, atunci când $d < N^{0.292}$, astfel, vom alege $d$ astfel încât $d \ mod \ (P-1)$ și $d \ mod \ (Q-1)$ sunt mici. A se vedea \cite{Wie90} pentru mai multe detalii.
 	   \subsection{Generarea cheilor, criptare și decriptare}
 	    \subsubsection{Generarea cheilor}
 	    Algoritmul primește $2$ parametri de securitate ca și input: $n$ (de obicei $1024$ biți) și $k$(de obicei $160$ biți) unde $k<n/2$. Apoi se aleg două numere prime $P$ și $Q$ verificând că $cmmdc(P-1,Q-1)=2$ și care au lungimea $n/2$. Modulul N este $N=PQ$. Apoi generăm aleator două valori pe $k$ biți $d_P$ și $d_Q$ astfel încât $cmmdc(d_P,P-1)=1, cmmdc(d_Q,Q-1)=1$ și $(d_P=d_Q \ mod \ 2$. Exponentul secret $d$ trebuie să verifice: $d=d_P \ mod \ (P-1)$ și $d=d_Q \ mod \ (Q-1)$. Nu putem calcula direct $d$ folosind teorema chineză a resturilor pentru că $P-1$ și $Q-1$ nu sunt relativ prime, dar noi le alegem astfel încât $cmmdc(P-1,Q-1)=2$ prin urmare:
@@ -536,6 +557,7 @@ x \equiv M_Q \ mod \ Q
 	    
 	    
 	    \section{Multi-Prime RSA}
+	    Datorită teoremei Chineze a resturilor, în loc să avem doar un modul de forma $N=PQ$, pute extinde acest algoritm și la un modul de forma $N=PQR$ \cite{CHLS97}.  Totuiși, 3 numere prime pentru $N$ pe 1024 este suficient. Creșsterea numărului de numere prime, va prezenta un incident de securitate deoarece numerele maxim 256 de biți pot fi foarte ușor factorizate folosind ECM \cite{lenstra}
 	     \subsection{Algoritmul Garner cand $N=PQR$}
 	     \subsubsection{Descrierea algoritmului}
 	     Algoritmul Garner este un algoritm pentru rezolvarea de sisteme de ecuații modulo $m$, ce ne permite să îmbunătățim viteza de decriptare, dar cu un consum mai mare al memoriei. Mai sus am prezentat varianta pentru două numere prime, dar în acest caz vom avea $3$ numere prime. Algoritmul are ca input $M_P,M_Q,M_R,P,Q,R$ și $N$, unde $N=PQR$. De asemenea, trebuie să calcuulăm și $PQ_{inv_R}$ și $P_{inv_Q}$, verificând că $PQ_{inv_R}=(PQ)^{-1} \ mod \ R$ și $P_{inv_Q}=P^{-1} \ mod \ Q$. Calculăm $M$ astfel încât: \\
@@ -591,6 +613,7 @@ M \equiv M_R \ mod \ R
 		 \end{enumerate}
 		
 		\section{Multi-Power RSA}
+		Această variantă cu factor multimiplu RSA, folosește un modul $N=P^bQ$ \cite{Tak98]}. Dacă lungimea în biți a lui $N$ este de 1024 de biți, atunci vom folosi $b=2$, deci $N=P^2Q$
 		 \subsection{Hensel lifting}
 		  \subsubsection{Ideea de baza la Hensel lifting}
 		  Folosind un modul $N=P^2Q$ folosind în mod clasic teorema Chineză a resturilor, făcând o decriptare RSA ar fi mai înceată decât dacă am folosi un modul $ N=PQ$. Când calculăm $ \mathbb{Z}/P^2\mathbb{Z}$, ajungem să avem lungimi de $2n/3$ biți, pe când în $\mathbb{Z}_{P^2}$ avem lungimi de $n/3$. Așadar, va trebui să-l scriem pe $P^2$ sub o altă formă.
@@ -645,6 +668,9 @@ M \equiv M_R \ mod \ R
 		   La decriptare vom calcula $M_P = C_{P}^{d} \ mod \ P^2$, unde $C_P = C '\ mod \ P^2$ și $M_P = M \ mod \ P^2$ folosind algoritmul Hensel. Ne permitem să calculăm exponentul unui număr de lungime $2n/3$ biți la costul unui număr de lungime $n/3$ biți. În final putem recupera plaintextul inițial folosind teorema chineză a resturilor. Această metodă are o viteză de circa 13.5 ori mare.
 		  \end{enumerate}
 		  
+		  
+		  \subsection{Multi-Power RSA modulo $N=P^bQ$}
+		  \subsubsection{Algoritmul}
 		  \subsection{Generalizarea ideii}
 		  În acest moment suntem limitați să avem $b=2$ unde $N=P^bQ$, deoarece lungimea maximă în acest moment este de 2048 de biți.
 		  \subsubsection{Ideea de bază}
@@ -664,8 +690,7 @@ M \equiv M_R \ mod \ R
 		  $$K_1 = \frac{E}{P^i} \cdot   (e*M_{P,i}^{e-1})^{-1} \ mod \ P$$
 		  În final se obține:
 		  $$M_{P,i+1}= (M_{P,i} + K_1 \cdot   P^i) \ mod \ P^{i+1}$$
-		  \subsection{Multi-Power RSA modulo $N=P^bQ$}
-		  \subsubsection{Algoritmul}
+		  \subsubsection{Descrierea algoritmului în forma de bază}
 		  \begin{enumerate}
 		  \item \textbf{Generarea cheilor}:\\
 		  Vom avea ca parametru de securitate $n$, vom alege cele două numere prime $P$ și $Q$, care au lungimea de $n/(b+1)$ biți și calculăm $N=P^bQ$. Apoi îl alegem pe $e$ în modul standard RSA, după care îl calculăm pe $d$ astfel încât $ed=1 \ mod \ (P^2-P)(Q-1)$. În final, vom calcula $d_P= d \ mod \ (P-1)$ și $d=q \ mod \ (Q-1)$. De asemenea vom calcula $P_{inv_Q}^{2}$ și $e_{inv_P}$. Cele două numere întregi $<N,e>$ sunt cheile publice, iar $d_P,d_Q,P,Q,(P_{inv_Q}^{2},e_{inv_P}>$ sunt cheile secrete.
@@ -675,6 +700,8 @@ M \equiv M_R \ mod \ R
 		  \item \textbf{Decriptarea}: \\
 		  Vom calcula $M_P = C_{P}^{d} \ mod \ P^b $ unde $C_P = C \ mod \ P^b$ și  $M_P = M \ mod \ P^b$ folosind algoritmul Hensel. În final, vom recupera plaintextul înițial folosind teorema chineză a resturilor. De asemnea calculăm $M_Q= C_{Q}^{d} \ mod \ Q$ și obținem plaintextul folosind algoritul Garner.
 		  \end{enumerate}
+		  
+		  
 		  
 		  \subsection{Schema lui Takagi}
 		  Schema lui Takagi este o variantă de multi-power RSA \cite{takagi}. Această variantă folosește on modul $N=P{b-1}Q$, pentru $b \geqslant 3$ și definește exponentul public și cel privat ca fiind invers modularul lui $\lambda \textprime (N) =cmmc(P-1,Q-1)$. Deoarece $\lambda \textprime (N)$ nu este un multiplu a lui $\lambda(N)$ unde ( $ed=1+k\lambda(N)$ ), înseamnă că decriptarea standard nu va funcționa, deci $m^{ed} \not\equiv m \ mod \ N$. Pentru a putea decripta un criptotext, trebuie să decriptăm parțial modulo $P^{b-1}$ și modulo $Q$ apoi el trebuie combinate folosind teorema Chineză a resturilor. Totuși, pentru a putea calcul calcula decriptarea parțială $m_{P^{b-1}}$ trebuie să folosin și lema lui Hensel.\\
@@ -711,7 +738,7 @@ Complexitatea algoritmului următor va depinde de exponentul public
 		   
 		  
 		  \section{RSA pe grupuri}
-		  Ideea este destul de schimbată pentru această variantă. Această constă în gruparea unor criptotexte.
+		  Ideea este destul de schimbată pentru această variantă. Aceasta constă în gruparea unor criptotexte, sub anumite condiții \cite{Fia89}.
 		  \subsection{Ideea de bază}
 		  \subsubsection{Notație}
 		  De data aceasta, vom folosi echivalentul notației $M=C^d \ mod \ N$ care este $M=C^{e^{
@@ -731,6 +758,7 @@ Complexitatea algoritmului următor va depinde de exponentul public
 		  $$ A=(C_{1}^{5} \cdot   C_{2}^{3})^{1/15} $$
 		  $$\frac{A^{10}}{C_{1}^{3} \cdot   C_{2}^{2}} = \frac{C_{1}^{10/3} \cdot   C_{2}^{2}}{C_{1}^{3} \cdot   C_{2}^{2} }=M_1$$
 		  $$\frac{A^6}{C_{1}^{2} *C_{2}}=\frac{C_{1}^{2} *C_{2}^{6/5}}{C_{1}^{2} \cdot   C_{2}}=M_2 $$
+		  Costul acestor două decriptări fiind aproape la fel ca și o decriptare clasică RSA \cite{BS02}
 		  
 		  \subsection{Optimizări}
 		  \subsubsection{Teorema Chineză a resturilor}
@@ -795,7 +823,7 @@ Complexitatea algoritmului următor va depinde de exponentul public
 
 \section{RSA varianta distribuită (Schema lui Shoup)}
 \subsection{Introducere}
-Varianta partajată a RSA (schemă prin semnături) prezintă câteva aspecte foarte interesante. În primul rând, este securizată și robustă deoarece problema criptanalizei este foarte grea. Apoi, partajarea, generarea semnăturii și verificarea sunt non interactive și în final, dimensiunea unei semnături partajate este legată de o constantă înmulțită cu dimensiunea modulului RSA. \\
+Varianta partajată a RSA \cite{shoup}(schemă prin semnături) prezintă câteva aspecte foarte interesante. În primul rând, este securizată și robustă deoarece problema criptanalizei este foarte grea. Apoi, partajarea, generarea semnăturii și verificarea sunt non interactive și în final, dimensiunea unei semnături partajate este legată de o constantă înmulțită cu dimensiunea modulului RSA. \\
 Când un mesaj trebuie să fie semnat de măcar $ t+1 $ server unde $ 2t+1 \leq l $, un server special numit combinator, direcționează mesajul $m$ sau $x$, unde $x=H(x)$ către toate serverele, apoi fiecare server calculează semnătura cu o dovadă de corectitudine, apoi combinatorul selectează un subgrup de $t+1$ servere și le combină. \\
 Folosind distributivitatea aditivă, $d=\sum_{i=1}^{l} d_i \ mod \ \phi(N)$, combinatorul poate alcula ușor semnăturile $S$, $s_i=x^{d_i} \ mod \ N$, unde $x=H(m)$, este mesajul semnat folosind formula:
 $$ S= \prod_{i=1}^{l} S_i = \prod_{i=1}^{l} x^{d_i} = x^{\sum_{i}^{l} d_i} = x^d \ mod \ N $$
@@ -1054,7 +1082,7 @@ Am arătat cum trebuie să evităm numerele prime sigure în schema lui Shoup î
 
 
 \chapter{Criptanaliză RSA}
-\section{Criptanaliză pe RSA clasic}
+\section{Criptanaliză pe RSA clasic \cite{wiki1} }
 Deși securitatea algoritmului RSA constă în legătura dintre aceasta și factorizarea întregilor, el trebuie folosit u grijă în implementări, deoarece, în caz de folosire eronată, sistemele bazate pe RSA pot fi atacate în anumite maniere care ocolesc factorizarea efectiva a modului, atacatorul ajungând să obțină mesajul clar sau cheia secreă.
 \subsection{Atac cu criptotext ales}
 În cazul acestui atac, adversarul dispune de cheia publică a entității atacate (exponentul de criptare $e$ și modulul $N$), și interceptează mesaje criptate trimise acestuia. Pentru a obține mesajul clar $m$ dintr-un mesaj criptat $c$ atacatorul poate proceda în felul următor:
@@ -1103,31 +1131,42 @@ Așadar, dacă dimensiunea lui $N$ ar fi de 1024 de biți iar $e=3$, atunci plai
 Acum să presupunem că avem un plaintext de dimensiune mare, asta ar însemna că acest atac nu ar putea funcționa, dar totuși noi cunoaștem o bucată din acest text, spre exemplu: \\
 Astăzi la licență am prezentat ???????? \\
 unde partea pe care nu o cunoaștem este destul de mică. În această situație, Copper-smith \cite{cooper} \cite{cooper2} ne arată că dacă partea necunoscută a unui text este destul de mică, este posibil să recuperăm întreg plaintextul. Rezultatul de bază este dat de următoare teoremă: \\
-\textbf{Teorema 4.1}
-Fie $<N,e>$ o cheie RSA publică, și $m$ plaintextul. Cheia publică $e$ este folosită pentru calculul criptotextului $c = m^e \ mod \ N$, dacă toate sau măcar o fracție $1/e$ de biți consecutivi este cunoscută, atunci tot plaintextul $m$ poate fi calculat în timpul $\log(N)$. \\
-Demonstrație: Deoarece măcar o fracție $1/e$ de biți consecutivi este cunoscută din $m$, putem scrie plaintextul ca și:
+\begin{theorem}
+Fie $<N,e>$ o cheie RSA publică, și $m$ plaintextul. Cheia publică $e$ este folosită pentru calculul criptotextului $c = m^e \ mod \ N$, dacă toate sau măcar o fracție $1/e$ de biți consecutivi este cunoscută, atunci tot plaintextul $m$ poate fi calculat în timpul $\log(N)$. \end{theorem}
+\textbf{Demonstrație}: Deoarece măcar o fracție $1/e$ de biți consecutivi este cunoscută din $m$, putem scrie plaintextul ca și:
 $$ m= m_{2}^{} \cdot   2^{k_2} + m_1 \cdot   2^{k_1} + m_0$$
 Unde toți acești termeni sunt cunoscuți, mai puțin $m_1$. Mai departe știm  că dimensiunea lui $m_1$ satisface următoarea relație $ |m_1| < N^{1/e}$. Acest lucru sugerează că trebuie să ne uităm după soluții mici ale polinomului monic de grad e $f_N(x) \in \mathbb{Z}_N $ (un polinom monic este un polinom univariat al cărui coeficient al termenului $X^n$ este egal cu 1, iar un polinom univariat este un polinom care are o singură variabilă $x$) dat de următoarea formulă:
 $$ f_N(x) = 2^{-k_1 \cdot   e}((m_2 \cdot   2^{k_2} + x \cdot 2^{k_1} + m_0)^e - e) \ mod \ N$$
-deoarece $f_N(m_1)= 2^{-k_1  \cdot e}(m^e-e)=0 \ mod \ N$. Deoarece $ |m_1| < N^{1/e}$, rezultatul Copersmith pentru găsirea soluțiilor mici pentru ecuațiile modulare univariate poate fi folosit pentru a calcula $m_1$, care va face ca întreg plaintextul să fie descoperit. 
+deoarece $f_N(m_1)= 2^{-k_1  \cdot e}(m^e-e)=0 \ mod \ N$. Deoarece $ |m_1| < N^{1/e}$, rezultatul Copersmith pentru găsirea soluțiilor mici pentru ecuațiile modulare univariate poate fi folosit pentru a calcula $m_1$, care va face ca întreg plaintextul să fie descoperit. \\
+Pentru teorema ca teorema prezentată mai sus să poată fi folosit eficient în practică,  exponentul public trebuie să fie relativ mic. Acest lucru urmărește 2 condiții:
+\begin{enumerate}
+\item Dacă $e > \log_{2}(N)$ atacul necesită ca toți biții din plaintext să fie cunoscuți.
+
+\item Costul unui astfel de atac va crește odată cu creșterea exponentului public. Spre exemplu, pentru valuarea $e= 2^{16}+1$ atacul nu va funcționa.
+\end{enumerate} 
 
 \subsubsection{Atac de tip mesaje relaționale}
 Când două plaintexte sunt criptate cu aceeași cheie publică $e$, este posibil să recuperăm plaintextele dacă exponentul public este mic iar relația liniară dintre plaintexte este cunoscută. Un atac inițial a fost făcut când exponentul public $e$ era $e=3$, de către  Franklin și Reiter \cite{franklyn} după care a fost preluată de Coppersmith \cite{copper3}, iar rezolvarea este dată de următoarea teoremă: \\
-\textbf{Teprema 4.2} Fie $<N,e>$ o cheie publică RSA, cu $e=3$. Fie $m_1$ și $m_2$ două plaintexte astfel încât $m2=am_1b$. Date $a,b,c=m_1^{3} \ mod N,c2 = m_2^3 \ mod \ N$, atât $m_1$ cât și $m_2$ pot fi calculat în timpul $\log(N)$. Acest lucru este dovedid în următorul calcul:
+\begin{theorem}
+ Fie $<N,e>$ o cheie publică RSA, cu $e=3$. Fie $m_1$ și $m_2$ două plaintexte astfel încât $m2=am_1b$. Date $a,b,c=m_1^{3} \ mod N,c2 = m_2^3 \ mod \ N$, atât $m_1$ cât și $m_2$ pot fi calculat în timpul $\log(N)$. 
+\end{theorem}
+Acest lucru este dovedid în următorul calcul:
 $$ \frac{b(c_2 + 2a^3c_1 - b^3)}{a(c_2-a^3c_1+2b^3)} \ mod \ N$$ 
 $$= \frac{m_1(3a^3bm_1^2+3a^2b^2m_1+3ab^3)}{3a^3m_{1}^{2}+3a^2b^2m_1+3ab^3} \ mod \ N = m_1$$ 
 De îndată ce $m_1$ este cunoscut, este ușor să calculăm $m_2 = am_1 +b$
 
 \subsubsection{Atac prin padare aleatoare}
 Când două plaintexte sunt legate între ele printr-o relație liniară $m_2=am_1+b$, unde $b$ este necunoscut, tot este posibil să recuperăm plaintextul dacă b este suficient de mic. Acest atac a fost făcut pentru $e=3$ de către Coppersmith \cite{cooper2}, folosind următoare teoremă:\\
-\textbf{Teorema 4.5} Fie $<N,e>$ e cheie RSA publică și $e=$. Fie $m_1$ și $m_2$ două plaintexte care satisfac relația $m_2=am_1+b$. Dat $c_1=m_1^3 \ mod \ N,c2=(m1+b)^3 \ mod \ N$, dacă $|b|<N^{1/9}$ atunci plaintexte $m_1$ și $m_2$ pot fi calculate în timp polinomial.
-
+\begin{theorem}
+Fie $<N,e>$ e cheie RSA publică și $e=$. Fie $m_1$ și $m_2$ două plaintexte care satisfac relația $m_2=am_1+b$. Dat $c_1=m_1^3 \ mod \ N,c2=(m1+b)^3 \ mod \ N$, dacă $|b|<N^{1/9}$ atunci plaintexte $m_1$ și $m_2$ pot fi calculate în timp polinomial.
+\end{theorem}
 \subsection{Exponent de decriptare mic}
 Dacă exponentul de decriptare (cel secret) este mic, pe lângă faptul că multe părți din mesaj nu se criptează, așa cum s-a arătat mai sus, există un algoritm rapid de găsire a lui $d$, cunoscând informațiile $e$ și $N$. Acest algoritm nu este eficient dacă $d$ este de același ordin de mărire cu $N$, deci dacă $e$ este mic, acesta fiind unul din motivele pentru care se alege în general $e$ un număr mic, pentru ca $d$ să fie cât mai mare.
 
 \subsubsection{Atacul fracțiilor continue: Atacul Wiener}
-Primul atac semnificativ asupra exponenților privați mici. Dată doar cheia publică RSA $<N,e>$, atacul factorizează modulul folosind doar informații obținute din convergența fracției continue $e/N$. Atacul Wiener folosește următoarea teoremă:
-\textbf{Teorema} Fie $N=PQ$ modulul RSA cu $e$ cheia de criptare publică și $d$ cheia privată definită ca și $\lambda(N)$. Fie $k$ să fie un număr întreg care satisface următoarele:
+Primul atac semnificativ asupra exponenților privați mici \cite{wiener}. Dată doar cheia publică RSA $<N,e>$, atacul factorizează modulul folosind doar informații obținute din convergența fracției continue $e/N$. Atacul Wiener folosește următoarea teoremă:
+\begin{theorem}
+ Fie $N=PQ$ modulul RSA cu $e$ cheia de criptare publică și $d$ cheia privată definită ca și $\lambda(N)$. Fie $k$ să fie un număr întreg care satisface următoarele:
 \begin{align*}
 ed&=1+k \lambda(N) \\
 g&=cmmdc(P-1,Q-1) \\
@@ -1137,6 +1176,7 @@ k_0&=\frac{k}{cmmdc(k,g)}
 Dacă $d$ satisface:
 $$ d< \frac{PQ}{2(P+Q-q)g_0k_0} = \frac{N}{2(P+Q-1)g_0k_0}$$
 Atunci $N$ poate fi factorizat în timpul $\log(N)$ \\
+\end{theorem}
 \textbf{Demonstrație}: folosim $N$ modulul RSA, unde $N=PQ$
 $$ \lambda(N)=cmmmc(P-1,Q-1)=\frac{\phi(N)}{cmmdc(P-1,Q-1)}=\frac{PQ - (P+Q-1)}{g}$$
 $$ = \frac{N - (P+Q-1)}{g}$$
@@ -1164,7 +1204,7 @@ $$ \frac{k_0s}{dg_0N} < \frac{1}{2(dg_0)^2}$$
 Din această relație, ajungem la concluzia că:
 $$ \left| \frac{e}{N} - \frac{k_0}{dg_0} \right| < \frac{1}{2(dg_0)^2}$$
 Știm din teorema fracțiilor continue, că $\frac{k_0}{dg_0}$ este una din convergențe din fracția continuă $\frac{e}{N}$. Dacă avem $c_i = \frac{a_i}{b_i}$ să fie convergența $i$ a lui $\frac{e}{N}$ atunci știm că $\frac{k_0}{dg_0} = \frac{a_j}{b_j}$ pentru un anumit $j$. \\
-\textbf{Fracții continue} \\
+\textbf{Fracții continue}  \cite{siftene} \\
 Fie $a$ și $b$ numere naturale, $b \neq 0$, folosind algoritmul lui Euclid obținem:
 \begin{align*}
 a&= q_1  \cdot b+r_1, \ \ \ 0<r_1<b \\
@@ -1383,9 +1423,9 @@ $$ed_Q = 1 + k_Q(Q-1) \Rightarrow ed_Q -1 =k_Q(Q-1)$$
  e(ed_Pd_Q - d_P -d_Q)+1 &= k_P(P-1)k_Q(Q-1)
 \end{align*}
 
-Unde, fiecare membru din partea stângă este cunoscut.  Așadar, putem calcula un multiplu de $\phi(N)$ ce ne va permite într-un mod probabilistic să factorizăm modulul folosind Miller \cite{miller}.
+Unde, fiecare membru din partea stângă este cunoscut.  Așadar, putem calcula un multiplu de $\phi(N)$ ce ne va permite într-un mod probabilistic să factorizăm modulul folosind Miller \cite{Milner3}.
 Cunoscând doar un singur exponent CRT, existp totuși o șansă ca modulul $N$ să poate fi factorizat.\\
-Să presupunem că $d_P$ este termenul cunoscut. Dacă $d$ cheia privată este mai mică decât fiecare număr prim, astfel încât $d = d_P = d_Q$ atunci $ed_P-1$ este un multiplu de $\lambda(N)$ și modulul poate fi factorizat folosind Miller \cite{miller}. Dacă exponentul privat $d$ este mai mare decât fiecare dintre numerele prime, atunci vom obsera folosind $ed_P = 1 + k_P(P-1)$ că $m^{ed_P} \equiv m \ mod \ P$, pentru orice plaintext $m \in \mathbb{Z}_{P}^{ \cdot }$, atunci:
+Să presupunem că $d_P$ este termenul cunoscut. Dacă $d$ cheia privată este mai mică decât fiecare număr prim, astfel încât $d = d_P = d_Q$ atunci $ed_P-1$ este un multiplu de $\lambda(N)$ și modulul poate fi factorizat folosind Miller \cite{Milner3}. Dacă exponentul privat $d$ este mai mare decât fiecare dintre numerele prime, atunci vom obsera folosind $ed_P = 1 + k_P(P-1)$ că $m^{ed_P} \equiv m \ mod \ P$, pentru orice plaintext $m \in \mathbb{Z}_{P}^{ \cdot }$, atunci:
 $$ m^{ed_P} - m = cp$$
 unde $c$ este un număr întreg. Fie $M=(m^{ed_P} - m) \ mod \ N$. Când $c$ nu este un multiplu al numărului prim $Q$ , factorizarea modulului este dată de $cmmdc(M,N)=P$. Atunci când $c$ este un multiplu al lui $q$ atunci $m^{ed_P} \equiv m \ mod \ N$. De aici rezulltă că $\forall m \in \mathbb{Z}_{P}^{*}$, atunci modulul $N$ poate fi factorizat, deoarece $d_P$ este un exponent valid de decriptare și $ed_P-1$ dezvăluie un multiplu al lui $\lambda(N)$.
 \subsubsection{Reconstruirea cheii folosind erori aleatoare}
@@ -1564,15 +1604,54 @@ Scopul acestei lucrări a fost de a-l introduce pe cititor în domeniul criptogr
 https://ro.wikipedia.org/wiki/Criptografie
 \bibitem{desmet}
 Y.Desmedt and Y.Frankel. Share Generation of Authenticators and Signature. In Crypto 91, LNCS 576, paginile 457-469.
+
+
+\bibitem{wiener}
+M. J. Wiener. Cryptanalysis of short RSA secret exponents. IEEE Transactions on Information Theory, 36(3):553–558, May 1990
+
+\bibitem{95}
+J. A. Halderman, S. D. Schoen, N. Heninger, W. Clarkson, W. Paul,J. A. Calandrino, A. J. Feldman, J. Appelbaum, and E. W. Felten.Lest we remember: Cold boot attacks on encryption keys. In P. C. van Oorschot, editor, USENIX Security Symposium, pages 45–60. USENIX
+Association, 2008.
+\bibitem{wiki1}
+https://ro.wikipedia.org/wiki/RSA
 \bibitem{boneh}
 D.Boneh și M.Franklin. Efficient Generation of Shared RSA keys. In Crypto 97, LNCS 1233, paginile 425-439. Springer-Verlag, 1997
-
+\bibitem{Menezes}
+A. Menezes, P. Van Oorschot, and S. Vanstone. Handbook for applied cryptography.
 \bibitem{catalano}
 D.Catalanoși S.Halevi. Computing Inverses over a Shared Secret Modulus. In Eurocrypt '00, LNCS 1355, paginile 190-207. Springer Verlag, 2000.
 \bibitem{cooper}
 D.Coppersmith. Finding a small root of a univariate modular equation. In U. M. Maurer, edution EUROCRYPT, volume 1070 of Lecture Notes in Computer Science, pagini 155-165. Springer, 1996
 \bibitem{cooper2}
 D. Coppersmith. Small solution to polynomial equations, and low exponent RSA vulnerabilities. Journal of Cryptology, paginile 233-260, 1997.
+\bibitem{copper3}
+D. Coppersmith, M. K. Franklin, J. Patarin, and M. K. Reiter. Low-exponent RSA with related messages. In U. M. Maurer, editor, EURO-CRYPT,volume 1070 of Lecture Notes in Computer Science, paginile 1–9.
+Springer, 1996
+
+\bibitem{heninger}
+N. Heninger and H. Shacham. Improved RSA private key reconstruction for cold boot attacks. Cryptology ePrint Archive
+\bibitem{shoup}
+V. Shoup. Practical Threshold Signatures. In Eurocrypt ’00, LNCS 1807, paginile 207–220. Springer-Verlag, 2000
+\bibitem{BS02}
+D. Boneh and H. Shacham. Fast variants of RSA. Cryptobytes, 5(1):1–9, 2002.
+\bibitem{Fia89}
+A. Fiat. Batch RSA. In Proceedings of Crypto ’89, volume 435, paginile 175–185. Springer-Verlag, 1989
+\bibitem{CHLS97}
+T. Collins, D. Hopkins, S. Langford, and M. Sabin. Public Key Cryptographic Apparatus and Method. US Patent, 1997
+\bibitem{lenstra}
+https://en.wikipedia.org/wiki/Lenstra_elliptic_curve_factorization
+\bibitem{Wie90}  
+M. Wiener. Cryptanalysis of short RSA secret exponents. IEEE Trans. on Info. Th.,
+36(3):553–558, 1990.
+\bibitem{BG00}
+D. Boneh and G.Durfee. Cryptoanalysis of RSA with private key d less than n 0.292 .
+IEEE Trans. on Info. Th., 46(4):1339–1349, Jul. 2000
+\bibitem{siftene}
+https://profs.info.uaic.ro/~siftene/Wiener.pdf
+\bibitem{franklyn}
+M. K. Franklin and M. K. Reiter. A linear protocol failure for RSA with exponent three. CRYPTO ’95 rump session, 1995.
+\bibitem{Tak98]}
+T. Takagi. Fast RSA-type cryptosystem modulo p k q. In Advances in cryptology, volume 1462, paginișe 318–326. Springer-Verlag, 1998.
 \bibitem{sarkar}
 S.Sarkar și S.Maitra. Partial key exposure attacks on RSA and its variants by guessing a fre bits of one of the prime factors. To appear in B-KMS, the Bulletin of Korean Mathematical Society.
 \bibitem{osutanoua}
