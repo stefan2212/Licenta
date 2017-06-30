@@ -18,10 +18,14 @@
 \newtheorem{proof}[theorem]{Demonstrația}
 \usepackage{graphicx}
 \usepackage{mathptmx}
+\usepackage{indentfirst}
+\usepackage{listings}
 \graphicspath{ {images/} }
 \hypersetup{
     colorlinks=true,
-    linkcolor=black,     
+    linkcolor=black,
+    urlcolor=black,
+    citecolor=black,     
 }
  \newcommand{\sign}[1]{%      
   \begin{tabular}[t]{@{}l@{}}
@@ -36,6 +40,20 @@
   \end{tabular}%
 }
 
+
+\lstdefinestyle{myCustomMatlabStyle}{
+  language=Matlab,
+  numbers=left,
+  stepnumber=1,
+  numbersep=10pt,
+  tabsize=4,
+  showspaces=false,
+  showstringspaces=false
+}
+
+%\setlength{\parindent}{4em}
+%\setlength{\parskip}{1em}
+\renewcommand{\baselinestretch}{1.5}
 
 \urlstyle{same}
 \setcounter{secnumdepth}{3}
@@ -53,7 +71,7 @@
 \vspace{1cm}
 Lucrare de Licență \\ 
 \vspace{0.5cm}
-{\Large \textbf{RSA - Variante și Criptanaliză}} \\
+{\Large \textbf{RSA - variante, criptanaliză și aplicabilitate}} \\
 \vspace{1cm}
 { \small Propusă de: \\}
 {\large Cernescu Ștefan-Bogdan} \\
@@ -72,7 +90,7 @@ Lucrare de Licență \\
 \vspace{0.5cm}
 {\huge \textbf{Facultatea de Informatică}} \\
 \vspace{3.5cm}
-{\Large \textbf{RSA - Variante și Criptanaliză}} \\
+{\Large \textbf{RSA - variante, criptanaliză și aplicabilitate}} \\
 \vspace{1cm}
 {\Large \textbf{Sesiunea} iulie,2017} \\
 {\large Cernescu Ștefan-Bogdan} \\
@@ -84,7 +102,7 @@ Lucrare de Licență \\
 \vspace{1cm}
 { \Huge \center Declarație privind originalitatea originalitatea și respectarea drepturilor de autor} \\
 
-Prin prezenta declar că Lucrarea de licență cu titlul "RSA - Variante și criptanaliză" este scrisă de mine și nu a mai fost prezentată niciodată la o altă facultate sau instituție de învățământ superior din țară sau străinătate. De asemenea, declar că toate sursele utilizate, incuiv cele preluate de pe Internet, sunt indicate în lucrare, cu respectarea regulilor de evitare a plagiatului:
+	Prin prezenta declar că Lucrarea de licență cu titlul "RSA - variante, criptanaliză și aplicabilitate" este scrisă de mine și nu a mai fost prezentată niciodată la o altă facultate sau instituție de învățământ superior din țară sau străinătate. De asemenea, declar că toate sursele utilizate, incuiv cele preluate de pe Internet, sunt indicate în lucrare, cu respectarea regulilor de evitare a plagiatului:
 \begin{itemize}
 \item toate fragmentele de text reproduse exact, chiar și în traducere proprie în altă limbă, sunt scrise între ghilimele și dețin referința precisă a sursei;
 \item reformularea în cuvinte proprii a textelor scrise de către alți autori deține referința precisă;
@@ -108,7 +126,7 @@ Cernescu Ștefan-Bogdan \\
 \vspace{1cm}
 
 
-Prin prezenta declar că sunt de acord ca Lucrarea de licență cu titltul "RSA - Variante și criptanaliză", codul sursă al programelor și celelalte conținuturi(grafice, multimedia, date de test etc.) care însoțesc această lucrare să fie utilizate în cadrul Facultății de Informatică. \\
+	Prin prezenta declar că sunt de acord ca Lucrarea de licență cu titltul "RSA - Variante și criptanaliză", codul sursă al programelor și celelalte conținuturi(grafice, multimedia, date de test etc.) care însoțesc această lucrare să fie utilizate în cadrul Facultății de Informatică. \\
 De asemenea, sunt de acord ca Facultatea de Informatică de la Universitatea "Alexandru Ioan Cuza" Iași să utilizeze, modifice, reproducă și să distribuie în scopuri necomerciale programele-calculator, format executabil și sursă, realizate de mine în cadrul prezentei lucrări de liceță.
 \vspace{1cm}
 \begin{flushleft}
@@ -123,15 +141,17 @@ Cernescu Ștefan-Bogdan \\
 \tableofcontents
 \clearpage
 
-
-\section{Obiectivele lucrării}
-Lucrarea de față reprezintă un studiu amănunțit asupra criptosisteului cu asimetrice private RSA (Rives, Shamir, Adleman) \\
-În această lucrare, voi prezenta un background teoretic referitor la tehnicile folosite de acest algoritm, voi descrie o serie de tehnici folosite în implementare, o serie de derivări ale acestui algoritm precum și o serie de atacuri care se pot efectua în anumite situații
-\section{Motivație}
-Lucrarea își propune să exploreze și să aducă în atenție posibilitățile oferite în domeniul criptografiei, de unul dintre cei mai puternici algoritmi de criptare care există în momentul actual. Chiar dacă acesta este un algoritm destul de vechi, gradul lui de securitate este încă foarte ridicat datorită teoremei matematică care stă la baza acestuia (problema factorizării unui număr).
-\section{Contribuții}
-Lucrarea reprezintă culegerea unor informații destul de importante dintr-o serie de articole științifice, și îndetalierea unor aspecte, pentru ca acest algoritm să poată fi înțeles mai ușor de persoanele care nu sunt familiarizate cu acest domeniu.\\
-Mai exact, contribuțiile mele la această lucrare sunt:
+\chapter*{}
+\section*{Obiectivele lucrării}
+	Lucrarea de față reprezintă un studiu amănunțit asupra criptosisteului cu asimetrice RSA (Rives, Shamir, Adleman) cât și o aplicație care folește RSA ca și algoritm pentru securizarea datelor \\
+În partea teoretică, voi prezenta un background  referitor la tehnicile folosite de acest algoritm, voi descrie o serie de tehnici folosite în implementare, o serie de derivări ale acestui algoritm precum și o serie de atacuri care se pot efectua în anumite situații. \\
+	Pentru partea practică, voi prezenta o aplicație ce permite utilizatorului să-și exporte, folosind un cont parolele ținute în KeePass precum și importarea lor într-o altă bază de date, dacă acesta deține credențialele. 
+\section*{Motivație}
+	Lucrarea își propune să exploreze și să aducă în atenție posibilitățile oferite în domeniul criptografiei, de unul dintre cei mai puternici algoritmi de criptare care există în momentul actual. Chiar dacă acesta este un algoritm destul de vechi, gradul lui de securitate este încă foarte ridicat datorită teoremei matematice care stă la baza acestuia (problema factorizării unui număr). \\
+	Pentru partea de aplicație, utilizatorul va beneficia de un plugin pentru aplicația KeePass, și acesta va putea oricând să-și țină datele sale într-un mediu securizat oferit de serviciul Vault, și să poată oricând să-și importe datele indiferent dacă acesta nu are acces la calculatorul unde aceste parole au fost salvate inițial.
+\section*{Contribuții}
+	Lucrarea reprezintă culegerea unor informații destul de importante dintr-o serie de articole științifice, și îndetalierea unor aspecte, pentru ca acest algoritm să poată fi înțeles mai ușor de persoanele care nu sunt familiarizate cu acest domeniu, dar și oferirea unei implementări unice în ceea ce privește pluginul de KeePass, deoarece nu mai există vreo altă implementare făcută public în ceea ce privește comunicarea dintre KeePass și serviciile Vault.\\
+	Mai exact, contribuțiile mele la această lucrare sunt:
 \begin{itemize}
 \item Structurarea unor informații culese din articole științifice
 \item Demonstrații făcute asupre unor teoreme
@@ -139,18 +159,26 @@ Mai exact, contribuțiile mele la această lucrare sunt:
 \item Scrierea unor algoritmi în format pseudocod pentru ușurință în implementare
 \item Rezolvarea unor modele folosind algoritmii în pseudocod pentru clarificare
 \item Prezentarea unor riscuri ce pot apărea în implementări eronate
+\item Oferirea unui plugin pentru unul dintre cele mai bune storage-uri de parole
+\item Autentificarea userului în KeePass
+\item Modalitatea de a exporta parolele într-un mediu securizat
+\item Modalitatea de a importa datele din Vault înapoi către KeePass
 \end{itemize} 
-\section{Structura lucrrării}
-În capitolul I, am efectuat o scurtă introducere în ceea ce înseamnă criptografie, diferența dintre criptografia cu chei simetrice și asimetrice, precum și introducerea în criptosistemul RSA și formulele matematice care stau la baza acestuia (factorizare, exponențiere, ecuații modulare și funcția Euler).
+\section*{Structura lucrrării}
+	În capitolul I, am efectuat o scurtă introducere în ceea ce înseamnă criptografie, diferența dintre criptografia cu chei simetrice și asimetrice, precum și introducerea în criptosistemul RSA. \par
+	În capitolul al II-lea am expus o serie de derivări ale algoritmului RSA, prezentând și o serie de algoritmi care ajută la implementare, cât și la optimizarea acestuia(Euclid extins, teorema Chineză a resturilor, invers modularul, algoritmul lui Garner, lema lui Hensel). \par
+	În capitolul al III-lea am prezentat o parte dintre atacurile care s-au efectuat de-a lungul timpului asupra acestui algoritm cât și asupra derivatelor acestuia. În această secține vor fi detaliate modalitățile prin care se poate ataca criptosistemul, din ce cauză se pot efectua aceste atacuri dar și modalități prin care putem să le evităm. \par
+	În capitolul al IV-lea voi prezenta un plugin pentru aplicația KeePass ce-i va permite utilizatorului să-și exporte parolele salvate într-o bază de date locală într-un mediu securizat dar și opțiunea de importare a acestora. În această secțiune vor fi detaliate modalitățile de implementare ale acestui KeePass, precum și tehnologiile utilizate.   
+
 
 
 \chapter{Introducere în criptografie}
 
 \section{Criptografia ca și domeniu \cite{cripto}}
-Criptografia este o ramură a matematicii care se ocupă cu securizarea informației prin modificarea conținutului acesteia. Termenul de criptografie este compus din cuvintele de origine greacă kryptos(ascuns) și grafein(a scrie). \\
-Criptologia este considerată ca fiind cu adevărat o știință de foarte puțin timfp. Această curpinde atât criptografie (scriere secretizată) cât și criptanaliza. De asemenea, criptologia reprezintă nu numai o artă veche, ci și o știință nouă: veche pentru că Iulius Cezar a utilizat-o, dar nouă pentru că a devenit o temă de cercetare academico-științifică abia începând cu anii 1970. Această disciplină este legată de multe altele, de exemplu teoria numerelor, algebră, teoria complexității, informatică.
+	Criptografia este o ramură a matematicii care se ocupă cu securizarea informației prin modificarea conținutului acesteia. Termenul de criptografie este compus din cuvintele de origine greacă kryptos(ascuns) și grafein(a scrie). \par
+	Criptologia este considerată ca fiind cu adevărat o știință de foarte puțin timfp. Această curpinde atât criptografie (scriere secretizată) cât și criptanaliza. De asemenea, criptologia reprezintă nu numai o artă veche, ci și o știință nouă: veche pentru că Iulius Cezar a utilizat-o, dar nouă pentru că a devenit o temă de cercetare academico-științifică abia începând cu anii 1970. Această disciplină este legată de multe altele, de exemplu teoria numerelor, algebră, teoria complexității, informatică.
 \section{Criptografia cu chei simetrice}
-Criptografia cu chei simetrice se referă la metode de criptare în care atât trimițătorul cât și receptorul folosesc aceeași cheie.\\
+	Criptografia cu chei simetrice \cite{fltCripto} se referă la metode de criptare în care atât trimițătorul cât și receptorul folosesc aceeași cheie.\\
 $$S=(G,\varepsilon,D)$$
 {\center $G$ algoritm probabilist de generare de chei, $k = G(\lambda)$ \\
 $\varepsilon$ algoritm probabilist de criptare, $c=\varepsilon(k,m)$\\
@@ -158,19 +186,19 @@ $D$ algoritm determinist de decriptare, $m=D(k,c)$
 
 }
 \section{Criptografia cu chei asimetrice}
-Criptografia asimetrică este un tip de criptografie care utilizează o pereche de chei: o cheie publică și una privată. Așadar, există o entitate, să-i spunem Bob care dorește să primească mesaje de la o serie de persoane: Alice, Tim, Michael. Astfel, Bob își va publica cheia publică, persoanele din lista sa își vor cripta mesajul folosind cheia publicată de Bob, iar singura entitate care va putea decripta acele mesaje va fi chiar Bob. \\
-Matematic, cele două chei sunt legate, însă cheia privată nu poate fi obținută din cheia publică. În caz contrar, oricine ar putea decripta mesajele destinate unui alt utilizator, fiindcă oricine are acces la cheia publică a acestuia. \\
-O astfel de legătură fiind folosită și în criptosistemul RSA. În continuarea acestei lucrări, vom prezenta tot feluri de cazuri unde expunem mereu un număr $N$ care va fi cheia noastră publică, iar legătura dintre acesta și cheia privată este factorizarea acestuia, o componentă a cheii noastre private fiind factorii primi ai lui $N$. \\
-Criptografia asimetrică mai poartă și denumirea de criptografie cu chei publice. 
+	Criptografia asimetrică \cite{asim} este un tip de criptografie care utilizează o pereche de chei: o cheie publică și una privată. Așadar, există o entitate, să-i spunem Bob care dorește să primească mesaje de la o serie de persoane: Alice, Tim, Michael. Astfel, Bob își va publica cheia publică, persoanele din lista sa își vor cripta mesajul folosind cheia publicată de Bob, iar singura entitate care va putea decripta acele mesaje va fi chiar Bob. \par
+	Matematic, cele două chei sunt legate, însă cheia privată nu poate fi obținută din cheia publică. În caz contrar, oricine ar putea decripta mesajele destinate unui alt utilizator, fiindcă oricine are acces la cheia publică a acestuia. \par
+	O astfel de legătură fiind folosită și în criptosistemul RSA. În continuarea acestei lucrări, vom prezenta tot feluri de cazuri unde expunem mereu un număr $N$ care va fi cheia noastră publică, iar legătura dintre acesta și cheia privată este factorizarea acestuia, o componentă a cheii noastre private fiind factorii primi ai lui $N$. \par
+	Criptografia asimetrică mai poartă și denumirea de criptografie cu chei publice. 
 
 \section{RSA Clasic \cite{wiki1}}
 \subsection{Descriere}
-RSA este un algoritm criptografic cu chei publice, primul algoritm utilizat atât pentru criptare, cât și pentru semnătura electronică. Algoritmul a fost dezvoltt în 1977 și publicat în 1978 de Ron Rivest, Adi Shamir și Leonard Adleman la MIT, iar numele algoritmului provine din inițialele lor. \\
-Securitatea sa se bazează pe dificultatea problemei factorizării numerelor întregi, problemă la care se reduce criptanaliza RSA și pentru care toți algoritmii de rezolvare cunoscuți au complexitate exponențială. Există câteva metode de criptanaliză care ocolesc factorizarea efectivă, exploatând maniere de implementare efectivă a schemei de criptare.
+	RSA este un algoritm criptografic cu chei publice, primul algoritm utilizat atât pentru criptare, cât și pentru semnătura electronică. Algoritmul a fost dezvoltt în 1977 și publicat în 1978 de Ron Rivest, Adi Shamir și Leonard Adleman la MIT, iar numele algoritmului provine din inițialele lor. \par
+	Securitatea sa se bazează pe dificultatea problemei factorizării numerelor întregi, problemă la care se reduce criptanaliza RSA și pentru care toți algoritmii de rezolvare cunoscuți au complexitate exponențială. Există câteva metode de criptanaliză care ocolesc factorizarea efectivă, exploatând maniere de implementare efectivă a schemei de criptare.
 \subsection{Funcționare}
-RSA este un algoritm de criptare pe blocuri. Acesta înseamnă că atât textul clar cât și cel criptat sunt numere între 0 și $N-1$, cu un $N$ ales. Un mesaj este împărțit în segmente de lungime corespunzătoare, numit blocuri, care sunt cifrate rând pe rând. De asemenea, ca algoritm criptografic cu chei publice, funcționează pe baza unei perechi de chei legate matematic între ele: o cheie publică, cunoscută de toată lumea, și una secretă, cunoscută doar de deținătorul acesteia.
+	RSA este un algoritm de criptare pe blocuri. Acesta înseamnă că atât textul clar cât și cel criptat sunt numere între 0 și $N-1$, cu un $N$ ales. Un mesaj este împărțit în segmente de lungime corespunzătoare, numit blocuri, care sunt cifrate rând pe rând. De asemenea, ca algoritm criptografic cu chei publice, funcționează pe baza unei perechi de chei legate matematic între ele: o cheie publică, cunoscută de toată lumea, și una secretă, cunoscută doar de deținătorul acesteia.
 \subsection{Generarea cheilor}
-Perechea de chei se generează după următorii pași:
+	Perechea de chei se generează după următorii pași:
 \begin{enumerate}
 \item Se generează două numere prime, de preferat mari, $P$ și $Q$
 \item Se calculează $N=PQ$ și $\phi(N)=(P-1)(Q-1)$
@@ -178,7 +206,7 @@ Perechea de chei se generează după următorii pași:
 \item Folosind algoritmul lui Euclid extins, se calculează întregul $d$ , element din $\mathbb{Z}_{\phi(N)}^{*}$, cu proprietatea că $de \equiv 1 \ mod \ \phi(N)$
 \end{enumerate}
 \subsubsection{Funcția lui Euler}
-Mai sus, s-a putut observa acea notație $\phi$ care este de fapt funcția lui Euler. Această funcție la primirea unui parametru $N$ va returna numărul de elemente care sunt mai mici decât $N$ și care sunt coprime cu acesta. Funcția lui Euler are următoarele proprietăți:
+	Mai sus, s-a putut observa acea notație $\phi$ care este de fapt funcția lui Euler. Această funcție la primirea unui parametru $N$ va returna numărul de elemente care sunt mai mici decât $N$ și care sunt coprime cu acesta. Funcția lui Euler are următoarele proprietăți:
 \begin{itemize}
 \item $\phi(1)=1$
 \item $\phi(P)=P-1, \forall P$ prim
@@ -187,20 +215,20 @@ Mai sus, s-a putut observa acea notație $\phi$ care este de fapt funcția lui E
 \item $\phi(N) = (P^{e_1}_{1} - P^{e_1-1}_1)(P^{e_2}_{2} - P^{e_2-1}_2) \dots (P^{e_k}_{k} - P^{e_k-1}_k)$ unde $N= P^{e_1}_{1} \cdot P^{e_2}_{2} \cdot \dots \cdot P^{e_k}_{k}$ este factorizarea lui $N$
 \end{itemize}
 \subsection{Criptare și Decriptare}
-Presupunând că mesajul clar este sub forma unui număr $m$, mai mic decât $N$, atunci mesajul criptat, notat cu $c$ este:
+	Presupunând că mesajul clar este sub forma unui număr $m$, mai mic decât $N$, atunci mesajul criptat, notat cu $c$ este:
 $$c = m^e \ mod \ N$$
-Unde $e$ este cheia publică a destinatarului mesajului. Pentru a decripta mesaju, destinatarul își folosește cheia sa secretă $d$, care are proprietatea foarte importantă că:
+unde $e$ este cheia publică a destinatarului mesajului. Pentru a decripta mesaju, destinatarul își folosește cheia sa secretă $d$, care are proprietatea foarte importantă că:
 $$de \equiv 1 \ mod \ \phi(N)$$
-Astfel, mesajul clar este recuperat calculând:
+	Astfel, mesajul clar este recuperat calculând:
 $$m = c^d \ mod \ N$$
-Oricine poate decripta mesaje cu cheia publică a destinatarului, dar numai acesta din urmă poate decripta, deoarece trebuie să folosească cheia sa secretă.
+	Oricine poate decripta mesaje cu cheia publică a destinatarului, dar numai acesta din urmă poate decripta, deoarece trebuie să folosească cheia sa secretă.
 \subsection{Implementări eficiente}
-În general, deoarece se bzează pe o operație destul de costisitoare din punct de vedere al timpului de calcul și al resurselor folosite, și anume exponențierea modulo $n$, viteza RSA este mult mai mică decât a algoritmilor de criptare cu cheie secretă. În jurul anilor 90, se estima că o implementare RSA hardware este de 1000 de ori mai lentă decât o implementare DES, iar în software, RSA este de 100 de ori mai lent. \\
-Există anumite modificări care pot aduce performanțe sporite, precum alegerea unui exponent de criptare mic (de exemplu $e=17$), care astfel reduce calculele necesare criptării, rezolvând în același timp și unele probleme de securitate. De asemenea, operațiile cu cheia secretă pot fi accelerate pe baza teoremei chineze a resturilor, dacă se stochează $P$,$Q$ și unele rezultate intermediare, foloside des.  Viteza decriptării va crește de circa 4 ori. De aceea, în sistemele de comunicație în timp real, în care viteza de criptare și decriptare este esențială (cum ar fi de exemplu aplicațiile de streaming video sau audio securizate), RSA se folosește doar la începutul comunicației, pentru a transmite ceia secretă de comunicație, care ulterior este folosită într-un algoritm cu cheie secretă, cum ar fi 3DES sau AES.
+	În general, deoarece se bzează pe o operație destul de costisitoare din punct de vedere al timpului de calcul și al resurselor folosite, și anume exponențierea modulo $n$, viteza RSA este mult mai mică decât a algoritmilor de criptare cu cheie secretă. În jurul anilor 90, se estima că o implementare RSA hardware este de 1000 de ori mai lentă decât o implementare DES, iar în software, RSA este de 100 de ori mai lent. \par
+	Există anumite modificări care pot aduce performanțe sporite, precum alegerea unui exponent de criptare mic (de exemplu $e=17$), care astfel reduce calculele necesare criptării, rezolvând în același timp și unele probleme de securitate. De asemenea, operațiile cu cheia secretă pot fi accelerate pe baza teoremei chineze a resturilor, dacă se stochează $P$,$Q$ și unele rezultate intermediare, foloside des.  Viteza decriptării va crește de circa 4 ori. De aceea, în sistemele de comunicație în timp real, în care viteza de criptare și decriptare este esențială (cum ar fi de exemplu aplicațiile de streaming video sau audio securizate), RSA se folosește doar la începutul comunicației, pentru a transmite ceia secretă de comunicație, care ulterior este folosită într-un algoritm cu cheie secretă, cum ar fi 3DES sau AES.
 \subsection{Securitatea}
-Problema decriptării unui mesaj criptat cu RSA este denumită problema RSA. Acesta constă în obținerea rădăcinii de ordin $e$ modulo $N$, unde $e$ și $N$ au proprietatea că $N$ este produsul a două numere prime mari $P$ și $Q$, iar $e$ este relativ prim cu produsul dintre $P-1$ și $Q-1$. În acest moment, cea mai eficientă de a realiza aeasta este descompunerea în factori primi ai lui $n$, și obținerea astfel a cheii secrete $d$ pe baza lui $e$. Astfel, este demonstrat că dificultatea spargerii unui mesaj criptat cu RSA nu este mai dificilă decât problema factorizării. Nu a fost descoperită încă o soluție generală a problemei RSA, dar nici nu s-a demonstrat matematic că nu există o altă soluție. \\
-Factorizarea întregilor prin metode comune ajută la găsirea soluțiilor în timp util doar pentru numere mici. Pentru numere mari, algoritmii de factorizare, cu complexitatea exponențială. dau soluția după foarte mult timp. Cea mai rapidă metodă de factorizare a întregilor, algoritmul ”Number Field Siev”, are o complexitate de $O(e^{c((\log n)^{\frac{1}{3}} (\log \log n)^{\frac{2}{3}}       })$. Aici, $c$ este un număr ce ia valori în jur de $1,9$ pentru numere de tipul lui $N$, adică numere cu 2 factori primi. Cel mai mare număr factorizat vreodată prin acest algoritm, rulat în anul 2005, de către specialiștii de la Agenția Federală Germană pentru Securitatea Tehnologiei Informației, are 200 de cifre zecimale, iar reprezentarea binară a factorilor primi obținuți ocupă 663 de biți. Cheile de criptare RSA cele mai sigure au lungimi de peste 1024 de biți.\\
-Atacul RSA forței brute, adică încercarea fiecărei chei secrete posibile, consumă chiar mai mult timp decât factorizarea.
+	Problema decriptării unui mesaj criptat cu RSA este denumită problema RSA. Acesta constă în obținerea rădăcinii de ordin $e$ modulo $N$, unde $e$ și $N$ au proprietatea că $N$ este produsul a două numere prime mari $P$ și $Q$, iar $e$ este relativ prim cu produsul dintre $P-1$ și $Q-1$. În acest moment, cea mai eficientă de a realiza aeasta este descompunerea în factori primi ai lui $n$, și obținerea astfel a cheii secrete $d$ pe baza lui $e$. Astfel, este demonstrat că dificultatea spargerii unui mesaj criptat cu RSA nu este mai dificilă decât problema factorizării. Nu a fost descoperită încă o soluție generală a problemei RSA, dar nici nu s-a demonstrat matematic că nu există o altă soluție. \par
+	Factorizarea întregilor prin metode comune ajută la găsirea soluțiilor în timp util doar pentru numere mici. Pentru numere mari, algoritmii de factorizare, cu complexitatea exponențială. dau soluția după foarte mult timp. Cea mai rapidă metodă de factorizare a întregilor, algoritmul ”Number Field Siev”, are o complexitate de $O(e^{c((\log n)^{\frac{1}{3}} (\log \log n)^{\frac{2}{3}}       })$. Aici, $c$ este un număr ce ia valori în jur de $1,9$ pentru numere de tipul lui $N$, adică numere cu 2 factori primi. Cel mai mare număr factorizat vreodată prin acest algoritm, rulat în anul 2005, de către specialiștii de la Agenția Federală Germană pentru Securitatea Tehnologiei Informației, are 200 de cifre zecimale, iar reprezentarea binară a factorilor primi obținuți ocupă 663 de biți. Cheile de criptare RSA cele mai sigure au lungimi de peste 1024 de biți.\par
+	Atacul RSA forței brute, adică încercarea fiecărei chei secrete posibile, consumă chiar mai mult timp decât factorizarea.
 
 
 
@@ -213,13 +241,13 @@ Atacul RSA forței brute, adică încercarea fiecărei chei secrete posibile, co
 \section{Bazele matematice} 
     \subsection{Comportamentul asimptotic}
      \subsubsection{Analiza unui algoritm}
-      Cel mai bun parametru de securitate o reprezintă lungimea unei chei. O cheie mai mare ne va
+      	Cel mai bun parametru de securitate o reprezintă lungimea unei chei. O cheie mai mare ne va
       asigura un nivel de securitate ridicat, dar operațille vor necesita un timp mai mare și vor consuma
       mai multă memorie. În momentul actual, lungimea unei chei RSA este de $1024$,chiar și 2048 de biți.
       
      \subsection{Aritmetica numerelor întregi}
       \subsubsection{Operațiile de bază}
-       Avem o serie de operații de bază la îndemâna noastră, cum ar fi operațiile logice, evaluarea condițiilor sau saltul în program. Aceste lucruri ne ajută pentru a calcula operații mai complexe cum ar fi înmulțirea a doua numere pe $n$ biți. Înmulțirea sau împărțirea acestor numere se numesc operații cu multiplă precizie. 
+       	Avem o serie de operații de bază la îndemâna noastră, cum ar fi operațiile logice, evaluarea condițiilor sau saltul în program. Aceste lucruri ne ajută pentru a calcula operații mai complexe cum ar fi înmulțirea a doua numere pe $n$ biți. Înmulțirea sau împărțirea acestor numere se numesc operații cu multiplă precizie. 
       \subsubsection{Reprezentarea într-o anumită bază}
       Numerele întregi pozitive pot fi reprezentate în multiple moduri \cite{Menezes}. Cea mai folosită reprezentare a acestora este baza $10$, un astfel de număr este reprezentat prin serii de $0$ și $9$. Spre exemplu $ a = 123 $ înseamnă $ a = 1 \cdot   10^2 + 2 \cdot 10^1 + 3*10^0$. Prin extensie, este posibil să reprezentăm un întreg utilizând o baza b: $ a = a_k \cdot   b^k + a_{k-1}*b^{k-1} +  \dots  + a_0*b^0 $. Pentru în număr $a$ și o bază $b$ există mereu această reprezentare și este unică. Deoarece calculaoarele lucrează cu $0$ și $1$, baza $2$ este mereu folosită. Așadar, vom folosi următoarea notație \\
       $$ a=(111011)_2 = 2^5 + 2^4 + 2^3 + 0*2^2 + 2^1 + 2^0 $$
@@ -244,8 +272,8 @@ Atacul RSA forței brute, adică încercarea fiecărei chei secrete posibile, co
         Majoritatea criptosistemelor sunt bazate pe grupuri finite; spre excemplu $ \mathbb{Z}_N $. Fiecare element $x$ din acest grup poate fi notat ca și: \\
         $$ x = r  \ mod \ N \ \Leftrightarrow \exists q \in \mathbb{Z} , x = r+q*N$$
        \subsubsection{Inversul modular}
-         Inversul modular poate fi calculat folosind algoritmului Euclid Extins, care nu calculează doar cel mai mare divizor comun a două numere întregi $x$ și $y$, dar găsește și două numere întregi $ \alpha $ și $  \beta $ astfel încât $ cmmdc(x,y) = \alpha \cdot   x + \beta \cdot   y$ \\
-        Dacă dorim să aflăm inversul lui  $x \ mod \ N$ (presupunând faptul că numerele sunt coprime, adică $cmmdc(x,N)=1)$ apoi calculăm $Xcmmdc(x,N)$ (varianta extinsă a algoritmului lui Euclid) și obținem $ \alpha \cdot   x + \beta \cdot   N = 1$. Modulo $N$, această expresie devine $\alpha \cdot   x  = 1 \ mod \ N$; în alte cuinte $\alpha= x^{-1} \ mod \ N$ \\
+         Inversul modular \cite{fltFai} poate fi calculat folosind algoritmului Euclid Extins, care nu calculează doar cel mai mare divizor comun a două numere întregi $x$ și $y$, dar găsește și două numere întregi $ \alpha $ și $  \beta $ astfel încât $ cmmdc(x,y) = \alpha \cdot   x + \beta \cdot   y$ \\
+        Dacă dorim să aflăm inversul lui  $x \ mod \ N$ (presupunând faptul că numerele sunt coprime, adică $cmmdc(x,N)=1)$ apoi calculăm $Xcmmdc(x,N)$ (varianta extinsă a algoritmului lui Euclid) și obținem $ \alpha \cdot   x + \beta \cdot   N = 1$. Modulo $N$, această expresie devine $\alpha \cdot   x  = 1 \ mod \ N$; în alte cuinte $\alpha= x^{-1} \ mod \ N$ \par
         Pentru ușurința înțelegerii, vom prezenta algoritmul extins al lui Euclid într-un pseudocod, precum și algoritmul pentru calculul inversului modular.  
         \begin{algorithm}[H]
 		   \caption{Euclid extins}
@@ -307,7 +335,7 @@ Atacul RSA forței brute, adică încercarea fiecărei chei secrete posibile, co
     
     \section{RSA Clasic}
      \subsection{Exponențiere Rapidă}
-      \subsubsection{Descrierea metodei binare (varianta de la stânga la dreapta)}
+      \subsubsection{Descrierea metodei binare (varianta de la dreapta la stânga)}
        Această metodă de exponențiere este bazată pe reprezentarea binară a exponentului și ne permite să calculăm un exponent cu un număr mic de înmulțiri și ridicări la pătrat \cite{Menezes}. Luăm baza $M$, exponentul e și modulul $N$ ca și input, și rezultatul exponențierii $C = M^e \ mod \ N$ ca și output. Pe lângă faptul că avem o reprezentare arbitrară a lui $ e = \sum_{i=0} ^ {k-1} e_i \cdot   2^i $, unde $ e_i $ este $0$ sau $1$. Putem transforma exponentul în următoarea expresie: \\
        \begin{align*}
         M^e &= M^{\sum_{i=0} ^ {k-1} e_i \cdot   2^i} \ mod N \\ 
@@ -319,7 +347,7 @@ Atacul RSA forței brute, adică încercarea fiecărei chei secrete posibile, co
        
        
 		\begin{algorithm}[H]
-		   \caption{Algoritmul exponențierii de la stânga la dreapta}
+		   \caption{Algoritmul exponențierii de la dreapta la stânga}
 		   \textbf{Input:} $M, e=(e_{k-1} \dots e_0)_2, \ N$ \\
 		   \textbf{Output:} $C= M^e \ mod \ N$
 		   \begin{algorithmic}
@@ -336,7 +364,7 @@ Atacul RSA forței brute, adică încercarea fiecărei chei secrete posibile, co
        
        
        
-      \subsubsection{Corectitudinea algoritmului de la stânga la dreapta}
+      \subsubsection{Corectitudinea algoritmului de la dreapta la stânga}
       Vom dovedi prin inducție că acest aloritm funcționează. Să spunem că la un anumit pas $i$ avem $ C_i = \prod_{j=i}^{k-1} {M^{e_j*2^{j-i}}} \ mod \ N$. La următorul pas, vom calcula ridicarea la pătrat și o înmulțire dacă $ e_{i-1} = 1 $. Prin urmare: \\
       \begin{align*}
        C_{i-1} &= M^{e_{i-1}}*C_{i}^2 \ mod \ N\\
@@ -351,7 +379,7 @@ Atacul RSA forței brute, adică încercarea fiecărei chei secrete posibile, co
       
      \subsection{Teorema Chineză a resturilor}
       \subsubsection{Descrierea}
-      Teorema Chineză a resturilor ne permite să reducem timpul computațional pentru o decryptare clasică RSA. Mai general, teorema formează o bijecție între $ \mathbb{Z}_m $ și produsul cartezian \\
+      Teorema Chineză a resturilor \cite{fltFai} ne permite să reducem timpul computațional pentru o decryptare clasică RSA. Mai general, teorema formează o bijecție între $ \mathbb{Z}_m $ și produsul cartezian \\
       $$ \prod_{i=0}^{k} \mathbb{Z}_{m_i} = \mathbb{Z}_{m_0} \times \mathbb{Z}_{m_1} \times \dots \times  \mathbb{Z}_{m_k}$$
       Asumând faptul că $ m = \prod_{i=0}^{k} m_i $ și că $ m_i $ au divizor comun doar pe 1. Spre exemplu, există un izomorfism între $ \mathbb{Z}_N$ și $\mathbb{Z}_P \times \mathbb{Z}_Q  $ în loc de $ \mathbb{Z}_N $, $ P $ și $Q$ reprezentând două numere prime astfel încât $ N=PQ$. Spunem că lungimea în biți a lui $P$ și $Q$ este jumătate din lungimea în biți ai lui $N$, costul înmulțirii este teoretic divizat prin 2. Este ușor a calcula imaginea unui anumit $a$, dar dacă $ a= a_i \ mod \ m_i $ este dat, atunci reciproca nu este trivială. Obiectul teoremei este să dea soluția unică modulo $m$ a unui sistem de forma: \\
     \[
@@ -723,7 +751,7 @@ M \equiv M_R \ mod \ R
 		  
 		  
 		  \subsection{Schema lui Takagi}
-		  Schema lui Takagi este o variantă de multi-power RSA \cite{takagi}. Această variantă folosește on modul $N=P{b-1}Q$, pentru $b \geqslant 3$ și definește exponentul public și cel privat ca fiind invers modularul lui $\lambda \textprime (N) =cmmc(P-1,Q-1)$. Deoarece $\lambda \textprime (N)$ nu este un multiplu a lui $\lambda(N)$ unde ( $ed=1+k\lambda(N)$ ), înseamnă că decriptarea standard nu va funcționa, deci $m^{ed} \not\equiv m \ mod \ N$. Pentru a putea decripta un criptotext, trebuie să decriptăm parțial modulo $P^{b-1}$ și modulo $Q$ apoi el trebuie combinate folosind teorema Chineză a resturilor. Totuși, pentru a putea calcul calcula decriptarea parțială $m_{P^{b-1}}$ trebuie să folosin și lema lui Hensel.\\
+		  Schema lui Takagi este o variantă de multi-power RSA \cite{takagi}. Această variantă folosește on modul $N=P{b-1}Q$, pentru $b \geqslant 3$ și definește exponentul public și cel privat ca fiind invers modularul lui $\lambda \textprime (N) =cmmc(P-1,Q-1)$. Deoarece $\lambda \textprime (N)$ nu este un multiplu a lui $\lambda(N)$ unde ( $ed=1+k\lambda(N)$ ), înseamnă că decriptarea standard nu va funcționa, deci $m^{ed} \not\equiv m \ mod \ N$. Pentru a putea decripta un criptotext, trebuie să decriptăm parțial modulo $P^{b-1}$ și modulo $Q$ apoi el trebuie combinate folosind teorema Chineză a resturilor. Totuși, pentru a putea calcul calcula decriptarea parțială $m_{P^{b-1}}$ trebuie să folosin și lema lui Hensel.\par
 		  Pentru numere aleator balansate $P$ și $Q$, modulul schemei Takagi este dat de $N=P^{b-1}Q$, pentru $b \geqslant 3$. Un exponent public mic $e$ este ales astfel încât$cmmdc(e,P)=1$ și exponentul privat este definit ca și inversul modular modulo $\lambda \textprime (N)$. Așadar, exponentul privat $d$ este ales astfel încât $ed \equiv 1+k\lambda \textprime (N)$. Odată ce $d$ este determinat, exponenții  teoremei Chineze
 		  \begin{align*}
 		  d_P &= d \ mod \ (P-1) \\
@@ -737,8 +765,8 @@ m_Q &= c^{d_Q} \ mod \ Q = m \ mod \ Q
 \end{align*} 
 Atunci când $N=PQ$ aceste decriptări parțiale pot fi combinate folosind doar teorema Chineză a resturilor pentru a recupera plaintextul modulo $N$. În schema lui Takagi, decriptarea parțială $m_P$ are nevoie de lema lui Hensel pentru a putea decripta modulo  $P^{b-1}$. Folosind $b-2$ iterații a lemei lui Hensel, decriptarea parțială modulo $P$ poate fi transformată într-o decriptare partițială modulo $P^{b-1}$. Decriptarea parțială modulo $Q$ și modulo $P^{b-1}$ sunt combinate folosind teorema Chineză a resturilor pentru a recupera un plaintext modulo $N=P^{b-1}Q$.
 \subsubsection{Eficiența schemei lui Takagi}
-Schema lui Takagi este mai eficientă decât RSA atât la generarea cheilor cât și la decriptare. Pentru o anumită dimensiune, în schema lui Takagi este necesară doar generarea a două numere prime de dimensiune $N^{1/b}$ în loc de $N^{1/2}$ ca la RSA clasic. Chiar dacă generarea numerelor prime are timp liniar, dimensiunea redusă a acestora va îmbunătăți cu siguranță viteza de generare. Condiția extra pentru exponentul public $cmmdc(e,P)=1$ nu a reprezenta o problemă dacă $e$ este suficient de mic. În particular, folosind un exponent public mult mai mic decât $N^{1/b}$ ne va asigura de fiecare dată faptul că $cmmdc(e,P)=1$. \\
-Am prezentat mai sus că decriptarea parțială modulo $P$ poate fi transformată într-o decriptare modulo $P^{b-1}$. O versiune completă și optimizată a algoritmului de decriptare a lui Takagi poate fi găsit în \cite{takagi}. Algoritmul de decriptare va calcula decriptările parțiale $m_P$ și $m_Q$, folosește algoritmul de decriptare a lui Takagi pentru a calcula $m_{P^{b-1}}$ și îl combină cu $m_Q$ și folosește algoritmul lui Garner pentru rezolvarea sistemului. \\
+Schema lui Takagi este mai eficientă decât RSA atât la generarea cheilor cât și la decriptare. Pentru o anumită dimensiune, în schema lui Takagi este necesară doar generarea a două numere prime de dimensiune $N^{1/b}$ în loc de $N^{1/2}$ ca la RSA clasic. Chiar dacă generarea numerelor prime are timp liniar, dimensiunea redusă a acestora va îmbunătăți cu siguranță viteza de generare. Condiția extra pentru exponentul public $cmmdc(e,P)=1$ nu a reprezenta o problemă dacă $e$ este suficient de mic. În particular, folosind un exponent public mult mai mic decât $N^{1/b}$ ne va asigura de fiecare dată faptul că $cmmdc(e,P)=1$. \par
+Am precizat mai sus că decriptarea parțială modulo $P$ poate fi transformată într-o decriptare modulo $P^{b-1}$. O versiune completă și optimizată a algoritmului de decriptare a lui Takagi poate fi găsit în \cite{takagi}. Algoritmul de decriptare va calcula decriptările parțiale $m_P$ și $m_Q$, folosește algoritmul de decriptare a lui Takagi pentru a calcula $m_{P^{b-1}}$ și îl combină cu $m_Q$ și folosește algoritmul lui Garner pentru rezolvarea sistemului. \\
 Complexitatea algoritmului următor va depinde de exponentul public
 \begin{algorithm}[H]
 		   \caption{Lema Hensel în schema lui Takagi}
@@ -842,11 +870,11 @@ Complexitatea algoritmului următor va depinde de exponentul public
 
 \section{RSA varianta distribuită (Schema lui Shoup)}
 \subsection{Introducere}
-Varianta partajată a RSA \cite{shoup}(schemă prin semnături) prezintă câteva aspecte foarte interesante. În primul rând, este securizată și robustă deoarece problema criptanalizei este foarte grea. Apoi, partajarea, generarea semnăturii și verificarea sunt non interactive și în final, dimensiunea unei semnături partajate este legată de o constantă înmulțită cu dimensiunea modulului RSA. \\
-Când un mesaj trebuie să fie semnat de măcar $ t+1 $ server unde $ 2t+1 \leq l $, un server special numit combinator, direcționează mesajul $m$ sau $x$, unde $x=H(x)$ către toate serverele, apoi fiecare server calculează semnătura cu o dovadă de corectitudine, apoi combinatorul selectează un subgrup de $t+1$ servere și le combină. \\
+Varianta partajată a RSA \cite{shoup}(schemă prin semnături) prezintă câteva aspecte foarte interesante. În primul rând, este securizată și robustă deoarece problema criptanalizei este foarte grea. Apoi, partajarea, generarea semnăturii și verificarea sunt non interactive și în final, dimensiunea unei semnături partajate este legată de o constantă înmulțită cu dimensiunea modulului RSA. \par
+Când un mesaj trebuie să fie semnat de măcar $ t+1 $ server unde $ 2t+1 \leq l $, un server special numit combinator, direcționează mesajul $m$ sau $x$, unde $x=H(x)$ către toate serverele, apoi fiecare server calculează semnătura cu o dovadă de corectitudine, apoi combinatorul selectează un subgrup de $t+1$ servere și le combină. \par
 Folosind distributivitatea aditivă, $d=\sum_{i=1}^{l} d_i \ mod \ \phi(N)$, combinatorul poate alcula ușor semnăturile $S$, $s_i=x^{d_i} \ mod \ N$, unde $x=H(m)$, este mesajul semnat folosind formula:
 $$ S= \prod_{i=1}^{l} S_i = \prod_{i=1}^{l} x^{d_i} = x^{\sum_{i}^{l} d_i} = x^d \ mod \ N $$
-Principalul dezavantaj al acestor tehnici îl reprezintă mărimea cheilor, din cauza necesității diferitelor partajări și a tehnicilor de reconstruire a semnăturilor. Ulterior, Shoup a propus prima schemă bazată pe partajarea polinomială (schema Desmedt și Frankel \cite{desmet}). Protocolul trebuie să revină de $t$ ori pentru a putea înlătura serverele rele, semnătura depinzând e un subgrup de $t+1$ servere. \\
+Principalul dezavantaj al acestor tehnici îl reprezintă mărimea cheilor, din cauza necesității diferitelor partajări și a tehnicilor de reconstruire a semnăturilor. Ulterior, Shoup a propus prima schemă bazată pe partajarea polinomială (schema Desmedt și Frankel \cite{desmet}). Protocolul trebuie să revină de $t$ ori pentru a putea înlătura serverele rele, semnătura depinzând e un subgrup de $t+1$ servere. \par
 Fie $\delta =l!$. Partajarea lui $d$ este în așa fel încât $\delta | d_i$ și $d_i =f(i)$ unde $f$ este un polinom de grad $t$ și cu termenul constant $d$. \\
 Fie $S$ mulțimea a $t+1$ servere, atunci coeficientul Lagrange va fi: 
 $$ \lambda_{i,j}^{'S} = \prod_{j^{'} \in S \setminus j}^{} \frac{i-j^{'}}{j-j^{'}}   $$
@@ -886,7 +914,7 @@ $$S^{\delta} = \prod_{i \in S}^{} S_{i}^{\lambda_{0,i}^{S} = x^{\delta d} \ mod 
 Robustețea înseamnă faptul că serverele corupte nu le pot împiedica pe cele necorupte să-și realizeze semnătura. \\
 În dovada corectitudinii serverele trebuie să dovedească că ridică $x$ la puterea $d_i$. Serverul $i$ deține cheia de verificare
 $$ v_i = \log_{x} S_i = d_i \ mod \ \phi(N)$$
-Problemele sunt: $\mathbb{Z}_{N}^{*}$ nu este un grup ciclic,  generatorul $V$ nu există și elementele de ordin maximal sunt greu de găsit. Dacă vom folosi numere prime sigure, atunci $\mathbb{Z}_{N}^{*}$ este un grup ciclic, iar generatoarele sunt ușor de găsit. \\
+Problemele sunt: $\mathbb{Z}_{N}^{*}$ nu este un grup ciclic,  generatorul $V$ nu există și elementele de ordin maximal sunt greu de găsit. Dacă vom folosi numere prime sigure, atunci $\mathbb{Z}_{N}^{*}$ este un grup ciclic, iar generatoarele sunt ușor de găsit. \par
 Pentru a nu crea neclarități, este bine să descriem totuși ce este acela un grup, mai precis un grup ciclic: 
 \subsubsection{Grupuri \cite{wikig}}
 Un grup este o structură algebrică ce constă dintr-o mulțime pe care este definită o lege de compoziție internă (acesta combină două elemente ale unei mulțimi și formează un al treilea element tot din aceeași mulțime). Pentru a fi un grup, mulțimea și operația trebuie să satisfacă o serie de axiome:
@@ -913,7 +941,7 @@ atunci grupul $(G,\circ )$ se numește grup comutativ sau abelian
 \textbf{Un grup ciclic} este un grup ale cărui elemente sunt puteri (când operația de grup este considerată a fi de natură aditivă, se preferă termenul de multipli) ai unui element $a$. 
 
 \subsection{Problema}
-Numerele prime sigure sunt folosite în general de chei pentru a dovedi faptul că schema de partajare a secretelor (Shamir \cite{shamir})  este sigură în inelul $\mathbb{Z}_M$, și nu într-un corp finit. Robustețea ne garantează faptul că dacă un jucător malițios trimite semnături false, scema tot va genera corect S. \\
+Numerele prime sigure sunt folosite în general de chei pentru a dovedi faptul că schema de partajare a secretelor (Shamir \cite{shamir})  este sigură în inelul $\mathbb{Z}_M$, și nu într-un corp finit. Robustețea ne garantează faptul că dacă un jucător malițios trimite semnături false, scema tot va genera corect S. \par
 Spre exemplu: combinatorul primește de la servere și trebuie să genereze semnăturile corecte. O cale de a face acest lucru este să alegem aleator $t+1$ semnături, să generăm posibilele semnături $S^{'}$ și să testăm dacă $S^{'}$ este valid. Dacă $S^{'}$ trece de protocolul de verificare, atunci semnătura corectă a fost găsită, dacă nu, combinatorul trebuie să testeze alte $t+1$ semnături. Combinatorul nu știe care sunt semnăturile false iar din această cauză, acesta poate ajunge la un număr exponențial de încercări. Așadar, este necesar să divizăm într-un mod eficient.
 
 
@@ -939,7 +967,7 @@ Considerăm următorul scenariu: \\
 \item Pentru a semna un mesaj $m$, combinatorul trimite mai departe $m$ către servere. Folosind cheia privată $d_i$ și cheile de verificare $v_u,v_{u,1}$ pentru $u \in [1,k]$ pentru fiecare server rulează algoritmul de partajare de semnături și are ca output o semnătură partajată $S_i$ împreună cu o dovadă de validitate și o dovadă de validitate $proof_i$. În final, combinatorul utilizează algoritmul de combinare de generare de semnături, și scoate câte semnături partajate sunt valabile și valide.
 \end{enumerate}
 \subsubsection{Proprietăți}
-După cum am mai menționat, robustețea garantează faptul că dacă avem un număr $t$ de jucători malițioși care trimit semnături false, schema tot va returna o semnătură corectă. Această proprietate este folosită doar în prezența adversarilor activi.\\
+După cum am mai menționat, robustețea garantează faptul că dacă avem un număr $t$ de jucători malițioși care trimit semnături false, schema tot va returna o semnătură corectă. Această proprietate este folosită doar în prezența adversarilor activi.\par
 Proprietatea care asigură fapul că nu poate fi falsificat , spune că pentru orice subset de $t+1$ jucători pot genera o semnătură $S$, dar nu permite generarea a mai puin de $t$ jucători. Această proprietate exprimă securitatea unei scheme de securitate și este folositoare în prezența atacurilor adversarilor pasivi.
 \subsubsection{Generarea cheii și protocolul de semnare}
 În această secțiune, vom descrie noțiunile de securitate pentru generarea de chei și protocolul pentru semnături. Am arătat că informațiile arătate în timpul generărilor de chei și semnării nu eliberează informații secrete adversarilor.
@@ -952,150 +980,12 @@ Dacă $\exists$ un adversar $A$ care corupe cel mult $t$ servere la începutul j
 Secretul semnării înseamnă că dacă $\exists$ un adversar $A$ care corupe cel mult $t$ servere la începutul jocului chiar dacă el poate obține informații, el nu poate forța o semnătură pe un nou mesaj.
 \end{itemize}
 
-
-\subsection{Un nou mod de a genera modulul RSA (schema Boneh-Franklin \cite{boneh})}
-Obiectul este să generăm moduli RSA astfel încât grupul este ciclic, iar ordinul acestui grup nu are factori primi mici.
-\subsubsection{Un nou modul distribuit}
-\begin{enumerate}
-
-\item La primul pas,fiecare server generază aleator două valori $p_i$ și $q_i$ în intervalul $ \left[ [2^{(n-1)/2}], [\frac{2^{n/2}-1}{l}] \right]$ unde $n$ este dimensiunea în biți. Apoi vom folosi un algoritm pentru a renunța la $p_1, \dots p_l$ și $q_1, \dots ,q_l$ care au factori primi mici, și dacă $p_1+ \dots +p_{l-1}$ sau $q_1+ \dots ,+q_{l-1}$ au factori primi mici. Serverul verifică dacă $cmmdc(P-1,4P)=2$ și $cmmdc(4P,Q-1)=2$ unde $P = \prod_{2 <p_i < B} p_i$
-
-\item Protocolul este rulat pentru a calcula produsul $N$ al lui $p_1+ \dots +p_l$ și $q_1+ \dots +q_l$. Se calculează și produsul lui $\phi(N)=(P-1)(Q-1)$ și $cmmdc(\phi(N),N-1)=1$
-
-\item Trebuie să folosim și un test de primalitate
-\end{enumerate}
-\subsubsection{Calculul cmmdc a unei valori publice și a unei valori secrete partajate}
-Tehnica de bază constă prin observarea faptului că $cmmdc(e,\phi)=cmmdc(e,\phi + Re)$ unde $R$ este un număr întreg mare folosit pentru a masca valoarea secretului partajat:
-$$\phi=\phi_1+ \dots +\phi _l$$.
-Serverul $i$ generează aleator un întreg $r_i \in [0  \dots  2^{n+k^{'}}]$, unde $k^{'}$ este un parametru de securitate, calculează:
-$$ c = \sum_{i}^{} c_i = \phi + eR$$
-Dacă setăm $R=\sum_i r_i$. Această valuare poate fi cunoscută public apoi, toate serverele vor calcula $cmmdc(e,\phi)=1$. Apoi, este ușor să arătăm că dacă vom înlocui $c$ cu $\phi + eR$, vom obține $e(u + R_v) + \phi v = 1$. Prin urmare, $u + R_v \ mod \ \phi$ este inversul modular al lui $e \ mod \ \phi$. În acest caz, dacă notăm cu $d$ inversul $e \ mod \ \phi$, fiecare server asignează inversul lui $d$ către $d_i = vr_i$ și primul server lui $d_1= vr_1$.
-\subsubsection{Îmbunătățirea generării numerelor fără factori mici}
-\begin{enumerate}
-\item Fiecare server generează aleator un număr întreg $a_i$ în intervalul $[1,P]$ în așa fel încât $a_i$ este relativ prim lui $P$. Deoarece $a_i$ este un număr întreg aleator relativ prim cu P, atunci $a=a_1, \dots ,a_l \ mod \ P$ este de asemenea relativ prim cu P.
-
-\item Serverul rulează un protocl pentrua converti $a$ la $a=b_1+ \dots +b_l$.
-
-\item Fiecare serve generează aleator un număr random:
-$$r_i \in \left[  [ \frac{\sqrt{2}* 2^{\frac{n}{2} -1} }{P}   ], [\frac{2^{\frac{n}{2}-1}}{p^l}]      \right] $$
-Și:
-$$ p_i=r_i P + b_i$$
-$p = \sum p_i \equiv a \ mod \ P$ și prin urmare $p$nu este divizibil de nici un număr prim mai mic decât $B$. Putem nota $p=BR +a$ unde $R=\sum_{i} r_i$. Acest lucru funcționează doar dacă $P<p$. Pentru a arăta asta și că $p^{'} = \frac{p-1}{2}$ nu are factori primi în afară de B, atunci trebuie să verificăm că $cmmdc(p-1,P)=cmmdc(2p^{'},P)=1$ și $cmmdc(p-1,4P)=2$ ca să testăm puterea lui 2. Dacă notăm $P^{'}=4P$, putem face un singur test $cmmdc(p-1,P^{'})=2$\\
-În final, protocolul care transformă partajarea multiplicativă a lui $a$ într-o partajare aditivă, poate fi făcută robustă. Această transformare apelează de $l$ ori protocolul. La început $b_{i,0}=0$ pentru toți $i \in {0, \dots ,l}$. Apoi, pentru fiecare $i=1$ până la $l$, $u_i=a_i$ și $i_j=0$ pentru $\forall j \neq u$ iar protocolul execută: 
-$$(b_{1,i-1}+ \dots +b_{l,i-1}) \times a_i = (b_{1,i-1}+ \dots +b_{l,i-1})(u_1+ \dots +u_l)=b_{1,i}+ \dots +b_{l,i}$$
-\end{enumerate}
-\subsubsection{Generarea lui $N$ întrucât $Q_N$ este ciclic}
-Aici vom arăta cum trebuie generat $N$ astfel încât $Q_N$ să fie ciclic. Pentru a garanta această proprietate trebuie să ne folosim de faptul că prodosul a două grupuri ciclice care sunt coprime este un grup ciclic. Trebuie să verificăm totuși că $P^{'}$ și $Q^{'}$ sunt coprime. Întâi trebuie demonstrată următoarea lemă: \\
-\begin{lemma}
-$N=PQ$, $cmmdc(P-1,Q-1)|c,,dc(N-1,\phi(N)$ și pătratul liber (un pătrat liber este un număr care nu este divizibil de nici un număr care este pătrat perfect) al lui $cmmdc(N-1,\phi(N))$ divide $(P-1),(Q-1)$. Dacă $cmmdc(N-1,\phi(N))=2$ atunci $cmmdc(P-1,Q-1)=2$ \\
-\end{lemma}
-\begin{proof}
-Demonstrație: Dacă $cmmdc(N-1,\phi(N))=2$ atunci $cmmdc(P-1,Q-1)|cmmdc(N-1,\phi(N)), cmmdc(P-1,Q-1)=2$. Deoarece $cmmdc(P-1,Q-1) \neq 1$.\\
-\end{proof}
-\begin{theorem}
-Generarea cheilor folosind Boneh-Franklin și $cmmdc$ ne ajută să generă, chei RSA în așa fel încât grupul $Q_N$ este ciclic de ordin $M=P^{'}Q^{'}$, unde $N=PQ$, $P=2P^{'}+1$,$Q=2Q^{'}+1$ și nici $P^{'}$ șau $Q^{'}$ au factori primi mai mici decât B. Numărul de iterații ale acestui protocl are o medie de $ 4 \times e^{\lambda} \ln(B)$ \\
-\end{theorem}
-\begin{proof}
-Ne asumăm faptul că avem un modul RSA în care $P-1$ și $Q-1$ au divizoriiprimi mai mari decât B, aceștia nu au divizori comuni, $cmmdc(P-1,Q-1) = 2$ și $\frac{P-1}{2}$ și $\frac{Q-1}{2}$ nu au factori primi mici. Prodosul a două grupuri ciclice ale căror ordine sunt coprime dau un grup ciclic, grupuri din $\mathbb{Z}_{P}^{*}$ și $\mathbb{Z}_{Q}^{*}$ sunt ciclice, la fel și grupul $Q_N$ este ciclic. Acest lucru ne garantează faptul că există un subgrup ciclic în $\mathbb{Z}_{N}^{*}$ de ordin $M=P^{'}Q^{'}$. Putem estima numărul de iterații ales acestui algoritm folosind faza $1$ din protocolul Boneh-Franklin. Întâi trebuie să cunoaștem faptul că:
-
-$$\lim_{n-> \infty} Pr_{P^{'},Q^{'}  \in [1,n] } [cmmdc(P^{'},Q^{'}]= 1 =  \frac{6}{\Pi^{2}} > 1/2 $$ 
-Adică, ne asumăm faptul că numerele prime din intervalul $ \left[  2^{\frac{n-1}{2}}, 2^{\frac{n}{2}}         \right] $ sunt uniform distribuite. Singurul factor lent la generarea cheii este verificarea dacă $cmmdc(P^{'},P-1)=2$ unde $P^{'} = 4P$. Putem nota că:
-$$Pr_{P^{'}}[ cmmdc(2P^{'},P^{'}) =2 ]$$
-$$ = Pr_{P^{'}} [2 \nmid P^{'} \wedge 3 \nmid P^{'}  \dots    \wedge B \nmid P^{'} ] =(1- \frac{1}{2})(1 - \frac{1}{3}) \dots (1- \frac{1}{B}) = \prod_{p_i \leq B}^{} (1- \frac{1}{P^i}) \approx \frac{1}{e^{\lambda} \ln(B)}  $$
-Conform teoremei a doua a lui Merts, unde $\lambda$ este onstanta lui Euler. Așadar, va trebui să rulăm algoritmul de $ 4 \times (e^{\lambda} \ln(B)$ ori în medie pentru a putea genera un astfel de modul RSA. 
-\end{proof}
 \subsubsection{Metoda distribuită de generare de chei în protocolul lui Shoup}
 De ăndată ce $N$ este generat, fie $e$ primul număr mai mare decât $4 \delta^{2}$  în așa fel încât serverul îl poate calcula. Apoi, protocolul Catalano \cite{catalano} este rulat pentru a genera cheia partajată într-o manieră distribuită. La finalul protocolului, fiecare server calculează cheia ei de verificare în felul următor:
 $$ v_{u,i} = v_{u}^{\delta d_i}$$
 Pentru $v_u$ aleator calculat ca și $y_{u}^{2} \ mod \ N$ unde $y_u$ e concatenarea lui $H(N|i)$ pentru suficient de mulți $i$ pentru a colecta corect parametri de securitate.
 
-\subsection{Schema lui Shoup împotriva adversarilor pasivi}
-\subsubsection{Generarea cheilor}
-La sfârșitul protocolului de genarare de chei, va trebui să se verifice, dacă informația îl poate ajuta pe adversar să afle cheia secretă. Fie $d_{i_1}, \dots ,d_{i_t}$, $t$ subsecrete ale cheii secrete, obținută de adversar la $t$ servere corupte. \\
-Informația dezvăluită prin partajarea lui $d_{i_j}$. Pentru fiecare $d_{i_j}$ putem spune că: 
-$$d_{i_j} = f(i_j) = a_0 + a_1i_j +  \dots  + a_t i_{j}^{t} \ mod \ M       $$
-Dacă adăugăm o a $t+1$ ecuație, $a_0=d$, vom obține următorul sistem liniar:
-
-
-
-\[
-\left\{ 
-\begin{array}{c}
-a_0 + a_1 i_1 +  \dots  a_t i_{1}^{t}  = d_{i_1} \ mod \ M \\ 
-a_0 + a_1 i_2 +  \dots  a_t i_{2}^{t}  = d_{i_2} \ mod \ M \\ 
- \dots  \\
-a_0 + a_1 i_t +  \dots  a_t i_{t}^{t}  = d_{i_t} \ mod \ M \\
-\end{array}
-\right. 
-\]
-
-Sau o matrice $A = D \ mod \ M$
-
-\[
-\left (
-\begin{array}{cc}
-1 \ i_1 \ i_{1}^{2}  \dots  i_{1}^{t} \\
-1 \ i_2 \ i_{2}^{2}  \dots  i_{2}^{t} \\
- \dots  \\
-1 \ i_t \ i_{t}^{2}  \dots  i_{t}^{t} \\
-1 \ \ 0 \ \ 0  \dots  0 
-
-
-\end{array}
-\right) 
-\times
-\left (
-\begin{array}{c}
-a_0 \\
-a_1 \\
- \dots  \\
-a_t  
-\end{array}
-\right)
-=
-\left(
-\begin{array}{c}
-d_{i_1} \\
-d_{i_2} \\
- \dots  \\
-d_{i_t}
-\end{array}
-\right)
-\]
-
-Această matrice este o matrice Vandermonde. Determinantul unei astfel de matrici este:
-$$ \det(A) = \prod_{1 \leq j < k <t+1}^{} (i_k - i_j) \ mod \ M$$
-Unde $i_{t+1} = 0$. Cum toți $i_j$ sunt distincți în $\mathbb{Z}_{M}$, $i_k - i_j \neq 0 \ mod \ M$ deoarece $l < B$. Prin urmare, toate valorile lui $d$ sunt posibile. Prin urmare, un grup de $t$ jucători nu pot obține informații despre $d$ din partajări ale lui $d$
-
-\subsubsection{Informația dezvăluită prin verificare cheilor}
-Ăentru toți $u \in [1,k]$, cheile de verificare $v_{u,i}$ ale serverelor non corupte nu dezvăluie vreo informație pentru că ele pot fi foarte ușor simulate din părți ale serverlor corupte. Simulatorul alege random $y_u \in \mathbb{Z}_{N}^{*}$, calculează 
-$$v_u = y_{u}^{2 \delta e} \ mod \ N$$ 
-Prin urmare $y_{u}^{d} = y_{u}^{2 \delta}$. Putem face notația: 
-$$\delta d_i = \sum_{k=1}^{t+1} \lambda_{i,k}^{S} d_j \ mod \ \phi(N)$$
-Notăm cu $S$ un grupt de $t+1$ valori dacă definim coeficienții Lagrange ca fiind:
-$$\lambda_{i,j}^{S} = \delta \times \prod_{j^{'} \in S \smallsetminus j}^{} \frac{i - j^{'}}{j - j^{'}} \in \mathbb{Z}  $$
-Simulatorul poate calcula pentru fiecare $u \ in [1,k]$:
-$$v_{u}^{\delta d_i} = y_{u}^{2 \delta \lambda_{i,0}^{S}}  \times \prod_{j=1}^{t} = v_{u}^{\lambda_{i.j}^{S} d_{i_j}    } \ mod \ N     $$
-unde $S = \lbrace 0,i_1, \dots ,i_t \rbrace$. Prin urmare, un grup de t jucători nu pot lua informația de la cheile de validare ale serverelor non corupte.
-\subsubsection{Protocol pentru semnătură}
-Pentru a genera o semnătură a unui mesaj $m$, fiecare server $i$ calculează $x=H(m)$,$S_i = x^{2 \delta d_i}  \ mod \ N$ și trimite $S_i$ către combinatori fără vreo dovadă deoarece sunt în modelul onest dar curios. Combinatorul selectează un grup $S$ de $t+1$ valori și calculează $ w = \prod_{j=1}^{t+1} S_{i_j}^{2 \lambda_{0,i_{j}}^{S} } \ mod \ N$. \\
-De aici rezultă că $w^{e} = x^{4 \delta^2}$ pentru că $s_{i_j}^{2} = x^{4 \delta d_j}$. De aici putem extrage $e$ rădăcina $x$ din $w$. Pentru că suntem în modelul onest dar curios, semnătura va fi tot timpul corectă.
-
-\subsection{Îmbunătățirea schemei lui Shoup împotriva adversarillor activi}
-\subsubsection{Dovada corectitudinii}
-Fie $N$ modulul astfel încât $N=PQ$ și $P = 2p^{'} +1 $ și $Q= 2q^{'} +1 $ unde $p^{'}$ și $q^{'}$ nu au factori primi mai mici și $cmmdc(P-1,Q-1)=2$. Prin urmare, logaritmul discret al oricărui element $S_i^{2}$ în baza $g$ există, unde $S_i = x^{2 \delta d_i}$ și $\delta = l!$. Putem nota cu $v_1, \dots ,v_k$ un $k$-tuplu de elemente aleatoare în $(Q_N)^k$ astfel încât acest tuplu poate genera cu o probabilitate mare tot grupul $Q_N$ de ordin $M=p'q'$ astfel încât pentru fiecare $x \in Q_N, \exists (a_1, \dots ,a_k) \ in [0,M] $ astfel încât $x = \prod_{i=1}^{k} v_i^{a_i} \ mod \ N$
-Fiecare server $i$ are un $k$-tuplu de chei de verificare $v_{1,i} = v_1^{d_i} \ mod \ N, \dots ,v_{k,i} = v_k^{d_i} \ mod \ N$. El calculează o semnătură, $S_i = x^{2 \delta d_i} \ mod \ N$, unde $d_i$ este semnătura $i$ a lui $d$, și dovedim că:
-$$ \log_{v_1} (v_1,i) =  \dots  = \log_{v_k} (v_k,i) = \log_{x^{4 \delta}} (s-{i}^{2}) = d_i \ mod \ M $$
-Acum, descriem "dovada corectitudinii" și lăsăm $d_i \in [0,M]$ să fie secretul partajat al serverelor și $A$ și $B^{'}$ două numere întregi astfel încât $\log(A) \geqslant \log(B^{'} Mh) +k_2$ unde $B^{'}$ și $k_2$ sunt parametri de securitate și $h$ este numărul de runde. În final, $k_1$ este un parametru, astfel încăt probabilitatea de falsificare este:
-$$1/B^{\prime ^{h}} \leq \frac{1}{2^{k_1}}$$
-Cel care face verificarea, generează aleator un $r \in [0,A]$. Apoi el calculează:
-$$t= (v_{1}^{'}, \dots ,v{k}^{'},x^{'})=(v_{1}^{r}, \dots ,v_{k}^{r},x^{4 \delta r})$$
-Fie $e$, reprezentând primii $b^{'} =\log(B^{'})-1$ biți din valuarea hashului.
-$$ e= [H(v_1, \dots ,v_k,x^{4 \delta},v_{1,i},..v_{k,i},S_{i}^{2},v_{1}^{'}, \dots ,v_{k}^{'},x^{'})]_{b^{'}} $$
-Și verificăm dacă $0 \leq z \leq A $
-
-
-\subsection{Concluzia}
+\subsection{Concluzia asupra schemei lui Shoup}
 Am arătat cum trebuie să evităm numerele prime sigure în schema lui Shoup în așa fel încât dovada să rămână corectă. Am considerat că mediile în care am lucrat sunt cu grad de securitate ridicat(ex scheme de vot electronic).
 \\ Pe scurt, folosim diferit tehnici pentru a dovedi că:
 \begin{enumerate}
@@ -1105,7 +995,7 @@ Am arătat cum trebuie să evităm numerele prime sigure în schema lui Shoup î
 
 \item Generăm un set de generatori $Q_N$ generând aleator diferiți generatori $Q_N$
 \end{enumerate} 
-În final, arătăm cum trebuie adaptată schema lui Shoup pentru a lucra cu diferite elemente care generează $Q_N$, în loc de unul singur.
+
 
 
 \chapter{Criptanaliză RSA}
@@ -1546,7 +1436,7 @@ La fel ca și cu variante clasică, există două tipuri de decriptări pentru a
 Vom considera o instanță a lui Multi-Prime RSA să fie spartă când factorizarea lui $N$ este cunoscută. Pentru RSA clasic, a fost suficient să recuperăm exponentul privat pentru a putea calcula $\phi(N)$. Pentru Multi-Prime RSA o asfel de abordare s-a reușit încă. Așadar, nu există vreun algoritm determinist care poate factoriza modulul folosind exponentul privat sau $\phi(N)$. Totuși, odată ce un multiplu de $\phi(N)$ este cunoscut, rezultatul lui Milner \cite{Milner3} poate fi folosit pentru a putea calcula modulul în mod probabilistic. Deoarece $ed -1 = k\phi(N)$, este suficient să obținem exponentul privat pentru a putea calcula în mod probabilistic modulul
 \subsection{Factorizarea Modulului}
 \subsubsection{Exponent de decriptare mic}
-Toate atacurile cunoscute de tip exponent de decriptare mic pentru Multi-Prime RSA sunt de fapt extensii pentru RSA clasic. \\
+Toate atacurile cunoscute de tip exponent de decriptare mic pentru Multi-Prime RSA sunt de fapt extensii pentru RSA clasic. \par
 Extensie atacului lui Wiener pentru Multi-Prime RSA pare să fie unul dintre cele mai slabe atacuri, dar totuși este eficient în implementare. Teorema folosită în atacul clasic poate fi transformată în următoare teoremă:
 \begin{theorem}
 Pentru fiecare număr întreg $r>1$ corespunde următorul lucru: Fie $N$ modulul RSA format din numere prime balansate, fie $e$ exponentul public pentru criptare, și $d$ exponentul privat pentru decriptare. Cu cheia publică \\ $<N,e>$ dată, exponentul privat satisface următoarea relație:
@@ -1570,17 +1460,17 @@ Folosind ecuația $(2.3)$ și faptul că $k<d$, ne vom da seama că partea din s
 \frac{N^{1/r}}{2(2r-1)} &> d^2 \Rightarrow \\
 \frac{N^{1/2r}}{\sqrt{2(2r-1)}} &> d 
 \end{align*}
-Dacă ultima inegalitate este adevărată, putem aplica modelul fracțiilor continue pentru $\frac{e}{N}$, vom obține $\frac{k}{d}$ ca fiind convergența. Pentru a obține convergența, adversarul va trebui doar să testeze toate convergențele de forma $\frac{k\textprime}{d\textprime}$ ale lui $\frac{e}{N}$. \\
+Dacă ultima inegalitate este adevărată, putem aplica modelul fracțiilor continue pentru $\frac{e}{N}$, vom obține $\frac{k}{d}$ ca fiind convergența. Pentru a obține convergența, adversarul va trebui doar să testeze toate convergențele de forma $\frac{k\textprime}{d\textprime}$ ale lui $\frac{e}{N}$. \par
 Deoarece algoritmul pentru fracții continue are timp polinomial, numărul de convergențe alui factorului $\frac{e}{N}$ este $O(\log(N))$, iar costul pentru testarea fiecărui candidat $\frac{k\textprime}{d\textprime} $ este de asemenea timp polinomial.
 
 \subsection{Multi-Power RSA}
 Multi-Power RSA reprezintă o altă variantă RSA unde $N=P^{b-1}Q$ cu $b\geqslant 3$ .\\
-Când exponentul public și cel privat sunt definite modulo funcției lui Euler $\phi(N)$, variantele sunt foarte asemănătoare cu cele asupra multi-prime RSA și majoritatea atacurilor de la multi-prime RSA se aplică direct la multi-power RSA. \\
+Când exponentul public și cel privat sunt definite modulo funcției lui Euler $\phi(N)$, variantele sunt foarte asemănătoare cu cele asupra multi-prime RSA și majoritatea atacurilor de la multi-prime RSA se aplică direct la multi-power RSA. \par
 Focusul principal va fi o variantă multi-power RSA, varianta lu Takagi, unde exponentul public și cel privat sunt definiți :
 $$ \lambda \textprime (N) = cmmmc(P-1,Q-1) $$
 în loc de $\phi(N) = P^{b-2}(P-1)(Q-1)$. Decriptarea acestei variante folosește lema lui Hensel și teorema Chineză a resturilor, și este cea mai rapidă metodă de decriptare pentru toate variantele atunci când un exponent public mic este folosit. \\
 \subsubsection{Spargerea multi-power RSA (schema lui Takagi)}
-Vom considera că o instanța a schemei lui Takagi să fie spartă atunci când factorizarea modului este cunoscută. Pentru RSA, a fost suficient să recuperăm exponentul privat sau să calculăm modulul $\phi(N)$ deoarece există algoritmi determiniști ce pot rezolva problema în timp polinomial, dacă deținem măcar unul din aceste două necunoscute. Pentru schea lu Takagi, odată ce un multiplu de $\lambda \textprime (N)$ este cunoscut, rezultatul lui Miller \cite{Milner3} poate fi folosit pentru a factoriza modulul în mod probabilistic. Deoarece $ed= 1 + k \lambda \textprime (N)$, este suficient să obținem exponentul privat pentru a putea factoriza modulul. Când exponentul este definit sub forma $(P-1)(Q-1)$, în loc de $\lambda \textprime (N)$, a fost arătat de către Kunihiro și Kurosawa \cite{Kunihiro} că modulul $N=P^{b-1}$ poate fi factorizat deterinistic în timp polinomial când exponentul privat $d$ este cunoscut. \\
+Vom considera că o instanța a schemei lui Takagi să fie spartă atunci când factorizarea modului este cunoscută. Pentru RSA, a fost suficient să recuperăm exponentul privat sau să calculăm modulul $\phi(N)$ deoarece există algoritmi determiniști ce pot rezolva problema în timp polinomial, dacă deținem măcar unul din aceste două necunoscute. Pentru schea lu Takagi, odată ce un multiplu de $\lambda \textprime (N)$ este cunoscut, rezultatul lui Miller \cite{Milner3} poate fi folosit pentru a factoriza modulul în mod probabilistic. Deoarece $ed= 1 + k \lambda \textprime (N)$, este suficient să obținem exponentul privat pentru a putea factoriza modulul. Când exponentul este definit sub forma $(P-1)(Q-1)$, în loc de $\lambda \textprime (N)$, a fost arătat de către Kunihiro și Kurosawa \cite{Kunihiro} că modulul $N=P^{b-1}$ poate fi factorizat deterinistic în timp polinomial când exponentul privat $d$ este cunoscut. \par
 Similar cu CRT-RSA, cunoașterea unui exponent CRT ne va permite să factorizăm modulul. Din definiția exponenților CRT, este de așteptat ca pentru un mesaj $ m \in \mathbb{Z}_{N}^{*}$,
 
 \begin{align*}
@@ -1591,7 +1481,7 @@ cmmdc(m^{ed_Q} -m ,N) &=Q
 \subsection{Factorizarea modulului}
 Securitatea schemei lui Takagi, la fel ca și la multi-prime RSA, se bazează pe dificultatea factorizării modului. Aici, dificultatea factorizării unui modul în schema lui Takagi nu ar trebui să fie mai greu decât factorizarea unui modul pe $n$ biți. Dificultatea factorizării unui modul de forma $N=P^{b-1}Q$, pentru o dimensiune fixată a unui modul scade odată cu creșterea lui $b$ când folosim un algoritmul de genul ECM(Lenstra's elliptic curve factorization), așadar valoarea lui $b$ trebuie aleasă cu foarte mare grijă. Orice număr $b$ care satisface condiția este cunoscut ca și nunăr sigur. Deoarece algoritmul ECM depinde foarte multe de dimensiunea celui mai mic factor a lui $N$. 
 \subsubsection{Exponent de decriptare mic}
-Sunt două tipuri de atac prin exponent de decriptare mic, fiecare fiind mai puternic decât cel prezentat în multi-prime RSA. Ambele atacuri au fost decoperite de May \cite{may}, care se aplică asupra schemei lui Takagi când o parte din biții CRT sunt cunoscuți. \\
+Sunt două tipuri de atac prin exponent de decriptare mic, fiecare fiind mai puternic decât cel prezentat în multi-prime RSA. Ambele atacuri au fost decoperite de May \cite{may}, care se aplică asupra schemei lui Takagi când o parte din biții CRT sunt cunoscuți. \par
 Primul atac se aplică asupra instanțelor de forma $ N^{(b-1)/b^2}$ și necesită o parte din ce mai semnificativi biți a unei exponențieri CRT. Atacul lui May \cite{may} este dat de următoarea teoremă:
 \begin{theorem}
 Fie $N=P^{b-1}Q$ să fie modulul RSA, pentru $b \geqslant 3$. Fie $e= N^{\alpha} \leq N^{(b-1)/b^2}$ un exponent public valid pentru schema lui Takagi, iar $d_P$ și $d_Q$ să fie exponenții CRT ce satisfac condiția $ed \equiv 1 \ mod \ (P-1)$ și $ed \equiv 1 \ mod \ (Q-1)$. Dat $d_P \textprime$ astfel încât 
@@ -1613,12 +1503,161 @@ Atunci modulul poate fi factorizat în timpul liniar $e$
 \end{theorem}
 \clearpage
 
+\chapter{Aplicabilitate RSA - KeePass Plugin}
+\section{Introducere}
+\subsection{Ce este KeePass}
+	KeePass este un manager de parole open source care te ajută să îți stochezi parolele într-un mod securizat. Se pot stoca toate parolele într-o singură bază de date care este blocată cu ajutorul unei chei  sau al unui fișier în care se află cheia. Așadar, veți fi nevoiți să rețineți doar o singură parolă master sau să selectați acel fișier pentru a debloca accesul la baza de date. Parolele din interiorul acestei baze de date sunt criptate cu ajutorul algoritmilor AES sau RSA.
+\subsection{Minusurile programului}
+	KeePass nu permite și o modalitate prin care un utilizator își poate exporta parolele stocate în baza de date. Deoarece majoritatea persoanelor folosesc dispozitive multiple(laptop, desktop, tabletă, smartphone), ar trebui să existe o modalitate prin care acestea pot fi sincronizate.
+\subsection{Soluția problemei}
+	O soluție pentru rezolvarea acestei probleme este implementarea unui plugin care va adăuga taburi noi în meniul aplicației. Astfel, un utilizator își va putea adăuga parolele într-un serviciu denumit Vault secret service, iar ulterior, acesta va putea să le și importe într-o altă bază de date.
+	
+\section{Tehnologii Utilizate}
+\subsection{.Net Framework C\#. Windows System Forms}
+	.Net Framework \cite{dotnet} este un framework produs de Microsoft, folosit la dezvoltarea softwarului care rulează preponderent pe Microsoft Windows, și include o serie de limbaje pentru care acesta oferă suport. În cadrul aplicațiilor, orice limbaj ce face parte din acest framework poate folosi codul scris în orice alt limbaj ce face parte din framework. \\
+	Pentru această aplicație, s-a folosit limbajul C\# - un limbaj ce face parte din .Net, orientat obiect, ce include o gamă largă de funcționalități, instrumente și mecanisme - printre cele folosite în cadrul aplicației prezentate fiind \cite{forms}:
+	\begin{itemize}
+	\item \textbf{ToolStrip} este clasa de bază pentru MenuStrip, StatusStrip și ContextMenuStrip. Acesta este asociat cu Windows Forms pentru a crea toolbar-uri care pot arăta ca și Windows XP, Office, Internet Explorer sau alte aparențe custom, cu sau fără iteme. Clasa ToolStrip conține mai mulți membri care pot face manage pentru desenare, cu input de la mouse sau tastatură și funcționalitate drag and drop. Folosim clasa ToolStripRender și clasa ToolStripManager pentru a avea și mai mult control asupra customizării în momentul desenării. Următorii itemi sunt speciali proiectați pentru a lucra cu ToolStripSystemRenderer și ToolStripProfessionalRendered: ToolStripButton, ToolStripSeparator, ToolStripLabel, ToolStripDropDownButton, ToolStripSplitButton, ToolStripTextBox, ToolStripComboBox.
+	\item Windows System Forms namespace conține clase pentru a crea aplicații windows-based care conțin interfețe foarte bogate valabile în systemele de operare windows.
+	\item RSACryptoserviceprovider este implementarea standard a criptosistemului RSA. Această bibliotecă suportă chei de dimensiuni între 384 și 16384 de biți. Această librarie a fost folosită la comunicarea TCP dintre clientul de KeePass și serverul din Python.
+	\end{itemize}
+
+\subsection{Vault secret service}
+Vault secret service \cite{vault} stochează și controlează accesul la tokeni, parole, certificate, chei API și alte secrete. Printr-un API unificat, userii pot accesa un storage criptat, să genereze credențiale AWS IAM/STS sau baze de date SQL/NoSQL, certificate $X.509$ sau credențiale SSH. \\
+\begin{itemize}
+\item Vault poate păstra secrete existene, sau poate genera dinamic secrete noi pentru a controla accesul la resurse third-party sau să furnizeze credențiale limitate de timp pentru infrastructură. Toate datele din Vault sunt criptate. Dinamic, sunt generate secrete temporare, iar după o anumită durată de timp, vault le va șterge. Se folosesc și politici de control al accesului pentru a furniza control strict asupra persoanelor care au acces la secrete.
+\item Secretele ținute în Vault pot fi updatate oricând, la orice oră. Dacă se folosește „encryption-as-a-service”, cheile pot fi transformate oricând, păstrând abilitatea de a decrypta valori criptate în trecut cu o altă cheie.
+\item De asemenea, Vault conține loguri de audit pentru interacțiunea cu clienții autentificați: tokeni de autentificare, creare de tokeni, acces la secrete, revocarea secretelor.
+\end{itemize}
+
+\subsection{Python}
+Python \cite{python} este un limbaj de programare creat în 1989 de programatorul olandez Guidp vanRossum. Python pune accentul pe curățenia și simplitatea codului, iar sintaxa sa le permite dezvoltatorilor să exprime unele idei programatice într-o manieră mai clară și mai concisă decât în alte limbaje de programare ca C. În ceea ce privește paradigma de programare, Python poate servi ca limbaj pentru software de tipul orientat obiect, dar permite și programare imperativă, funcțională sau procedurală. 
+
+
+\section{Arhitectura aplicației}
+Aplicația se bazează pe arhitectura client-server, în sensul că utilizatorul va interacționa cu aplicația desktop (KeePass), iar aceasta va trimite cererile clientului către serverul TCP de Python urmând ca acesta să folosească API-ul de la Vault secret service, acest lucru fiind posibil doar dacă utilizatorul se autentifică cu succes.
+
+{\center \includegraphics[width=17cm,height=35cm,keepaspectratio]{sequence.PNG}}
+
+Comunicarea dintre clientul de KeePass și serverul în Python fiind TCP, datele se vor trimite sub formă de flux de octeți, iar din scriptul de Python către serviciul vault, datele se vor trimite sub formă de Json. \par
+Autentificarea unui user se va face folosind o bază de date PostgreSql. Am ales această variantă deoarece în interiorul serverului de baze de date nu vor fi ținute decât username-ul utilizatorului și parola acestuia (asupra parolei se va aplica o funcție hash sha256). După autentificare, userii vor putea să exporte parolele care au fost selectate în KeePass iar la export, toate parolele care sunt ținute în serviciu vor fi aduse către aplicație. Pentru a scrie și a citi din serviciul vault, fiecare user va avea nevoie de un backend, acesta reprezentând locul în care se vor afla parolele (fiecare backend va reprezenta chiar numele contului utilizatorului). \par
+La înregistrare, în serviciul vault se va monta un nou sistem de fișiere în care sunt ținute secretele acestuia. \par
+Pentru ca scriptul de Python să aibă acces la instanța de Vault, acesta trebuie să se autenttifice folosind un token generat de vault, și va avea nevoie să treacă de o barieră. Bariera reprezintă faptul că la inițializare, serviciul vault nu poate fi accesat de nimic, doar dacă se îndeplinește o anumită condiție. Serverul la pornire va genera 5 chei iar pentru a accesa serviciul, este neceesară cunoașterea a măcar 3 dintre aceste chei.  Un astfel de exemplu este prezentat în imaginea de mai jos:
+{\center \includegraphics[width=10cm,height=20cm,keepaspectratio]{vault.PNG}} \\
+Serviciul poate fi deblocat de la linia de comandă folosind comanda $vault \ unseal$ dar și din cod folosind  funcția $client.unseal(cheia)$ 
+În interiorul backend-ului parolele vor fi ținute în clar, dar acest lucru nu va reprezenta o problemă deoarece datele nu pot fi accesate decât de entitatea care reușește să treacă pragul celor 3 chei de decriptare. Datele din storage arată în felul următor
+{\center \includegraphics[width=10cm,height=6cm,keepaspectratio]{date.PNG}}\\
+Pentru ca datele din KeePass să ajungă până în serviciul Vault, datele din KeePass trebuie să fie întâi selectate, după care trebuie apăsat butonul de Export Passwords. Pentru a putea selecta acele date trebuie să folosim următoarele lucruri:
+\\
+{\fontfamily{Courier}\selectfont  
+private IPluginHost m_host = null;
+}
+\\
+Așa vom inițializa obiectul necesar operațiilor asupra aplicației KeePass. În acest obiect se află toate metodele necesare modelării aplicației.
+\\  
+{\fontfamily{Courier}\selectfont 
+\lstset{basicstyle=\scriptsize ,style=myCustomMatlabStyle}
+\begin{lstlisting}[language=C]
+private void OnMenuExport(object sender, EventArgs e)
+        {
+            msg.SendMessage("ExportMyPasswords");
+            PwEntry [] pwEntryes = m_host.MainWindow.GetSelectedEntries();
+            for(int i=0;i<pwEntryes.Length;i++)
+            {
+                string title = pwEntryes[i].Strings.Get(PwDefs.TitleField).ReadString();
+                string username = pwEntryes[i].Strings.Get(PwDefs.UserNameField).ReadString(); 
+                ProtectedString protectedString = pwEntryes[i].Strings.GetSafe(PwDefs.PasswordField);
+                byte[] bytes = protectedString.ReadUtf8();
+                UTF8Encoding encoding = new UTF8Encoding();
+                string passwords = encoding.GetString(bytes);
+
+                msg.SendMessage(title);
+                msg.SendMessage(username);
+                msg.SendMessage(passwords);
+            }
+        }
+\end{lstlisting}
+}
+La apăsarea butonului Export Passwords se va apela metoda OnMenuExport, care prin apelul funcției GetSelectedEntries() va returna un vector cu acele obiecte care sunt selectate. A urmat interația prin acele obiecte, formatarea lor și trimiterea lor către server. \\
+
+Pentru ca datele din Vault să ajungă în KeePass, va trebui doar să apăsăm butonul de Import Passwords. Datele vor fi scoate din Vault într-un format JSON, datele arătând exact ca în formatul de mai jos:
+{\center \includegraphics[width=10cm,height=8cm,keepaspectratio]{json.PNG}} \\
+Tot ce a trebui, a fost parsarea acelui JSON, și trimiterea datelor pe rând înapoi clientului. La primirea datelor, am adăugat fiecare obiecte primit (titlu, username, parolă) în câte o listă, după care vom apela o altă metodă din m_host pentru a updata UI-ul din KeePass. \\
+Codul prin care se primesc datele este următorul:
+
+{\fontfamily{Courier}\selectfont 
+\lstset{basicstyle=\scriptsize ,style=myCustomMatlabStyle}
+\begin{lstlisting}[language=C]
+ private void OnMenuImport(object sender, EventArgs e)
+        {
+            msg.SendMessage("ImportMyPasswords");
+            FieldManipulator field = new FieldManipulator();
+            string answer = msg.ReciveMessage();
+            int length = Int32.Parse(answer);
+            List<string> titles = new List<string>();
+            List<string> usernames = new List<string>();
+            List<string> passwords = new List<string>();
+            for (int i = 0; i < length; i++)
+            {
+                string title = msg.ReciveMessage();
+                string username = msg.ReciveMessage();
+                string password = msg.ReciveMessage();
+                titles.Add(title);
+                usernames.Add(username);
+                passwords.Add(password);
+            }
+            for(int i = 0; i < length; i++)
+            {
+                field.writeEntry(m_host, titles[i], usernames[i], passwords[i]);
+                Thread.Sleep(2000);
+            }
+            msg.closeClient();
+            
+        }
+\end{lstlisting}
+}
+Iar pentru adaptarea UI-ului:
+{\fontfamily{Courier}\selectfont 
+\lstset{basicstyle=\scriptsize ,style=myCustomMatlabStyle}
+\begin{lstlisting}[language=C]
+ public void writeEntry(IPluginHost m_host,string title, string username, string password)
+        {
+            PwEntry entry = new PwEntry(true, true);
+            entry.Strings.Set(PwDefs.TitleField, new ProtectedString(false, title));
+            entry.Strings.Set(PwDefs.UserNameField, new ProtectedString(false, username));
+            entry.Strings.Set(PwDefs.PasswordField, new ProtectedString(false, password));
+
+            m_host.Database.RootGroup.AddEntry(entry, true);
+            m_host.MainWindow.UpdateUI(false, null, true, m_host.Database.RootGroup, true, null, true);
+
+        }
+\end{lstlisting}
+}
+
+\section{Utilizarea aplicației}
+În această secțiune, vor fi prezente și anumite lucruri despre KeePass, nu doar despre plugin.\\
+La inițializarea unei noi baze de date, veți fi nevoiți să introduceți o parolă de criptare. Această parolă trebuie ținută minte deoarece cu ea se poate decripta baza de date locală și se pot vizualiza parolele.\\
+Pentru folosirea pluginului, utilizatorul va fi nevoit să se ducă în dreptul meniului de tools, iar acolo se va observa butonul de account. De îndată ce veți duce cursorul mouse-ului către butonul de account, vor apărea login și register. \\
+Odată logat, utilizatorul va putea să înceapă să selecteze parolele (acest lucru se poate face ținnd apăsată tasta ctr + click stânga pe itemul dorit). După ce Aveți selectate itemele, puteți apăsa butonul de export.
+{\center \includegraphics[width=10cm,height=8cm,keepaspectratio]{export.PNG}} \\
+
+După ce vom trece pe o altă bază de date, parolele care se aflau în cealaltă bază de date nu mai sunt vizibile și aici, dar cu opțiunea de import vom putea obține din nou parolele.
+{\center \includegraphics[width=10cm,height=8cm,keepaspectratio]{import.PNG}} \\
+Importul va dura puțin mai mult, deoarece UI-ul trebuie să se reapdateze la primirea fiecărei parole noi, dar după câteva secunde, baza de date va avea toate parolele dorite
+{\center \includegraphics[width=10cm,height=8cm,keepaspectratio]{import2.PNG}} \\
+
+
+
 \chapter*{}
-\section*{Concluzia}
-Pe parcursul acestor capitole, am detaliat o serie de derivări ale algoritmului RSA, moduri de implementare ale acestuia, cum depindem foarte mult de modul în care generăm cheile (numere prime cât mai mari, exponentul de criptare să nu fie nici foarte mare, nici foarte mic), îmbunătățiri, precum și vulnerabilități și modalități prin care putem să le exploatăm. \\
-De asemenea, am reușit să înțelegem și o parte din algoritmii fundamentali care aparțin de teoria numerelor (TCR, Euclid-extins, invers modularul, ecuație diofantică etc), precum și alte aspecte matematice(polinoame, grupuri). \\
-Am reușit să detaliem și o problemă  matematică care este ușoară într-un sens, dar intractabilă în celălalt (factorizarea unui număr), deci am reușit să vedem cât de greu este, chiar și cu puterea computațională actuală, să reușim să factorizăm un număr foarte mare\\. 
-Scopul acestei lucrări a fost de a-l introduce pe cititor în domeniul criptografiei, și de a-i forma o bază solidă în ceea ce privește criptografia cu chei publice, mai precis RSA.
+\section*{Concluzii}
+\par
+	 Pe parcursul acestor capitole, am detaliat o serie de derivări ale algoritmului RSA, moduri de implementare ale acestuia, cum depindem foarte mult de modul în care generăm cheile (numere prime cât mai mari, exponentul de criptare să nu fie nici foarte mare, nici foarte mic), îmbunătățiri, precum și vulnerabilități și modalități prin care putem să le exploatăm. \par
+De asemenea, am reușit să înțelegem și o parte din algoritmii fundamentali care aparțin de teoria numerelor (TCR, Euclid-extins, invers modularul, ecuație diofantică etc), precum și alte aspecte matematice(polinoame, grupuri). \par
+	Am reușit să detaliem și o problemă  matematică care este ușoară într-un sens, dar intractabilă în celălalt (factorizarea unui număr), deci am reușit să vedem cât de greu este, chiar și cu puterea computațională actuală, să reușim să factorizăm un număr foarte mare.\par 
+Scopul acestei lucrări a fost de a-l introduce pe cititor în domeniul criptografiei, și de a-i forma o bază solidă în ceea ce privește criptografia cu chei publice, mai precis RSA. \par
+Pe partea de aplicație am reușit integrarea unui plugin de KeePass cu un serviciu Vault, această implementare fiind prima datorită versiunii vechi de .NET (versiunea 3.5 care la momentul lansării nu suporta comunicarea cu un serviciu). Am văzut cum se poate construi o aplicație folosind atât tehnologii low level(windows system forms, sockets) dar și o parte high level(API-ul în Python ce permite comunicarea cu serviciul vault). Pe lângă toate acestea, am văzut și cum poate fi folosit algoritmul RSA pentru securizarea unei aplicații. \par
+	Aplicația poate constitui un punct de plecare pentru alte alte pluginuri similare ce doresc comunicarea cu un serviciu. De asemenea, această aplicație poate fi extinsă și în alte domenii de cercetare, unul dintre acestea fiind „Încrederea în Rețele”. În acest caz vom avea un cluster de noduri (fiecare nod reprezentând un user) iar la adăugarea unui nou nod în cluster vom putea să-i distribuim anumite informații doar dacă acel nod este considerat de încredere.
+
 
 
 
@@ -1654,7 +1693,8 @@ D. Coppersmith. Small solution to polynomial equations, and low exponent RSA vul
 \bibitem{copper3}
 D. Coppersmith, M. K. Franklin, J. Patarin, and M. K. Reiter. Low-exponent RSA with related messages. In U. M. Maurer, editor, EURO-CRYPT,volume 1070 of Lecture Notes in Computer Science, paginile 1–9.
 Springer, 1996
-
+\bibitem{vault}
+https://www.hashicorp.com/blog/Vault-announcement/
 \bibitem{heninger}
 N. Heninger and H. Shacham. Improved RSA private key reconstruction for cold boot attacks. Cryptology ePrint Archive
 \bibitem{shoup}
@@ -1688,12 +1728,24 @@ S.Sarkar și S.Maitra. Partial key exposure attacks on RSA and its variants by g
 M. J. Hinek, M. J. Low și E. Teske. On some attack on multi-prime RSA. K.Nyberg și H. M. Heys, editorii, Selected Areas in Cryptography, volume 2595 of Lecture Notes in Computer Science, paginile 385-404. Springer, 2002.
 \bibitem{Milner3}
 G. L. Miller. Riemann’s hypothesis and tests for primality. Journal of Computer and System Sciences, 13:300–317, 1976. 
+\bibitem{fltCripto}
+Ferucio Laurențiu Țiplea. Introducere în criptografie. Anul II semestrul 1, Universitatea Alexandru Ioan Cuza, facultatea de Informatică.
+\bibitem{fltFai}
+https://profs.info.uaic.ro/~fltiplea/ Fundamente algebrice ale informaticii. Anul I semestrul2, Universitatea Alexandru Ioan Cuza, facultatea de Informatică.
 \bibitem{takagi}
  T. Takagi. A fast RSA-type public-key primitive modulo pkq using Hensel lifting. IEICE Transactions, 87-A(1):94–101, 2004. 
 \bibitem{Kunihiro}
  N. Kunihiro and K. Kurosawa. Deterministic polynomial time equivalence between factoring and key-recovery attack on Takagi’s RSA. In T. Okamoto and X. Wang, editors, Public Key Cryptography, volume 4450 of Lecture Notes in Computer Science, paginile 412–425. Springer, 2007.
 \bibitem{may}
  A. May. Computing the RSA secret key is deterministic polynomial time equivalent to factoring. In M. K. Franklin, editor, CRYPTO, volume 3152 of Lecture Notes in Computer Science, paginile 213–219. Springer, 2004. 
+\bibitem{asim}
+https://ro.wikipedia.org/wiki/Criptografie_asimetrică
+\bibitem{dotnet}
+https://en.wikipedia.org/wiki/.NET_Framework
+\bibitem{forms}
+https://msdn.microsoft.com/en-us/library/system.windows.forms.form(v=vs.110).aspx
+\bibitem{python}
+https://ro.wikipedia.org/wiki/Python
 \end{thebibliography}
 
 

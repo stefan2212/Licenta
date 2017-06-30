@@ -1,0 +1,124 @@
+\select@language {romanian}
+\contentsline {chapter}{\numberline {1}Introducere \IeC {\^\i }n criptografie}{7}{chapter.1}
+\contentsline {section}{\numberline {1.1}Criptografia ca \IeC {{\textcommabelow s}}i domeniu \cite {cripto}}{7}{section.1.1}
+\contentsline {section}{\numberline {1.2}Criptografia cu chei simetrice}{7}{section.1.2}
+\contentsline {section}{\numberline {1.3}Criptografia cu chei asimetrice}{8}{section.1.3}
+\contentsline {section}{\numberline {1.4}RSA Clasic \cite {wiki1}}{8}{section.1.4}
+\contentsline {subsection}{\numberline {1.4.1}Descriere}{8}{subsection.1.4.1}
+\contentsline {subsection}{\numberline {1.4.2}Func\IeC {{\textcommabelow t}}ionare}{8}{subsection.1.4.2}
+\contentsline {subsection}{\numberline {1.4.3}Generarea cheilor}{9}{subsection.1.4.3}
+\contentsline {subsubsection}{\numberline {1.4.3.1}Func\IeC {{\textcommabelow t}}ia lui Euler}{9}{subsubsection.1.4.3.1}
+\contentsline {subsection}{\numberline {1.4.4}Criptare \IeC {{\textcommabelow s}}i Decriptare}{9}{subsection.1.4.4}
+\contentsline {subsection}{\numberline {1.4.5}Implement\IeC {\u a}ri eficiente}{10}{subsection.1.4.5}
+\contentsline {subsection}{\numberline {1.4.6}Securitatea}{10}{subsection.1.4.6}
+\contentsline {chapter}{\numberline {2}Variante \IeC {{\textcommabelow s}}i Optimiz\IeC {\u a}ri RSA}{12}{chapter.2}
+\contentsline {section}{\numberline {2.1}Bazele matematice}{12}{section.2.1}
+\contentsline {subsection}{\numberline {2.1.1}Comportamentul asimptotic}{12}{subsection.2.1.1}
+\contentsline {subsubsection}{\numberline {2.1.1.1}Analiza unui algoritm}{12}{subsubsection.2.1.1.1}
+\contentsline {subsection}{\numberline {2.1.2}Aritmetica numerelor \IeC {\^\i }ntregi}{12}{subsection.2.1.2}
+\contentsline {subsubsection}{\numberline {2.1.2.1}Opera\IeC {{\textcommabelow t}}iile de baz\IeC {\u a}}{12}{subsubsection.2.1.2.1}
+\contentsline {subsubsection}{\numberline {2.1.2.2}Reprezentarea \IeC {\^\i }ntr-o anumit\IeC {\u a} baz\IeC {\u a}}{12}{subsubsection.2.1.2.2}
+\contentsline {subsection}{\numberline {2.1.3}Aritmetica modular\IeC {\u a}}{13}{subsection.2.1.3}
+\contentsline {subsubsection}{\numberline {2.1.3.1}Reducerea modular\IeC {\u a}}{13}{subsubsection.2.1.3.1}
+\contentsline {subsubsection}{\numberline {2.1.3.2}Inversul modular}{13}{subsubsection.2.1.3.2}
+\contentsline {section}{\numberline {2.2}RSA Clasic}{15}{section.2.2}
+\contentsline {subsection}{\numberline {2.2.1}Exponen\IeC {{\textcommabelow t}}iere Rapid\IeC {\u a}}{15}{subsection.2.2.1}
+\contentsline {subsubsection}{\numberline {2.2.1.1}Descrierea metodei binare (varianta de la dreapta la st\IeC {\^a}nga)}{15}{subsubsection.2.2.1.1}
+\contentsline {subsubsection}{\numberline {2.2.1.2}Corectitudinea algoritmului de la dreapta la st\IeC {\^a}nga}{16}{subsubsection.2.2.1.2}
+\contentsline {subsection}{\numberline {2.2.2}Teorema Chinez\IeC {\u a} a resturilor}{17}{subsection.2.2.2}
+\contentsline {subsubsection}{\numberline {2.2.2.1}Descrierea}{17}{subsubsection.2.2.2.1}
+\contentsline {subsubsection}{\numberline {2.2.2.2}Demonstra\IeC {{\textcommabelow t}}ia teoremei}{20}{subsubsection.2.2.2.2}
+\contentsline {subsection}{\numberline {2.2.3}Algoritmul lui Garner}{20}{subsection.2.2.3}
+\contentsline {subsubsection}{\numberline {2.2.3.1}Descrierea algoritmului}{20}{subsubsection.2.2.3.1}
+\contentsline {subsubsection}{\numberline {2.2.3.2}Corectitudinea algoritmului}{22}{subsubsection.2.2.3.2}
+\contentsline {subsection}{\numberline {2.2.4}Implement\IeC {\u a}ri rapide RSA}{22}{subsection.2.2.4}
+\contentsline {subsubsection}{\numberline {2.2.4.1}Generarea cheilor, criptare \IeC {{\textcommabelow s}}i decriptare}{23}{subsubsection.2.2.4.1}
+\contentsline {section}{\numberline {2.3}RSA Rebalansat}{23}{section.2.3}
+\contentsline {subsection}{\numberline {2.3.1}Generarea cheilor, criptare \IeC {{\textcommabelow s}}i decriptare}{24}{subsection.2.3.1}
+\contentsline {subsubsection}{\numberline {2.3.1.1}Generarea cheilor}{24}{subsubsection.2.3.1.1}
+\contentsline {subsubsection}{\numberline {2.3.1.2}Criptarea}{25}{subsubsection.2.3.1.2}
+\contentsline {subsubsection}{\numberline {2.3.1.3}Decriptarea}{25}{subsubsection.2.3.1.3}
+\contentsline {section}{\numberline {2.4}Multi-Prime RSA}{25}{section.2.4}
+\contentsline {subsection}{\numberline {2.4.1}Algoritmul Garner cand $N=PQR$}{25}{subsection.2.4.1}
+\contentsline {subsubsection}{\numberline {2.4.1.1}Descrierea algoritmului}{25}{subsubsection.2.4.1.1}
+\contentsline {subsubsection}{\numberline {2.4.1.2}Corectitudinea algoritmului}{26}{subsubsection.2.4.1.2}
+\contentsline {subsection}{\numberline {2.4.2}Multi-Prime RSA (modulo $N=PQR$)}{26}{subsection.2.4.2}
+\contentsline {subsubsection}{\numberline {2.4.2.1}Descrierea criptosistemului}{26}{subsubsection.2.4.2.1}
+\contentsline {subsection}{\numberline {2.4.3}Generalizarea algoritmului Garner}{27}{subsection.2.4.3}
+\contentsline {subsubsection}{\numberline {2.4.3.1}Descrierea algoritmului \IeC {\^\i }n forma general\IeC {\u a}}{27}{subsubsection.2.4.3.1}
+\contentsline {section}{\numberline {2.5}Multi-Power RSA}{28}{section.2.5}
+\contentsline {subsection}{\numberline {2.5.1}Hensel lifting}{28}{subsection.2.5.1}
+\contentsline {subsubsection}{\numberline {2.5.1.1}Ideea de baza la Hensel lifting}{28}{subsubsection.2.5.1.1}
+\contentsline {subsubsection}{\numberline {2.5.1.2}Justificarea matematic\IeC {\u a}}{28}{subsubsection.2.5.1.2}
+\contentsline {subsection}{\numberline {2.5.2}Multi-Power RSA modulo $N=P^2Q$}{29}{subsection.2.5.2}
+\contentsline {subsubsection}{\numberline {2.5.2.1}Algoritmul}{29}{subsubsection.2.5.2.1}
+\contentsline {subsection}{\numberline {2.5.3}Multi-Power RSA modulo $N=P^bQ$}{30}{subsection.2.5.3}
+\contentsline {subsubsection}{\numberline {2.5.3.1}Algoritmul}{30}{subsubsection.2.5.3.1}
+\contentsline {subsection}{\numberline {2.5.4}Generalizarea ideii}{30}{subsection.2.5.4}
+\contentsline {subsubsection}{\numberline {2.5.4.1}Ideea de baz\IeC {\u a}}{30}{subsubsection.2.5.4.1}
+\contentsline {subsubsection}{\numberline {2.5.4.2}Descrierea algoritmului \IeC {\^\i }n forma de baz\IeC {\u a}}{31}{subsubsection.2.5.4.2}
+\contentsline {subsection}{\numberline {2.5.5}Schema lui Takagi}{31}{subsection.2.5.5}
+\contentsline {subsubsection}{\numberline {2.5.5.1}Eficien\IeC {{\textcommabelow t}}a schemei lui Takagi}{32}{subsubsection.2.5.5.1}
+\contentsline {section}{\numberline {2.6}RSA pe grupuri}{33}{section.2.6}
+\contentsline {subsection}{\numberline {2.6.1}Ideea de baz\IeC {\u a}}{33}{subsection.2.6.1}
+\contentsline {subsubsection}{\numberline {2.6.1.1}Nota\IeC {{\textcommabelow t}}ie}{33}{subsubsection.2.6.1.1}
+\contentsline {subsubsection}{\numberline {2.6.1.2}Formule de baz\IeC {\u a} pentru decriptare}{33}{subsubsection.2.6.1.2}
+\contentsline {subsubsection}{\numberline {2.6.1.3}Decriptarea a dou\IeC {\u a} texte}{34}{subsubsection.2.6.1.3}
+\contentsline {subsection}{\numberline {2.6.2}Optimiz\IeC {\u a}ri}{34}{subsection.2.6.2}
+\contentsline {subsubsection}{\numberline {2.6.2.1}Teorema Chinez\IeC {\u a} a resturilor}{34}{subsubsection.2.6.2.1}
+\contentsline {subsubsection}{\numberline {2.6.2.2}Calcului unui singur invers modular}{34}{subsubsection.2.6.2.2}
+\contentsline {subsection}{\numberline {2.6.3}\IeC {\^I}mbun\IeC {\u a}t\IeC {\u a}\IeC {{\textcommabelow t}}irea batch RSA: Tehnica lui Montgomery}{34}{subsection.2.6.3}
+\contentsline {subsubsection}{\numberline {2.6.3.1}Descrierea algoritmului}{34}{subsubsection.2.6.3.1}
+\contentsline {subsubsection}{\numberline {2.6.3.2}Corectitudinea algoritmului}{35}{subsubsection.2.6.3.2}
+\contentsline {subsection}{\numberline {2.6.4}\IeC {\^I}mbun\IeC {\u a}t\IeC {\u a}\IeC {{\textcommabelow t}}irea RSA folosind tehnica lui Shamir}{35}{subsection.2.6.4}
+\contentsline {subsubsection}{\numberline {2.6.4.1}Descrierea algoritmului}{35}{subsubsection.2.6.4.1}
+\contentsline {subsubsection}{\numberline {2.6.4.2}Explica\IeC {{\textcommabelow t}}ie}{36}{subsubsection.2.6.4.2}
+\contentsline {section}{\numberline {2.7}RSA varianta distribuit\IeC {\u a} (Schema lui Shoup)}{36}{section.2.7}
+\contentsline {subsection}{\numberline {2.7.1}Introducere}{36}{subsection.2.7.1}
+\contentsline {subsection}{\numberline {2.7.2}Dovada robuste\IeC {{\textcommabelow t}}ii \IeC {{\textcommabelow s}}i folosirea numerelor prime sigure}{38}{subsection.2.7.2}
+\contentsline {subsubsection}{\numberline {2.7.2.1}Grupuri \cite {wikig}}{39}{subsubsection.2.7.2.1}
+\contentsline {subsection}{\numberline {2.7.3}Problema}{40}{subsection.2.7.3}
+\contentsline {subsection}{\numberline {2.7.4}Modele de securitate}{40}{subsection.2.7.4}
+\contentsline {subsubsection}{\numberline {2.7.4.1}Re\IeC {{\textcommabelow t}}eaua}{40}{subsubsection.2.7.4.1}
+\contentsline {subsubsection}{\numberline {2.7.4.2}Adversarul}{40}{subsubsection.2.7.4.2}
+\contentsline {subsubsection}{\numberline {2.7.4.3}Defini\IeC {{\textcommabelow t}}ii formale}{40}{subsubsection.2.7.4.3}
+\contentsline {subsubsection}{\numberline {2.7.4.4}Juc\IeC {\u a}torul \IeC {{\textcommabelow s}}i adversarul}{41}{subsubsection.2.7.4.4}
+\contentsline {subsubsection}{\numberline {2.7.4.5}Propriet\IeC {\u a}\IeC {{\textcommabelow t}}i}{41}{subsubsection.2.7.4.5}
+\contentsline {subsubsection}{\numberline {2.7.4.6}Generarea cheii \IeC {{\textcommabelow s}}i protocolul de semnare}{42}{subsubsection.2.7.4.6}
+\contentsline {subsubsection}{\numberline {2.7.4.7}Metoda distribuit\IeC {\u a} de generare de chei \IeC {\^\i }n protocolul lui Shoup}{42}{subsubsection.2.7.4.7}
+\contentsline {subsection}{\numberline {2.7.5}Concluzia asupra schemei lui Shoup}{42}{subsection.2.7.5}
+\contentsline {chapter}{\numberline {3}Criptanaliz\IeC {\u a} RSA}{44}{chapter.3}
+\contentsline {section}{\numberline {3.1}Criptanaliz\IeC {\u a} pe RSA clasic \cite {wiki1} }{44}{section.3.1}
+\contentsline {subsection}{\numberline {3.1.1}Atac cu criptotext ales}{44}{subsection.3.1.1}
+\contentsline {subsection}{\numberline {3.1.2}Mesaje necriptate}{45}{subsection.3.1.2}
+\contentsline {subsection}{\numberline {3.1.3}Exponentul de criptare mic}{45}{subsection.3.1.3}
+\contentsline {subsubsection}{\numberline {3.1.3.1}Atac de tip mesaj stereotip}{46}{subsubsection.3.1.3.1}
+\contentsline {subsubsection}{\numberline {3.1.3.2}Atac de tip mesaje rela\IeC {{\textcommabelow t}}ionale}{47}{subsubsection.3.1.3.2}
+\contentsline {subsubsection}{\numberline {3.1.3.3}Atac prin padare aleatoare}{48}{subsubsection.3.1.3.3}
+\contentsline {subsection}{\numberline {3.1.4}Exponent de decriptare mic}{48}{subsection.3.1.4}
+\contentsline {subsubsection}{\numberline {3.1.4.1}Atacul frac\IeC {{\textcommabelow t}}iilor continue: Atacul Wiener}{48}{subsubsection.3.1.4.1}
+\contentsline {subsubsection}{\numberline {3.1.4.2}Ap\IeC {\u a}rarea \IeC {\^\i }mpotriva atacului Wiener}{54}{subsubsection.3.1.4.2}
+\contentsline {subsubsection}{\numberline {3.1.4.3}Numere prime par\IeC {{\textcommabelow t}}ial cunoscute}{55}{subsubsection.3.1.4.3}
+\contentsline {section}{\numberline {3.2}Criptanaliz\IeC {\u a} pe variante RSA}{57}{section.3.2}
+\contentsline {subsection}{\numberline {3.2.1}CRT-RSA}{57}{subsection.3.2.1}
+\contentsline {subsubsection}{\numberline {3.2.1.1}Spargerea CRT-RSA}{58}{subsubsection.3.2.1.1}
+\contentsline {subsubsection}{\numberline {3.2.1.2}Reconstruirea cheii folosind erori aleatoare}{59}{subsubsection.3.2.1.2}
+\contentsline {subsection}{\numberline {3.2.2}Multi-Prime RSA}{61}{subsection.3.2.2}
+\contentsline {subsubsection}{\numberline {3.2.2.1}Spargerea Multi-Prime RSA}{62}{subsubsection.3.2.2.1}
+\contentsline {subsection}{\numberline {3.2.3}Factorizarea Modulului}{63}{subsection.3.2.3}
+\contentsline {subsubsection}{\numberline {3.2.3.1}Exponent de decriptare mic}{63}{subsubsection.3.2.3.1}
+\contentsline {subsection}{\numberline {3.2.4}Multi-Power RSA}{64}{subsection.3.2.4}
+\contentsline {subsubsection}{\numberline {3.2.4.1}Spargerea multi-power RSA (schema lui Takagi)}{64}{subsubsection.3.2.4.1}
+\contentsline {subsection}{\numberline {3.2.5}Factorizarea modulului}{65}{subsection.3.2.5}
+\contentsline {subsubsection}{\numberline {3.2.5.1}Exponent de decriptare mic}{65}{subsubsection.3.2.5.1}
+\contentsline {chapter}{\numberline {4}Aplicabilitate RSA - KeePass Plugin}{67}{chapter.4}
+\contentsline {section}{\numberline {4.1}Introducere}{67}{section.4.1}
+\contentsline {subsection}{\numberline {4.1.1}Ce este KeePass}{67}{subsection.4.1.1}
+\contentsline {subsection}{\numberline {4.1.2}Minusurile programului}{67}{subsection.4.1.2}
+\contentsline {subsection}{\numberline {4.1.3}Solu\IeC {{\textcommabelow t}}ia problemei}{67}{subsection.4.1.3}
+\contentsline {section}{\numberline {4.2}Tehnologii Utilizate}{68}{section.4.2}
+\contentsline {subsection}{\numberline {4.2.1}.Net Framework C\#. Windows System Forms}{68}{subsection.4.2.1}
+\contentsline {subsection}{\numberline {4.2.2}Vault secret service}{68}{subsection.4.2.2}
+\contentsline {subsection}{\numberline {4.2.3}Python}{69}{subsection.4.2.3}
+\contentsline {section}{\numberline {4.3}Arhitectura aplica\IeC {{\textcommabelow t}}iei}{69}{section.4.3}
+\contentsline {section}{\numberline {4.4}Utilizarea aplica\IeC {{\textcommabelow t}}iei}{73}{section.4.4}

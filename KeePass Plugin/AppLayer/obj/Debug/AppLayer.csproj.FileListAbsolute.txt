@@ -1,0 +1,1 @@
+C:\Users\stfcr\Source\Repos\keepassplugin\SamplePlugin\AppLayer\bin\Debug\AppLayer.exe.config
